@@ -5,6 +5,7 @@ import { X, CheckCircle2, AlertCircle, Loader2, Phone, Mail, User, ArrowRight } 
 import { useState, useCallback } from 'react';
 import { useCart, formatPrice } from '@/context/CartContext';
 import axios from 'axios';
+import apiClient from '@/lib/api/api-client';
 
 // ─── Razorpay global type shim ────────────────────────────────────────────────
 declare global {
@@ -77,7 +78,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
             // If key is missing in frontend env, try fetching from backend
             if (!key) {
                 try {
-                    const keyRes = await axios.get('http://localhost:5000/api/payment/key-id');
+                    const keyRes = await apiClient.get('/payment/key-id');
                     key = keyRes.data.keyId;
                 } catch (err) {
                     console.error("Failed to fetch Razorpay Key ID from backend:", err);
@@ -91,7 +92,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
             }
 
             // 1. Create order on the backend
-            const orderRes = await axios.post('http://localhost:5000/api/payment/orders', {
+            const orderRes = await apiClient.post('/payment/orders', {
                 amount: tokenAmount,
                 currency: 'INR',
                 receipt: `receipt_${Date.now()}`
@@ -115,7 +116,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                     try {
                         setScreen('loading');
                         // 3. Verify payment on the backend
-                        const verifyRes = await axios.post('http://localhost:5000/api/payment/verify', {
+                        const verifyRes = await apiClient.post('/payment/verify', {
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_signature: response.razorpay_signature

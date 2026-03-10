@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { ApiError } from "../../types/api.types";
 
-const API_BASE_URL =
-  process.env.NEXT_PUBLIC_BACKEND_URL ||
-  "https://sirf-local-backend.vercel.app/";
+const API_BASE_URL = (
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://sirf-local-backend.vercel.app"
+).replace(/\/$/, "");
 
 const apiClient = axios.create({
   baseURL: `${API_BASE_URL}/api`,
