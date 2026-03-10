@@ -28,7 +28,7 @@ export default function Trust() {
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section className="bg-[#0C0C0C] border-t border-[#2A2A2A] overflow-hidden" style={{ padding: '96px 0' }}>
+    <section className="bg-[#1F1E1F] border-t border-[#525252] overflow-hidden" style={{ padding: '96px 0' }}>
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Two-column grid */}
@@ -59,17 +59,17 @@ export default function Trust() {
               style={{
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
                 fontWeight: 900,
-                color: '#F5F0E8',
+                color: '#FFFFFF',
                 lineHeight: 1.15,
                 letterSpacing: '-0.5px',
                 marginBottom: '20px',
               }}
             >
               Rooted in{' '}
-              <span style={{ color: '#D4A853' }}>Mirik,</span>
+              <span style={{ color: '#780FF0' }}>Mirik,</span>
               <br />
               Designed for the{' '}
-              <span style={{ color: '#D4A853' }}>World</span>
+              <span style={{ color: '#780FF0' }}>World</span>
             </motion.h2>
 
             <motion.p
@@ -77,7 +77,7 @@ export default function Trust() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 }}
               style={{
-                color: '#8A8178',
+                color: '#858585',
                 fontSize: '16px',
                 lineHeight: 1.7,
                 maxWidth: '520px',
@@ -104,13 +104,13 @@ export default function Trust() {
                     gap: '8px',
                     padding: '8px 16px',
                     borderRadius: '999px',
-                    background: 'rgba(212,168,83,0.07)',
-                    border: '1px solid rgba(212,168,83,0.22)',
+                    background: 'rgba(120,15,240,0.07)',
+                    border: '1px solid rgba(120,15,240,0.22)',
                     cursor: 'default',
                   }}
                 >
-                  <Icon size={14} color="#D4A853" strokeWidth={2} />
-                  <span style={{ color: '#C8B98A', fontSize: '13px', fontWeight: 600, letterSpacing: '0.1px' }}>
+                  <Icon size={14} color="#780FF0" strokeWidth={2} />
+                  <span style={{ color: '#CFB0F2', fontSize: '13px', fontWeight: 600, letterSpacing: '0.1px' }}>
                     {label}
                   </span>
                 </motion.div>
@@ -134,7 +134,7 @@ export default function Trust() {
             {/* Left + right fade masks */}
             <div style={{
               position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
-              background: 'linear-gradient(to right, #0C0C0C 0%, transparent 12%, transparent 88%, #0C0C0C 100%)',
+              background: 'linear-gradient(to right, #1F1E1F 0%, transparent 12%, transparent 88%, #1F1E1F 100%)',
             }} />
 
             {/* Scrolling row — doubled images for seamless loop */}
@@ -158,7 +158,7 @@ export default function Trust() {
                     borderRadius: '12px',
                     overflow: 'hidden',
                     flexShrink: 0,
-                    border: '1px solid rgba(212,168,83,0.12)',
+                    border: '1px solid rgba(120,15,240,0.12)',
                   }}
                   className="img-zoom"
                 >

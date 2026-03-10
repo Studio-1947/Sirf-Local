@@ -79,7 +79,7 @@ export default function Process() {
   });
 
   return (
-    <section id="process" className="bg-[#141414] py-28 border-t border-[#2A2A2A]">
+    <section id="process" className="bg-[#1F1E1F] py-28 border-t border-[#525252]">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="text-center mb-16">
           <motion.span
@@ -93,10 +93,10 @@ export default function Process() {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="text-4xl md:text-6xl font-black text-[#F5F0E8] leading-tight"
+            className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight"
           >
             Your Journey{' '}
-            <span className="text-[#D4A853]">With Us</span>
+            <span className="text-[#780FF0]">With Us</span>
           </motion.h2>
         </div>
 
@@ -111,13 +111,13 @@ export default function Process() {
             display: 'flex', alignItems: 'center',
           }}>
             {/* Base line */}
-            <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, #D4A853 20%, #D4A853 80%, transparent)' }} />
+            <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, #780FF0 20%, #780FF0 80%, transparent)' }} />
             {/* Traveling glow pill */}
             <motion.div style={{
               position: 'absolute', top: '50%', translateY: '-50%',
               x: pillX, width: 80, height: 4, borderRadius: 9999,
-              background: 'linear-gradient(90deg, transparent, #D4A853, #FFE08A, #D4A853, transparent)',
-              boxShadow: '0 0 14px 6px rgba(212,168,83,0.8)',
+              background: 'linear-gradient(90deg, transparent, #780FF0, #8E3AEE, #780FF0, transparent)',
+              boxShadow: '0 0 14px 6px rgba(120,15,240,0.8)',
               zIndex: 1,
             }} />
           </div>
@@ -130,18 +130,18 @@ export default function Process() {
                   scale: activeCard === i ? 1.04 : 1,
                   y: activeCard === i ? -10 : 0,
                   boxShadow: activeCard === i
-                    ? '0 20px 40px rgba(212,168,83,0.2)'
+                    ? '0 20px 40px rgba(120,15,240,0.2)'
                     : '0 0px 0px rgba(0,0,0,0)',
                 }}
                 transition={{ type: 'spring', stiffness: 350, damping: 28 }}
                 className={`relative rounded-2xl p-8 border ${
                   step.gold
-                    ? 'bg-[#D4A853] border-[#D4A853] text-[#0C0C0C]'
-                    : 'bg-[#1A1A1A] border-[#2A2A2A] text-[#F5F0E8]'
+                    ? 'bg-[#780FF0] border-[#780FF0] text-white'
+                    : 'bg-[#383838] border-[#525252] text-[#FFFFFF]'
                 }`}
               >
                 <div className={`absolute top-4 right-4 font-mono-display text-xs tracking-widest ${
-                  step.gold ? 'text-[#0C0C0C]/50' : 'text-[#A89F8C]'
+                  step.gold ? 'text-white/50' : 'text-[#9E9E9E]'
                 }`}>
                   {step.phase}
                 </div>
@@ -156,10 +156,10 @@ export default function Process() {
                   {step.emoji}
                 </motion.span>
 
-                <h3 className={`text-xl font-black mb-3 ${step.gold ? 'text-[#0C0C0C]' : 'text-[#F5F0E8]'}`}>
+                <h3 className={`text-xl font-black mb-3 ${step.gold ? 'text-white' : 'text-[#FFFFFF]'}`}>
                   {step.title}
                 </h3>
-                <p className={`text-sm leading-relaxed ${step.gold ? 'text-[#0C0C0C]/70' : 'text-[#A89F8C]'}`}>
+                <p className={`text-sm leading-relaxed ${step.gold ? 'text-white/70' : 'text-[#9E9E9E]'}`}>
                   {step.description}
                 </p>
               </motion.div>

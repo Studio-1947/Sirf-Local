@@ -21,44 +21,44 @@ const TABS: Category[] = ['All', 'Photos', 'Branding', 'Logo', 'Packaging', 'Vid
 
 const items: GalleryItem[] = [
   // Photos  →  public/images/gallery/photos/
-  { id: 'p1', category: 'Photos', label: 'Photo 1', sublabel: 'Photography', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/photos/1.png' },
-  { id: 'p2', category: 'Photos', label: 'Photo 2', sublabel: 'Photography', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/photos/2.png' },
-  { id: 'p3', category: 'Photos', label: 'Photo 3', sublabel: 'Photography', accent: '#A07850', bg: 'linear-gradient(135deg,#1a0e00 0%,#2e1a06 100%)', src: '/images/gallery/photos/3.png' },
-  { id: 'p4', category: 'Photos', label: 'Photo 4', sublabel: 'Photography', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/photos/4.png' },
-  { id: 'p5', category: 'Photos', label: 'Photo 5', sublabel: 'Photography', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/photos/5.png' },
-  { id: 'p6', category: 'Photos', label: 'Photo 6', sublabel: 'Photography', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/photos/6.png' },
-  { id: 'p7', category: 'Photos', label: 'Photo 7', sublabel: 'Photography', accent: '#A07850', bg: 'linear-gradient(135deg,#1a0e00 0%,#2e1a06 100%)', src: '/images/gallery/photos/7.png' },
-  { id: 'p8', category: 'Photos', label: 'Photo 8', sublabel: 'Photography', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/photos/8.png' },
+  { id: 'p1', category: 'Photos', label: 'Photo 1', sublabel: 'Photography', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/photos/1.png' },
+  { id: 'p2', category: 'Photos', label: 'Photo 2', sublabel: 'Photography', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/photos/2.png' },
+  { id: 'p3', category: 'Photos', label: 'Photo 3', sublabel: 'Photography', accent: '#B98AEF', bg: 'linear-gradient(135deg,#2D0060 0%,#6509CE 100%)', src: '/images/gallery/photos/3.png' },
+  { id: 'p4', category: 'Photos', label: 'Photo 4', sublabel: 'Photography', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/photos/4.png' },
+  { id: 'p5', category: 'Photos', label: 'Photo 5', sublabel: 'Photography', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/photos/5.png' },
+  { id: 'p6', category: 'Photos', label: 'Photo 6', sublabel: 'Photography', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/photos/6.png' },
+  { id: 'p7', category: 'Photos', label: 'Photo 7', sublabel: 'Photography', accent: '#B98AEF', bg: 'linear-gradient(135deg,#2D0060 0%,#6509CE 100%)', src: '/images/gallery/photos/7.png' },
+  { id: 'p8', category: 'Photos', label: 'Photo 8', sublabel: 'Photography', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/photos/8.png' },
   // Branding  →  public/images/gallery/branding/
-  { id: 'b1',  category: 'Branding', label: 'Branding Work 1',  sublabel: 'Brand Identity', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/branding/1.png' },
-  { id: 'b2',  category: 'Branding', label: 'Branding Work 2',  sublabel: 'Brand Identity', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/branding/2.png' },
-  { id: 'b3',  category: 'Branding', label: 'Branding Work 3',  sublabel: 'Brand Identity', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/branding/3.png' },
-  { id: 'b4',  category: 'Branding', label: 'Branding Work 4',  sublabel: 'Brand Identity', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/branding/4.png' },
-  { id: 'b5',  category: 'Branding', label: 'Branding Work 5',  sublabel: 'Brand Identity', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/branding/5.png' },
-  { id: 'b6',  category: 'Branding', label: 'Branding Work 6',  sublabel: 'Brand Identity', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/branding/6.png' },
-  { id: 'b7',  category: 'Branding', label: 'Branding Work 7',  sublabel: 'Brand Identity', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/branding/7.png' },
-  { id: 'b8',  category: 'Branding', label: 'Branding Work 8',  sublabel: 'Brand Identity', accent: '#A07850', bg: 'linear-gradient(135deg,#1a0e00 0%,#2e1a06 100%)', src: '/images/gallery/branding/8.png' },
-  { id: 'b9',  category: 'Branding', label: 'Branding Work 9',  sublabel: 'Brand Identity', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/branding/9.png' },
-  { id: 'b10', category: 'Branding', label: 'Branding Work 10', sublabel: 'Brand Identity', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/branding/10.png' },
+  { id: 'b1',  category: 'Branding', label: 'Branding Work 1',  sublabel: 'Brand Identity', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/branding/1.png' },
+  { id: 'b2',  category: 'Branding', label: 'Branding Work 2',  sublabel: 'Brand Identity', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/branding/2.png' },
+  { id: 'b3',  category: 'Branding', label: 'Branding Work 3',  sublabel: 'Brand Identity', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/branding/3.png' },
+  { id: 'b4',  category: 'Branding', label: 'Branding Work 4',  sublabel: 'Brand Identity', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/branding/4.png' },
+  { id: 'b5',  category: 'Branding', label: 'Branding Work 5',  sublabel: 'Brand Identity', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/branding/5.png' },
+  { id: 'b6',  category: 'Branding', label: 'Branding Work 6',  sublabel: 'Brand Identity', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/branding/6.png' },
+  { id: 'b7',  category: 'Branding', label: 'Branding Work 7',  sublabel: 'Brand Identity', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/branding/7.png' },
+  { id: 'b8',  category: 'Branding', label: 'Branding Work 8',  sublabel: 'Brand Identity', accent: '#B98AEF', bg: 'linear-gradient(135deg,#2D0060 0%,#6509CE 100%)', src: '/images/gallery/branding/8.png' },
+  { id: 'b9',  category: 'Branding', label: 'Branding Work 9',  sublabel: 'Brand Identity', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/branding/9.png' },
+  { id: 'b10', category: 'Branding', label: 'Branding Work 10', sublabel: 'Brand Identity', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/branding/10.png' },
   // Logo  →  public/images/gallery/logo/
-  { id: 'l1', category: 'Logo', label: 'Logo Design 1', sublabel: 'Logo Design', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/logo/1.png' },
-  { id: 'l2', category: 'Logo', label: 'Logo Design 2', sublabel: 'Logo Design', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/logo/2.png' },
-  { id: 'l3', category: 'Logo', label: 'Logo Design 3', sublabel: 'Logo Design', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/logo/3.png' },
-  { id: 'l4', category: 'Logo', label: 'Logo Design 4', sublabel: 'Logo Design', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/logo/4.png' },
-  { id: 'l5', category: 'Logo', label: 'Logo Design 5', sublabel: 'Logo Design', accent: '#A07850', bg: 'linear-gradient(135deg,#1a0e00 0%,#2e1a06 100%)', src: '/images/gallery/logo/5.png' },
-  { id: 'l6', category: 'Logo', label: 'Logo Design 6', sublabel: 'Logo Design', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/logo/6.png' },
+  { id: 'l1', category: 'Logo', label: 'Logo Design 1', sublabel: 'Logo Design', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/logo/1.png' },
+  { id: 'l2', category: 'Logo', label: 'Logo Design 2', sublabel: 'Logo Design', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/logo/2.png' },
+  { id: 'l3', category: 'Logo', label: 'Logo Design 3', sublabel: 'Logo Design', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/logo/3.png' },
+  { id: 'l4', category: 'Logo', label: 'Logo Design 4', sublabel: 'Logo Design', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/logo/4.png' },
+  { id: 'l5', category: 'Logo', label: 'Logo Design 5', sublabel: 'Logo Design', accent: '#B98AEF', bg: 'linear-gradient(135deg,#2D0060 0%,#6509CE 100%)', src: '/images/gallery/logo/5.png' },
+  { id: 'l6', category: 'Logo', label: 'Logo Design 6', sublabel: 'Logo Design', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/logo/6.png' },
   // Packaging  →  public/images/gallery/packaging/
-  { id: 'pk1', category: 'Packaging', label: 'Packaging Design 1', sublabel: 'Packaging Design', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/packaging/1.png' },
-  { id: 'pk2', category: 'Packaging', label: 'Packaging Design 2', sublabel: 'Packaging Design', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/packaging/2.png' },
-  { id: 'pk3', category: 'Packaging', label: 'Packaging Design 3', sublabel: 'Packaging Design', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/packaging/3.png' },
-  { id: 'pk4', category: 'Packaging', label: 'Packaging Design 4', sublabel: 'Packaging Design', accent: '#A07850', bg: 'linear-gradient(135deg,#1a0e00 0%,#2e1a06 100%)', src: '/images/gallery/packaging/4.png' },
-  { id: 'pk5', category: 'Packaging', label: 'Packaging Design 5', sublabel: 'Packaging Design', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/packaging/5.png' },
-  { id: 'pk6', category: 'Packaging', label: 'Packaging Design 6', sublabel: 'Packaging Design', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/packaging/6.png' },
+  { id: 'pk1', category: 'Packaging', label: 'Packaging Design 1', sublabel: 'Packaging Design', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/packaging/1.png' },
+  { id: 'pk2', category: 'Packaging', label: 'Packaging Design 2', sublabel: 'Packaging Design', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/packaging/2.png' },
+  { id: 'pk3', category: 'Packaging', label: 'Packaging Design 3', sublabel: 'Packaging Design', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/packaging/3.png' },
+  { id: 'pk4', category: 'Packaging', label: 'Packaging Design 4', sublabel: 'Packaging Design', accent: '#B98AEF', bg: 'linear-gradient(135deg,#2D0060 0%,#6509CE 100%)', src: '/images/gallery/packaging/4.png' },
+  { id: 'pk5', category: 'Packaging', label: 'Packaging Design 5', sublabel: 'Packaging Design', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/packaging/5.png' },
+  { id: 'pk6', category: 'Packaging', label: 'Packaging Design 6', sublabel: 'Packaging Design', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/packaging/6.png' },
   // Videos  →  public/images/gallery/videos/
-  { id: 'v1', category: 'Videos', label: 'Video 1', sublabel: 'Reel / Promo', accent: '#7C9A5E', bg: 'linear-gradient(135deg,#0f1f0c 0%,#1a2e14 100%)', src: '/images/gallery/videos/1.mp4' },
-  { id: 'v2', category: 'Videos', label: 'Video 2', sublabel: 'Reel / Promo', accent: '#D4A853', bg: 'linear-gradient(135deg,#1a1200 0%,#2e2006 100%)', src: '/images/gallery/videos/2.mp4' },
-  { id: 'v3', category: 'Videos', label: 'Video 3', sublabel: 'Reel / Promo', accent: '#C47B5A', bg: 'linear-gradient(135deg,#1a0800 0%,#2e1206 100%)', src: '/images/gallery/videos/3.mp4' },
-  { id: 'v4', category: 'Videos', label: 'Video 4', sublabel: 'Reel / Promo', accent: '#A07850', bg: 'linear-gradient(135deg,#1a0e00 0%,#2e1a06 100%)', src: '/images/gallery/videos/4.mp4' },
+  { id: 'v1', category: 'Videos', label: 'Video 1', sublabel: 'Reel / Promo', accent: '#A463EE', bg: 'linear-gradient(135deg,#200050 0%,#5103AA 100%)', src: '/images/gallery/videos/1.mp4' },
+  { id: 'v2', category: 'Videos', label: 'Video 2', sublabel: 'Reel / Promo', accent: '#780FF0', bg: 'linear-gradient(135deg,#1A003A 0%,#3E0085 100%)', src: '/images/gallery/videos/2.mp4' },
+  { id: 'v3', category: 'Videos', label: 'Video 3', sublabel: 'Reel / Promo', accent: '#8E3AEE', bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)', src: '/images/gallery/videos/3.mp4' },
+  { id: 'v4', category: 'Videos', label: 'Video 4', sublabel: 'Reel / Promo', accent: '#B98AEF', bg: 'linear-gradient(135deg,#2D0060 0%,#6509CE 100%)', src: '/images/gallery/videos/4.mp4' },
 ];
 
 /* ─── Lightbox ─────────────────────────────────────────────────────────────── */
@@ -157,10 +157,10 @@ function Lightbox({
 
         {/* Label row */}
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-          <span style={{ color: '#6A6158', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
+          <span style={{ color: '#6B6B6B', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
             {item.sublabel}
           </span>
-          <span style={{ color: '#F5F0E8', fontSize: '15px', fontWeight: 700 }}>
+          <span style={{ color: '#FFFFFF', fontSize: '15px', fontWeight: 700 }}>
             {item.label}
           </span>
         </div>
@@ -172,12 +172,12 @@ function Lightbox({
         style={{
           position: 'fixed', top: '20px', right: '20px',
           width: '40px', height: '40px', borderRadius: '50%',
-          background: 'rgba(30,30,30,0.9)', border: '1px solid #3A3A3A',
+          background: 'rgba(30,30,30,0.9)', border: '1px solid #525252',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           cursor: 'pointer', zIndex: 1001,
         }}
       >
-        <X size={18} color="#F5F0E8" />
+        <X size={18} color="#FFFFFF" />
       </button>
 
       {/* Prev arrow */}
@@ -187,12 +187,12 @@ function Lightbox({
           style={{
             position: 'fixed', left: '20px', top: '50%', transform: 'translateY(-50%)',
             width: '44px', height: '44px', borderRadius: '50%',
-            background: 'rgba(30,30,30,0.9)', border: '1px solid #3A3A3A',
+            background: 'rgba(30,30,30,0.9)', border: '1px solid #525252',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer', zIndex: 1001,
           }}
         >
-          <ChevronLeft size={22} color="#F5F0E8" />
+          <ChevronLeft size={22} color="#FFFFFF" />
         </button>
       )}
 
@@ -203,12 +203,12 @@ function Lightbox({
           style={{
             position: 'fixed', right: '20px', top: '50%', transform: 'translateY(-50%)',
             width: '44px', height: '44px', borderRadius: '50%',
-            background: 'rgba(30,30,30,0.9)', border: '1px solid #3A3A3A',
+            background: 'rgba(30,30,30,0.9)', border: '1px solid #525252',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             cursor: 'pointer', zIndex: 1001,
           }}
         >
-          <ChevronRight size={22} color="#F5F0E8" />
+          <ChevronRight size={22} color="#FFFFFF" />
         </button>
       )}
     </motion.div>
@@ -246,7 +246,7 @@ function GalleryCard({ item, index, onClick }: { item: GalleryItem; index: numbe
         borderRadius: '16px',
         overflow: 'hidden',
         aspectRatio: '4/3',
-        border: `1px solid ${hovered ? item.accent + '55' : '#2A2A2A'}`,
+        border: `1px solid ${hovered ? item.accent + '55' : '#525252'}`,
         background: item.bg,
         cursor: 'zoom-in',
         transition: 'border-color 0.3s, transform 0.2s',
@@ -271,7 +271,7 @@ function GalleryCard({ item, index, onClick }: { item: GalleryItem; index: numbe
           >
             <div style={{
               width: '52px', height: '52px', borderRadius: '50%',
-              background: 'rgba(12,12,12,0.6)', backdropFilter: 'blur(8px)',
+              background: 'rgba(31,30,31,0.6)', backdropFilter: 'blur(8px)',
               border: `1px solid ${item.accent}55`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
@@ -295,7 +295,7 @@ function GalleryCard({ item, index, onClick }: { item: GalleryItem; index: numbe
       <div style={{
         position: 'absolute', top: '12px', left: '12px', zIndex: 3,
         padding: '4px 10px', borderRadius: '999px',
-        background: 'rgba(12,12,12,0.75)', backdropFilter: 'blur(8px)',
+        background: 'rgba(31,30,31,0.75)', backdropFilter: 'blur(8px)',
         border: `1px solid ${item.accent}33`,
       }}>
         <span style={{ color: item.accent, fontSize: '11px', fontWeight: 700, letterSpacing: '0.08em', fontFamily: 'Fragment Mono, monospace', textTransform: 'uppercase' }}>
@@ -310,17 +310,17 @@ function GalleryCard({ item, index, onClick }: { item: GalleryItem; index: numbe
         transition={{ duration: 0.25 }}
         style={{
           position: 'absolute', inset: 0, zIndex: 2,
-          background: 'linear-gradient(to top, rgba(12,12,12,0.92) 0%, rgba(12,12,12,0.4) 55%, transparent 100%)',
+          background: 'linear-gradient(to top, rgba(31,30,31,0.92) 0%, rgba(31,30,31,0.4) 55%, transparent 100%)',
           display: 'flex', flexDirection: 'column', justifyContent: 'flex-end',
           padding: '18px',
         }}
       >
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: '8px' }}>
           <div>
-            <p style={{ color: '#A89F8C', fontSize: '11px', marginBottom: '4px', fontFamily: 'Fragment Mono, monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
+            <p style={{ color: '#9E9E9E', fontSize: '11px', marginBottom: '4px', fontFamily: 'Fragment Mono, monospace', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               {item.sublabel}
             </p>
-            <p style={{ color: '#F5F0E8', fontSize: '14px', fontWeight: 700, lineHeight: 1.3 }}>
+            <p style={{ color: '#FFFFFF', fontSize: '14px', fontWeight: 700, lineHeight: 1.3 }}>
               {item.label}
             </p>
           </div>
@@ -328,7 +328,7 @@ function GalleryCard({ item, index, onClick }: { item: GalleryItem; index: numbe
             width: '32px', height: '32px', borderRadius: '50%', flexShrink: 0,
             background: item.accent, display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <ArrowUpRight size={16} color="#0C0C0C" strokeWidth={2.5} />
+            <ArrowUpRight size={16} color="#FFFFFF" strokeWidth={2.5} />
           </div>
         </div>
       </motion.div>
@@ -374,7 +374,7 @@ export default function Gallery() {
   }, [lightboxId]);
 
   return (
-    <section style={{ background: '#0C0C0C', padding: '96px 0', borderTop: '1px solid #2A2A2A' }}>
+    <section style={{ background: '#1F1E1F', padding: '96px 0', borderTop: '1px solid #525252' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
 
         {/* Header */}
@@ -391,10 +391,10 @@ export default function Gallery() {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#F5F0E8', lineHeight: 1.15, letterSpacing: '-0.5px' }}
+            style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '-0.5px' }}
           >
             A Glimpse of{' '}
-            <span style={{ color: '#D4A853' }}>Our Works</span>
+            <span style={{ color: '#780FF0' }}>Our Works</span>
           </motion.h2>
         </div>
 
@@ -412,7 +412,7 @@ export default function Gallery() {
               style={{
                 position: 'relative', padding: '8px 20px', borderRadius: '999px',
                 border: 'none', background: 'transparent',
-                color: active === tab ? '#D4A853' : '#6A6158',
+                color: active === tab ? '#780FF0' : '#6B6B6B',
                 fontSize: '13px', fontWeight: 600, cursor: 'pointer',
                 transition: 'color 0.2s', outline: 'none',
               }}
@@ -422,8 +422,8 @@ export default function Gallery() {
                   layoutId="tab-pill"
                   style={{
                     position: 'absolute', inset: 0, borderRadius: '999px',
-                    border: '1px solid rgba(212,168,83,0.35)',
-                    background: 'rgba(212,168,83,0.08)',
+                    border: '1px solid rgba(120,15,240,0.35)',
+                    background: 'rgba(120,15,240,0.08)',
                   }}
                   transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                 />
@@ -467,4 +467,3 @@ export default function Gallery() {
     </section>
   );
 }
-
