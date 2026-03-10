@@ -19,7 +19,7 @@ import crypto from "crypto";
  *             properties:
  *               amount:
  *                 type: number
- *                 description: Amount in INR
+ *                 description: Amount in INR (Rupees). The backend automatically converts this to paise for Razorpay.
  *               currency:
  *                 type: string
  *                 default: INR
