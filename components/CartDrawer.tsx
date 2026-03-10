@@ -58,14 +58,14 @@ export default function CartDrawer() {
                 padding: '20px 24px', borderBottom: '1px solid #1C1C1C',
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <ShoppingBag size={20} color="#D4A853" strokeWidth={1.8} />
+                  <ShoppingBag size={20} color="#780FF0" strokeWidth={1.8} />
                   <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '16px' }}>Your Cart</span>
                   {totalCount > 0 && (
                     <span style={{
-                      background: '#D4A853', color: '#0C0C0C',
+                      background: '#780FF0', color: '#FFFFFF',
                       fontWeight: 800, fontSize: '11px', borderRadius: '999px', padding: '2px 8px',
                     }}>
-                      {totalCount} {totalCount === 1 ? 'service' : 'services'}
+                      {totalCount} {totalCount === 1 ? 'item' : 'items'}
                     </span>
                   )}
                 </div>
@@ -76,7 +76,7 @@ export default function CartDrawer() {
                     color: '#888', cursor: 'pointer', padding: '6px',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#D4A853'; (e.currentTarget as HTMLElement).style.color = '#D4A853'; }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
                   onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#252525'; (e.currentTarget as HTMLElement).style.color = '#888'; }}
                 >
                   <X size={16} />
@@ -113,7 +113,7 @@ export default function CartDrawer() {
                         exit={{ opacity: 0, x: 20 }}
                         layout
                         style={{
-                          background: '#131313', border: '1px solid #1E1E1E',
+                          background: '#131313', border: '1px solid #383838',
                           borderRadius: '14px', padding: '14px 16px',
                         }}
                       >
@@ -208,10 +208,10 @@ export default function CartDrawer() {
                           /* One-time disclaimer */
                           <div style={{
                             display: 'flex', gap: '7px', alignItems: 'flex-start',
-                            background: 'rgba(212,168,83,0.05)', borderRadius: '8px',
-                            padding: '8px 10px', border: '1px solid rgba(212,168,83,0.12)',
+                            background: 'rgba(120,15,240,0.05)', borderRadius: '8px',
+                            padding: '8px 10px', border: '1px solid rgba(120,15,240,0.12)',
                           }}>
-                            <Info size={13} color="#D4A853" style={{ flexShrink: 0, marginTop: '1px' }} strokeWidth={2} />
+                            <Info size={13} color="#780FF0" style={{ flexShrink: 0, marginTop: '1px' }} strokeWidth={2} />
                             <p style={{ color: '#7A7060', fontSize: '11.5px', lineHeight: 1.55, margin: 0 }}>
                               Final price may vary with scope & features — we'll confirm before starting.
                             </p>
@@ -231,7 +231,7 @@ export default function CartDrawer() {
                   }}>
                     <Info size={14} color="#555" style={{ flexShrink: 0, marginTop: '1px' }} />
                     <p style={{ color: '#555', fontSize: '12px', lineHeight: 1.6, margin: 0 }}>
-                      One-time service prices are <strong style={{ color: '#7A7060' }}>starting rates</strong>. Final cost is confirmed after a quick chat about your requirements — no hidden charges.
+                      One-time service prices are <strong style={{ color: '#8E3AEE' }}>starting rates</strong>. Final cost is confirmed after a quick chat about your requirements — no hidden charges.
                     </p>
                   </div>
                 )}
@@ -265,7 +265,7 @@ export default function CartDrawer() {
                       paddingTop: '10px', borderTop: '1px solid #1E1E1E', marginTop: '4px',
                     }}>
                       <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '15px' }}>Total</span>
-                      <span style={{ color: '#D4A853', fontWeight: 900, fontSize: '18px', letterSpacing: '-0.5px' }}>
+                      <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '18px', letterSpacing: '-0.5px' }}>
                         {formatPrice(grandTotal)}
                       </span>
                     </div>
@@ -273,14 +273,14 @@ export default function CartDrawer() {
                     {/* 10% token highlight */}
                     <div style={{
                       display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      background: 'rgba(212,168,83,0.08)', borderRadius: '10px',
+                      background: 'rgba(120,15,240,0.08)', borderRadius: '10px',
                       padding: '9px 12px', marginTop: '4px',
-                      border: '1px solid rgba(212,168,83,0.2)',
+                      border: '1px solid rgba(120,15,240,0.2)',
                     }}>
                       <span style={{ color: '#A89F8C', fontSize: '12.5px' }}>
-                        Due today <span style={{ color: '#D4A853', fontWeight: 700 }}>(10% token)</span>
+                        Due today <span style={{ color: '#780FF0', fontWeight: 700 }}>(10% token)</span>
                       </span>
-                      <span style={{ color: '#D4A853', fontWeight: 900, fontSize: '15px' }}>
+                      <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '15px' }}>
                         {formatPrice(tokenAmount)}
                       </span>
                     </div>
@@ -291,15 +291,15 @@ export default function CartDrawer() {
                     onClick={() => { closeDrawer(); setCheckoutOpen(true); }}
                     style={{
                       width: '100%', padding: '13px 0', borderRadius: '999px',
-                      background: '#D4A853', color: '#0C0C0C',
+                      background: '#780FF0', color: '#FFFFFF',
                       fontWeight: 800, fontSize: '14px', border: 'none',
                       cursor: 'pointer', opacity: 1,
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       gap: '8px', letterSpacing: '0.3px',
                       transition: 'background 0.2s',
                     }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#E5BA6A'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#D4A853'; }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#8E3AEE'; }}
+                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#780FF0'; }}
                   >
                     Proceed to Checkout <ArrowRight size={15} />
                   </button>
@@ -315,7 +315,7 @@ export default function CartDrawer() {
                       textAlign: 'center', textDecoration: 'none',
                       transition: 'border-color 0.2s, color 0.2s',
                     }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#D4A853'; (e.currentTarget as HTMLElement).style.color = '#D4A853'; }}
+                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
                     onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2A2A2A'; (e.currentTarget as HTMLElement).style.color = '#A89F8C'; }}
                   >
                     Or enquire via Contact →
