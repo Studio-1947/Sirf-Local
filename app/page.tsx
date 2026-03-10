@@ -1,5 +1,6 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
+// import PaymentIntegrationDemo from '@/components/PaymentIntegrationDemo';
 import About from '@/components/About';
 import Mission from '@/components/Mission';
 import Services from '@/components/Services';
@@ -16,6 +17,9 @@ export default function Home() {
     <main>
       <Navbar />
       <Hero />
+      {/* <div className="py-20 bg-black">
+        <PaymentIntegrationDemo />
+      </div> */}
       <About />
       <Mission />
       <Services />
