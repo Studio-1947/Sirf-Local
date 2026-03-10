@@ -50,23 +50,15 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
 
     const remaining = grandTotal - baseSelectedAmount;
 
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
     const [screen, setScreen] = useState<ScreenState>('form');
-    const [paymentId, setPaymentId] = useState('');
-
-    const validate = () => {
-        const e: { name?: string; phone?: string } = {};
-        if (!name.trim()) e.name = 'Please enter your name';
-        if (!/^\d{10}$/.test(phone.trim())) e.phone = 'Enter a valid 10-digit mobile number';
-        setErrors(e);
-        return Object.keys(e).length === 0;
-    };
+    const [paymentId, setPaymentId] = useState<string | null>(null);
+    const [successData, setSuccessData] = useState<{
+        paidAmount: number;
+        percent: number;
+        remaining: number;
+    } | null>(null);
 
     const handlePay = useCallback(async () => {
-        if (!validate()) return;
         setScreen('loading');
 
         try {
@@ -109,7 +101,6 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                 name: 'Sirf Local',
                 description: `${selectedPercent}% booking token + 18% GST — ${description}`,
                 order_id: orderData.id,
-                prefill: { name: name.trim(), contact: phone.trim(), email: email.trim() },
                 theme: { color: '#780FF0' },
                 modal: { ondismiss: () => setScreen('form') },
                 handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
@@ -123,6 +114,12 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                         });
 
                         if (verifyRes.status === 200) {
+                            // Capture data for success screen before clearing cart
+                            setSuccessData({
+                                paidAmount: tokenAmount,
+                                percent: selectedPercent,
+                                remaining: remaining
+                            });
                             setPaymentId(response.razorpay_payment_id);
                             setScreen('success');
                             clearCart();
@@ -142,18 +139,19 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
             console.error("Payment initialization failed:", error);
             setScreen('failure');
         }
-    }, [name, phone, email, tokenAmount, items, selectedPercent, clearCart]);
+    }, [tokenAmount, items, selectedPercent, clearCart, remaining]);
 
     const handleClose = () => {
         setScreen('form');
-        setErrors({});
+        setPaymentId(null); // Clear payment ID on close
+        setSuccessData(null); // Clear success data on close
         onClose();
     };
 
     const whatsappText = encodeURIComponent(
-        `Hi Sirf Local! I just paid ${formatPrice(tokenAmount)} as a token (ID: ${paymentId}). Here are my services:\n`
+        `Hi Sirf Local! I just paid ${formatPrice(successData?.paidAmount ?? tokenAmount)} as a token (ID: ${paymentId}). Here are my services:\n`
         + items.map(i => `• ${i.title} (×${i.qty})`).join('\n')
-        + `\nTotal: ${formatPrice(grandTotal)}\nRemaining: ${formatPrice(remaining)}`
+        + `\nTotal: ${formatPrice(grandTotal)}\nRemaining: ${formatPrice(successData?.remaining ?? remaining)}`
     );
     const whatsappUrl = `https://wa.me/91XXXXXXXXXX?text=${whatsappText}`; // replace number
 
@@ -246,7 +244,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                                 Booking token paid!
                                             </p>
                                             <p style={{ color: '#8A8178', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
-                                                We've received your <span style={{ color: '#780FF0', fontWeight: 700 }}>{formatPrice(tokenAmount)}</span> payment ({selectedPercent}% + GST).
+                                                We've received your <span style={{ color: '#780FF0', fontWeight: 700 }}>{formatPrice(successData?.paidAmount ?? 0)}</span> payment ({successData?.percent ?? selectedPercent}% + GST).
                                                 Our team will reach out within <strong style={{ color: '#F0EBE0' }}>24 hours</strong> to kick things off.
                                             </p>
                                         </div>
@@ -268,7 +266,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                         }}>
                                             <p style={{ color: '#780FF0', fontWeight: 700, fontSize: '13px', margin: '0 0 4px' }}>Remaining balance</p>
                                             <p style={{ color: '#8A8178', fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
-                                                <span style={{ color: '#F0EBE0', fontWeight: 700 }}>{formatPrice(remaining)}</span> is due after we confirm the
+                                                <span style={{ color: '#F0EBE0', fontWeight: 700 }}>{formatPrice(successData?.remaining ?? 0)}</span> is due after we confirm the
                                                 final scope with you — no surprises.
                                             </p>
                                         </div>
@@ -409,80 +407,6 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             <p style={{ color: '#555', fontSize: '12px', margin: '4px 0 0', lineHeight: 1.55 }}>
                                                 You pay {selectedPercent}% now plus GST. Remaining <span style={{ color: '#A89F8C', fontWeight: 600 }}>{formatPrice(remaining)}</span> is settled after final confirmation.
                                             </p>
-                                        </div>
-
-                                        {/* Contact fields */}
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                            <p style={{ color: '#666', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.8px', fontWeight: 700, margin: 0 }}>
-                                                Your details
-                                            </p>
-
-                                            {/* Name */}
-                                            <div>
-                                                <div style={{
-                                                    display: 'flex', alignItems: 'center', gap: '10px',
-                                                    background: '#131313', border: `1px solid ${errors.name ? '#E05353' : '#222'}`,
-                                                    borderRadius: '12px', padding: '10px 14px',
-                                                    transition: 'border-color 0.2s',
-                                                }}
-                                                    onFocus={() => setErrors(p => ({ ...p, name: undefined }))}
-                                                >
-                                                    <User size={15} color="#555" strokeWidth={2} />
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Your name"
-                                                        value={name}
-                                                        onChange={e => setName(e.target.value)}
-                                                        style={{
-                                                            flex: 1, background: 'transparent', border: 'none', outline: 'none',
-                                                            color: '#F0EBE0', fontSize: '14px',
-                                                        }}
-                                                    />
-                                                </div>
-                                                {errors.name && <p style={{ color: '#E05353', fontSize: '11px', margin: '4px 4px 0' }}>{errors.name}</p>}
-                                            </div>
-
-                                            {/* Phone */}
-                                            <div>
-                                                <div style={{
-                                                    display: 'flex', alignItems: 'center', gap: '10px',
-                                                    background: '#131313', border: `1px solid ${errors.phone ? '#E05353' : '#222'}`,
-                                                    borderRadius: '12px', padding: '10px 14px',
-                                                    transition: 'border-color 0.2s',
-                                                }}>
-                                                    <Phone size={15} color="#555" strokeWidth={2} />
-                                                    <input
-                                                        type="tel"
-                                                        placeholder="10-digit mobile number"
-                                                        value={phone}
-                                                        onChange={e => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                                                        style={{
-                                                            flex: 1, background: 'transparent', border: 'none', outline: 'none',
-                                                            color: '#F0EBE0', fontSize: '14px',
-                                                        }}
-                                                    />
-                                                </div>
-                                                {errors.phone && <p style={{ color: '#E05353', fontSize: '11px', margin: '4px 4px 0' }}>{errors.phone}</p>}
-                                            </div>
-
-                                            {/* Email — optional */}
-                                            <div style={{
-                                                display: 'flex', alignItems: 'center', gap: '10px',
-                                                background: '#131313', border: '1px solid #222',
-                                                borderRadius: '12px', padding: '10px 14px',
-                                            }}>
-                                                <Mail size={15} color="#555" strokeWidth={2} />
-                                                <input
-                                                    type="email"
-                                                    placeholder="Email (optional)"
-                                                    value={email}
-                                                    onChange={e => setEmail(e.target.value)}
-                                                    style={{
-                                                        flex: 1, background: 'transparent', border: 'none', outline: 'none',
-                                                        color: '#F0EBE0', fontSize: '14px',
-                                                    }}
-                                                />
-                                            </div>
                                         </div>
 
                                         {/* Pay button */}
