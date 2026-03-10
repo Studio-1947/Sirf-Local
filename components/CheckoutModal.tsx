@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, AlertCircle, Loader2, Phone, Mail, User, ArrowRight } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { useCart, formatPrice } from '@/context/CartContext';
+import axios from 'axios';
 
 // ─── Razorpay global type shim ────────────────────────────────────────────────
 declare global {
@@ -67,39 +68,80 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
         if (!validate()) return;
         setScreen('loading');
 
-        const loaded = await loadRazorpayScript();
-        if (!loaded) { setScreen('failure'); return; }
+        try {
+            const loaded = await loadRazorpayScript();
+            if (!loaded) { setScreen('failure'); return; }
 
-        const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
-        if (!key || key.startsWith('rzp_test_XXXX')) {
-            // Dev-mode: simulate success without real key
-            setPaymentId('dev_simulated_payment');
-            setScreen('success');
-            clearCart();
-            return;
+            let key = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+            // If key is missing in frontend env, try fetching from backend
+            if (!key) {
+                try {
+                    const keyRes = await axios.get('http://localhost:5000/api/payment/key-id');
+                    key = keyRes.data.keyId;
+                } catch (err) {
+                    console.error("Failed to fetch Razorpay Key ID from backend:", err);
+                }
+            }
+
+            if (!key) {
+                console.error("Razorpay Key ID missing");
+                setScreen('failure');
+                return;
+            }
+
+            // 1. Create order on the backend
+            const orderRes = await axios.post('http://localhost:5000/api/payment/orders', {
+                amount: tokenAmount,
+                currency: 'INR',
+                receipt: `receipt_${Date.now()}`
+            });
+
+            const orderData = orderRes.data;
+            const description = items.map(i => `${i.title} (×${i.qty})`).join(', ');
+
+            // 2. Open Razorpay Checkout
+            const rzp = new window.Razorpay({
+                key,
+                amount: orderData.amount,
+                currency: orderData.currency,
+                name: 'Sirf Local',
+                description: `${selectedPercent}% booking token + 18% GST — ${description}`,
+                order_id: orderData.id,
+                prefill: { name: name.trim(), contact: phone.trim(), email: email.trim() },
+                theme: { color: '#780FF0' },
+                modal: { ondismiss: () => setScreen('form') },
+                handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
+                    try {
+                        setScreen('loading');
+                        // 3. Verify payment on the backend
+                        const verifyRes = await axios.post('http://localhost:5000/api/payment/verify', {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        });
+
+                        if (verifyRes.status === 200) {
+                            setPaymentId(response.razorpay_payment_id);
+                            setScreen('success');
+                            clearCart();
+                        } else {
+                            setScreen('failure');
+                        }
+                    } catch (err) {
+                        console.error("Verification failed:", err);
+                        setScreen('failure');
+                    }
+                },
+            });
+
+            rzp.on('payment.failed', () => setScreen('failure'));
+            rzp.open();
+        } catch (error) {
+            console.error("Payment initialization failed:", error);
+            setScreen('failure');
         }
-
-        const description = items.map(i => `${i.title} (×${i.qty})`).join(', ');
-
-        const rzp = new window.Razorpay({
-            key,
-            amount: tokenAmount * 100,           // paise
-            currency: 'INR',
-            name: 'Sirf Local',
-            description: `${selectedPercent}% booking token + 18% GST — ${description}`,
-            prefill: { name: name.trim(), contact: phone.trim(), email: email.trim() },
-            theme: { color: '#780FF0' },
-            modal: { ondismiss: () => setScreen('form') },
-            handler: (response: { razorpay_payment_id: string }) => {
-                setPaymentId(response.razorpay_payment_id);
-                setScreen('success');
-                clearCart();
-            },
-        });
-        rzp.on('payment.failed', () => setScreen('failure'));
-        rzp.open();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [name, phone, email, tokenAmount, items]);
+    }, [name, phone, email, tokenAmount, items, selectedPercent, clearCart]);
 
     const handleClose = () => {
         setScreen('form');

@@ -111,3 +111,17 @@ export const verifyPayment = async (req: Request, res: Response) => {
       .json({ message: "Error verifying payment", error: error.message });
   }
 };
+
+/**
+ * @openapi
+ * /api/payment/key-id:
+ *   get:
+ *     summary: Get the public Razorpay Key ID
+ *     tags: [Payment]
+ *     responses:
+ *       200:
+ *         description: Key ID retrieved successfully
+ */
+export const getKeyId = (req: Request, res: Response) => {
+  res.status(200).json({ keyId: process.env.RAZORPAY_KEY_ID });
+};
