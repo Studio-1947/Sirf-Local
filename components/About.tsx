@@ -107,7 +107,7 @@ export default function About() {
                 <p className="text-4xl font-black text-[#FFFFFF]">
                   <CountUp value={2} suffix="+" />
                 </p>
-                <p className="text-sm text-[#9E9E9E] mt-1">Years Building</p>
+                <p className="text-sm text-[#9E9E9E] mt-1">Monthly Building</p>
               </div>
             </motion.div>
           </div>
