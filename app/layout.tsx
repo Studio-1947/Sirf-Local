@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 import ClientProviders from "@/components/ClientProviders";
 import CartDrawer from "@/components/CartDrawer";
@@ -26,6 +27,11 @@ export default function RootLayout({
         <link
           href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet"
+        />
+        <Script
+          id="razorpay-checkout-js"
+          src="https://checkout.razorpay.com/v1/checkout.js"
+          strategy="beforeInteractive"
         />
       </head>
       <body className="antialiased noise">
