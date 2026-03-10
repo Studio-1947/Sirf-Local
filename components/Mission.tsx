@@ -1,13 +1,19 @@
-'use client';
+"use client";
 
-import { motion, useInView, useAnimationFrame } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
-import type { ReactNode } from 'react';
-import CountUp from './CountUp';
-import { Mountains, Planet, Eye } from '@phosphor-icons/react';
+import { motion, useInView, useAnimationFrame } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import type { ReactNode } from "react";
+import CountUp from "./CountUp";
+import { Mountains, Planet, Eye } from "@phosphor-icons/react";
 
 /* ── Traveling border beam component ─────────────────────────── */
-function BorderBeam({ rx = 16, duration = 7000 }: { rx?: number; duration?: number }) {
+function BorderBeam({
+  rx = 16,
+  duration = 7000,
+}: {
+  rx?: number;
+  duration?: number;
+}) {
   const svgRef = useRef<SVGSVGElement>(null);
   const rectRef = useRef<SVGRectElement>(null);
   const rectGlowRef = useRef<SVGRectElement>(null);
@@ -28,8 +34,8 @@ function BorderBeam({ rx = 16, duration = 7000 }: { rx?: number; duration?: numb
     offsetRef.current -= (perimeter / duration) * delta;
     if (offsetRef.current <= 0) offsetRef.current = perimeter;
     const o = String(offsetRef.current);
-    rectRef.current.setAttribute('stroke-dashoffset', o);
-    rectGlowRef.current.setAttribute('stroke-dashoffset', o);
+    rectRef.current.setAttribute("stroke-dashoffset", o);
+    rectGlowRef.current.setAttribute("stroke-dashoffset", o);
   });
 
   const pillLength = perimeter * 0.03;
@@ -38,24 +44,44 @@ function BorderBeam({ rx = 16, duration = 7000 }: { rx?: number; duration?: numb
     <svg
       ref={svgRef}
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ overflow: 'visible' }}
+      style={{ overflow: "visible" }}
     >
       <defs>
         <filter id="beam-glow" x="-50%" y="-50%" width="200%" height="200%">
           <feGaussianBlur stdDeviation="4" result="blur" />
-          <feMerge><feMergeNode in="blur" /><feMergeNode in="SourceGraphic" /></feMerge>
+          <feMerge>
+            <feMergeNode in="blur" />
+            <feMergeNode in="SourceGraphic" />
+          </feMerge>
         </filter>
       </defs>
 
       {/* Dim base border */}
-      <rect x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)"
-        rx={rx} ry={rx} fill="none" stroke="#525252" strokeWidth="1" />
+      <rect
+        x="1"
+        y="1"
+        width="calc(100% - 2px)"
+        height="calc(100% - 2px)"
+        rx={rx}
+        ry={rx}
+        fill="none"
+        stroke="#525252"
+        strokeWidth="1"
+      />
 
       {/* Glow layer */}
-      <rect ref={rectGlowRef}
-        x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)"
-        rx={rx} ry={rx} fill="none"
-        stroke="#780FF0" strokeWidth="6" strokeLinecap="round"
+      <rect
+        ref={rectGlowRef}
+        x="1"
+        y="1"
+        width="calc(100% - 2px)"
+        height="calc(100% - 2px)"
+        rx={rx}
+        ry={rx}
+        fill="none"
+        stroke="#780FF0"
+        strokeWidth="6"
+        strokeLinecap="round"
         strokeDasharray={`${pillLength} ${perimeter - pillLength}`}
         strokeDashoffset={perimeter}
         filter="url(#beam-glow)"
@@ -63,10 +89,18 @@ function BorderBeam({ rx = 16, duration = 7000 }: { rx?: number; duration?: numb
       />
 
       {/* Sharp bright pill layer */}
-      <rect ref={rectRef}
-        x="1" y="1" width="calc(100% - 2px)" height="calc(100% - 2px)"
-        rx={rx} ry={rx} fill="none"
-        stroke="#8E3AEE" strokeWidth="2" strokeLinecap="round"
+      <rect
+        ref={rectRef}
+        x="1"
+        y="1"
+        width="calc(100% - 2px)"
+        height="calc(100% - 2px)"
+        rx={rx}
+        ry={rx}
+        fill="none"
+        stroke="#8E3AEE"
+        strokeWidth="2"
+        strokeLinecap="round"
         strokeDasharray={`${pillLength} ${perimeter - pillLength}`}
         strokeDashoffset={perimeter}
       />
@@ -76,31 +110,42 @@ function BorderBeam({ rx = 16, duration = 7000 }: { rx?: number; duration?: numb
 
 const pillars = [
   {
-    title: 'Local Roots',
+    title: "Local Roots",
     description:
-      'We start by understanding the heartbeat of your business. Your story, our craft, and your local community are the foundation of our strategy.',
+      "We start by understanding the heartbeat of your business. Your story, our craft, and your local community are the foundation of our strategy.",
     icon: <Mountains size={36} weight="fill" color="#FFFFFF" />,
-    color: '#A463EE',
+    color: "#A463EE",
   },
   {
-    title: 'Digital Bridge',
+    title: "Digital Bridge",
     description:
-      'We build the infrastructure from websites, social media to SEO that acts as the bridge connecting your physical store to the digital highway.',
+      "We build the infrastructure from websites, social media to SEO that acts as the bridge connecting your physical store to the digital highway.",
     icon: <Planet size={36} weight="fill" color="#FFFFFF" />,
-    color: '#780FF0',
+    color: "#780FF0",
   },
   {
-    title: 'Global Bridge',
+    title: "Global Bridge",
     description:
-      'Unlock new markets. From a customer down the street to a collector across the ocean, we ensure your business is visible everywhere.',
+      "Unlock new markets. From a customer down the street to a collector across the ocean, we ensure your business is visible everywhere.",
     icon: <Eye size={36} weight="fill" color="#FFFFFF" />,
-    color: '#9E9E9E',
+    color: "#9E9E9E",
   },
 ];
 
-function PillarCard({ pillar, index }: { pillar: { title: string; description: string; icon: ReactNode; color: string }; index: number }) {
+function PillarCard({
+  pillar,
+  index,
+}: {
+  pillar: {
+    title: string;
+    description: string;
+    icon: ReactNode;
+    color: string;
+  };
+  index: number;
+}) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <motion.div
@@ -119,7 +164,7 @@ function PillarCard({ pillar, index }: { pillar: { title: string; description: s
       <div className="mb-5 block">{pillar.icon}</div>
       <h3
         className="text-xl font-black mb-3 group-hover:text-[#780FF0] transition-colors"
-        style={{ color: '#FFFFFF' }}
+        style={{ color: "#FFFFFF" }}
       >
         {pillar.title}
       </h3>
@@ -132,7 +177,7 @@ function PillarCard({ pillar, index }: { pillar: { title: string; description: s
 
 export default function Mission() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-100px' });
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section className="bg-[#1F1E1F] py-28 border-t border-[#525252]">
@@ -151,7 +196,7 @@ export default function Mission() {
             transition={{ delay: 0.2, duration: 0.7 }}
             className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight"
           >
-            Bridging Tradition{' '}
+            Bridging Tradition{" "}
             <span className="text-[#780FF0]">&amp; Technology</span>
           </motion.h2>
         </div>
@@ -176,32 +221,46 @@ export default function Mission() {
               <p className="text-[#9E9E9E] text-sm font-mono-display tracking-widest uppercase mb-1">
                 Success Rate · Last 12 months
               </p>
-              <p className="text-7xl font-black text-[#780FF0]"><CountUp value={98} suffix="%" /></p>
+              <p className="text-7xl font-black text-[#FFFFFF]">
+                <CountUp value={98} suffix="%" />
+              </p>
             </div>
             <div className="max-w-sm">
               <p className="text-[#FFFFFF] text-lg font-semibold mb-2">
                 We measure what matters
               </p>
               <p className="text-[#9E9E9E] text-sm leading-relaxed">
-                Our success is defined by your growth — every project we take on,
-                we finish. Every business we work with, grows.
+                Our success is defined by your growth — every project we take
+                on, we finish. Every business we work with, grows.
               </p>
             </div>
             <div className="hidden md:block">
               <div className="relative w-32 h-32">
                 <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
-                  <circle cx="60" cy="60" r="50" fill="none" stroke="#525252" strokeWidth="8" />
+                  <circle
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#525252"
+                    strokeWidth="8"
+                  />
                   <motion.circle
-                    cx="60" cy="60" r="50"
-                    fill="none" stroke="#780FF0" strokeWidth="8" strokeLinecap="round"
+                    cx="60"
+                    cy="60"
+                    r="50"
+                    fill="none"
+                    stroke="#780FF0"
+                    strokeWidth="8"
+                    strokeLinecap="round"
                     strokeDasharray={`${2 * Math.PI * 50}`}
                     initial={{ strokeDashoffset: 2 * Math.PI * 50 }}
                     whileInView={{ strokeDashoffset: 2 * Math.PI * 50 * 0.02 }}
                     viewport={{ once: true }}
-                    transition={{ duration: 1.5, delay: 0.5, ease: 'easeOut' }}
+                    transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
                   />
                 </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-2xl font-black text-[#780FF0]">
+                <span className="absolute inset-0 flex items-center justify-center text-2xl font-black text-[#FFFFFF]">
                   <CountUp value={98} suffix="%" />
                 </span>
               </div>
