@@ -8,7 +8,7 @@ import { useCart } from '@/context/CartContext';
 
 const navLinks = [
   { label: 'About', href: '#about' },
-  { label: 'Services', href: '#services' },
+  { label: 'Solutions', href: '#services' },
   { label: 'Process', href: '#process' },
   { label: 'Team', href: '#team' },
   { label: 'Pricing', href: '#pricing' },
@@ -31,13 +31,17 @@ export default function Navbar() {
         initial={{ y: -80, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.6, ease: 'easeOut' }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          scrolled
-            ? 'bg-[#0C0C0C]/90 backdrop-blur-md border-b border-[#2A2A2A]'
-            : 'bg-transparent'
-        }`}
+        className="fixed top-4 left-0 right-0 z-50 flex justify-center px-4"
       >
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <div
+          className="w-full max-w-5xl rounded-full px-5 py-3 flex items-center justify-between backdrop-blur-md"
+          style={{
+            background: scrolled ? 'rgba(31,30,31,0.80)' : 'rgba(31,30,31,0.45)',
+            border: scrolled ? '1px solid rgba(120,15,240,0.25)' : '1px solid rgba(255,255,255,0.08)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+            transition: 'background 0.3s, border-color 0.3s, box-shadow 0.3s',
+          }}
+        >
           {/* Logo */}
           <a href="#" className="flex items-center">
             <Image
@@ -56,7 +60,7 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className="text-sm text-[#A89F8C] hover:text-[#F5F0E8] transition-colors font-medium tracking-wide"
+                className="text-sm text-[#9E9E9E] hover:text-[#FFFFFF] transition-colors font-medium tracking-wide"
               >
                 {link.label}
               </a>
@@ -70,8 +74,8 @@ export default function Navbar() {
               onClick={openDrawer}
               style={{
                 position: 'relative',
-                background: totalCount > 0 ? 'rgba(212,168,83,0.1)' : 'rgba(255,255,255,0.05)',
-                border: `1px solid ${totalCount > 0 ? 'rgba(212,168,83,0.35)' : 'rgba(255,255,255,0.08)'}`,
+                background: totalCount > 0 ? 'rgba(120,15,240,0.1)' : 'rgba(255,255,255,0.05)',
+                border: `1px solid ${totalCount > 0 ? 'rgba(120,15,240,0.35)' : 'rgba(255,255,255,0.08)'}`,
                 borderRadius: '50%',
                 width: '38px',
                 height: '38px',
@@ -83,7 +87,7 @@ export default function Navbar() {
               }}
               title="View cart"
             >
-              <ShoppingCart size={16} color={totalCount > 0 ? '#D4A853' : '#A89F8C'} strokeWidth={2} />
+              <ShoppingCart size={16} color={totalCount > 0 ? '#780FF0' : '#9E9E9E'} strokeWidth={2} />
               <AnimatePresence>
                 {totalCount > 0 && (
                   <motion.span
@@ -96,8 +100,8 @@ export default function Navbar() {
                       position: 'absolute',
                       top: '-5px',
                       right: '-5px',
-                      background: '#D4A853',
-                      color: '#0C0C0C',
+                      background: '#780FF0',
+                      color: '#FFFFFF',
                       fontWeight: 900,
                       fontSize: '10px',
                       borderRadius: '999px',
@@ -107,7 +111,7 @@ export default function Navbar() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       padding: '0 4px',
-                      border: '1.5px solid #0C0C0C',
+                      border: '1.5px solid #1F1E1F',
                     }}
                   >
                     {totalCount}
@@ -117,10 +121,12 @@ export default function Navbar() {
             </button>
 
             <a
-              href="#contact"
-              className="px-5 py-2.5 bg-[#D4A853] text-[#0C0C0C] text-sm font-bold rounded-full hover:bg-[#E5BA6A] transition-colors"
+              href="https://wa.me/919093277919"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-5 py-2.5 bg-[#780FF0] text-white text-sm font-bold rounded-full hover:bg-[#8E3AEE] transition-colors"
             >
-              Get Started
+              Connect Now
             </a>
           </div>
 
@@ -133,21 +139,21 @@ export default function Navbar() {
                 position: 'relative',
                 background: 'transparent',
                 border: 'none',
-                color: '#A89F8C',
+                color: '#9E9E9E',
                 cursor: 'pointer',
                 padding: '4px',
                 display: 'flex',
               }}
             >
-              <ShoppingCart size={20} color={totalCount > 0 ? '#D4A853' : '#A89F8C'} strokeWidth={2} />
+              <ShoppingCart size={20} color={totalCount > 0 ? '#780FF0' : '#9E9E9E'} strokeWidth={2} />
               {totalCount > 0 && (
                 <span
                   style={{
                     position: 'absolute',
                     top: '-2px',
                     right: '-4px',
-                    background: '#D4A853',
-                    color: '#0C0C0C',
+                    background: '#780FF0',
+                    color: '#FFFFFF',
                     fontWeight: 900,
                     fontSize: '9px',
                     borderRadius: '999px',
@@ -165,7 +171,7 @@ export default function Navbar() {
             </button>
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="text-[#F5F0E8] p-1"
+              className="text-[#FFFFFF] p-1"
             >
               {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -181,7 +187,12 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-16 left-0 right-0 z-40 bg-[#141414] border-b border-[#2A2A2A] px-6 py-6 md:hidden"
+            className="fixed top-[80px] left-4 right-4 z-40 rounded-2xl px-6 py-6 md:hidden backdrop-blur-md"
+          style={{
+            background: 'rgba(31,30,31,0.80)',
+            border: '1px solid rgba(120,15,240,0.25)',
+            boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
+          }}
           >
             <div className="flex flex-col gap-5">
               {navLinks.map((link) => (
@@ -189,17 +200,19 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-[#F5F0E8] text-lg font-medium hover:text-[#D4A853] transition-colors"
+                  className="text-[#FFFFFF] text-lg font-medium hover:text-[#780FF0] transition-colors"
                 >
                   {link.label}
                 </a>
               ))}
               <a
-                href="#contact"
+                href="https://wa.me/919093277919"
+                target="_blank"
+                rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                className="mt-2 px-5 py-3 bg-[#D4A853] text-[#0C0C0C] text-sm font-bold rounded-full text-center hover:bg-[#E5BA6A] transition-colors"
+                className="mt-2 px-5 py-3 bg-[#780FF0] text-white text-sm font-bold rounded-full text-center hover:bg-[#8E3AEE] transition-colors"
               >
-                Get Started
+                Connect Now
               </a>
             </div>
           </motion.div>
