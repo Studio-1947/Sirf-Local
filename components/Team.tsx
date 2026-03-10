@@ -76,9 +76,17 @@ export default function Team() {
             transition={{ delay: 0.2, duration: 0.7 }}
             className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight"
           >
-            People Behind{' '}
+            People Behind<br />
             <span className="text-[#780FF0]">Your Growth</span>
           </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.35, duration: 0.6 }}
+            className="mt-5 text-[#9E9E9E] text-lg max-w-xl leading-relaxed"
+          >
+            A small but mighty crew of designers, strategists, and storytellers — all obsessed with making local businesses thrive.
+          </motion.p>
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">

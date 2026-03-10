@@ -1,22 +1,25 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useInView } from 'framer-motion';
-import { useRef } from 'react';
-import CountUp from './CountUp';
+import { motion } from "framer-motion";
+import { useInView } from "framer-motion";
+import { useRef } from "react";
+import CountUp from "./CountUp";
 
 const steps = [
-  { num: '01', text: 'You give us the project' },
-  { num: '02', text: 'We do your brand survey' },
-  { num: '03', text: 'We hire a local youth in Himal Nagrik Fellowship' },
-  { num: '04', text: 'We build solution with our experts and Himal Nagrik Fellow' },
-  { num: '05', text: 'Money flows within the community' },
-  { num: '06', text: 'We all grow' },
+  { num: "01", text: "You give us the project" },
+  { num: "02", text: "We do your brand survey" },
+  { num: "03", text: "We hire a local youth in Himal Nagrik Fellowship" },
+  {
+    num: "04",
+    text: "We build solution with our experts and Himal Nagrik Fellow",
+  },
+  { num: "05", text: "Money flows within the community" },
+  { num: "06", text: "We all grow" },
 ];
 
-function StepItem({ step, index }: { step: typeof steps[0]; index: number }) {
+function StepItem({ step, index }: { step: (typeof steps)[0]; index: number }) {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-80px' });
+  const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
     <motion.div
@@ -26,7 +29,7 @@ function StepItem({ step, index }: { step: typeof steps[0]; index: number }) {
       transition={{ duration: 0.5, delay: index * 0.1 }}
       className="flex items-start gap-6 py-6 border-b border-[#525252] group hover:border-[#780FF0]/40 transition-colors"
     >
-      <span className="font-mono-display text-[#780FF0] text-sm pt-1 min-w-[32px]">
+      <span className="font-mono-display text-[#FFFFFF] group-hover:text-[#780FF0] transition-colors text-sm pt-1 min-w-[32px]">
         {step.num}
       </span>
       <p className="text-[#FFFFFF] text-lg font-medium group-hover:text-[#780FF0] transition-colors">
@@ -38,7 +41,7 @@ function StepItem({ step, index }: { step: typeof steps[0]; index: number }) {
 
 export default function About() {
   const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-100px' });
+  const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section id="about" className="bg-[#1F1E1F] py-28">
@@ -61,8 +64,7 @@ export default function About() {
               transition={{ delay: 0.2, duration: 0.7 }}
               className="text-4xl md:text-5xl font-black text-[#FFFFFF] leading-tight mb-6"
             >
-              Accessible,{' '}
-              <span className="text-[#780FF0]">Affordable,</span>{' '}
+              Accessible, <span className="text-[#780FF0]">Affordable,</span>{" "}
               &amp; Inclusive for Local Businesses
             </motion.h2>
 
@@ -86,18 +88,26 @@ export default function About() {
               className="flex gap-8"
             >
               <div>
-                <p className="text-4xl font-black text-[#780FF0]"><CountUp value={10} suffix="+" /></p>
-                <p className="text-sm text-[#9E9E9E] mt-1">Clients Across India</p>
+                <p className="text-4xl font-black text-[#FFFFFF]">
+                  <CountUp value={10} suffix="+" />
+                </p>
+                <p className="text-sm text-[#9E9E9E] mt-1">
+                  Clients Across India
+                </p>
               </div>
               <div className="w-px bg-[#525252]" />
               <div>
-                <p className="text-4xl font-black text-[#780FF0]"><CountUp value={98} suffix="%" /></p>
+                <p className="text-4xl font-black text-[#FFFFFF]">
+                  <CountUp value={98} suffix="%" />
+                </p>
                 <p className="text-sm text-[#9E9E9E] mt-1">Success Rate</p>
               </div>
               <div className="w-px bg-[#525252]" />
               <div>
-                <p className="text-4xl font-black text-[#780FF0]"><CountUp value={2} suffix="+" /></p>
-                <p className="text-sm text-[#9E9E9E] mt-1">Years Building</p>
+                <p className="text-4xl font-black text-[#FFFFFF]">
+                  <CountUp value={2} suffix="+" />
+                </p>
+                <p className="text-sm text-[#9E9E9E] mt-1">Monthly Building</p>
               </div>
             </motion.div>
           </div>
