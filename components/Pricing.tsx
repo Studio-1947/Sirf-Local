@@ -259,6 +259,11 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
         </h3>
         <p style={{ color: '#8A8178', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
           {card.body}
+          {card.period === 'one-time' && card.title.toLowerCase().includes('website') && (
+            <span style={{ display: 'block', fontSize: '11px', color: '#555', marginTop: '4px', fontStyle: 'italic' }}>
+              *Costs may increase with added features and pages
+            </span>
+          )}
         </p>
 
         {/* Divider + label */}
