@@ -102,9 +102,9 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
     };
 
     const whatsappText = encodeURIComponent(
-        `Hi Sirf Local! I just paid ₹${formatPrice(tokenAmount).replace('₹', '')} as a token (ID: ${paymentId}). Here are my services:\n`
+        `Hi Sirf Local! I just paid ${formatPrice(tokenAmount)} as a token (ID: ${paymentId}). Here are my services:\n`
         + items.map(i => `• ${i.title} (×${i.qty})`).join('\n')
-        + `\nTotal: ₹${formatPrice(grandTotal).replace('₹', '')}\nRemaining: ₹${formatPrice(remaining).replace('₹', '')}`
+        + `\nTotal: ${formatPrice(grandTotal)}\nRemaining: ${formatPrice(remaining)}`
     );
     const whatsappUrl = `https://wa.me/91XXXXXXXXXX?text=${whatsappText}`; // replace number
 

@@ -5,14 +5,14 @@ import { useRef } from 'react';
 import Image from 'next/image';
 
 const team = [
-  { name: 'Anjali Chettri',     role: 'Co-Founder',          img: '/images/team/anjali.png',      color: '#7C9A5E' },
-  { name: 'Nikhil Raj Subba',   role: 'Marketing',           img: '/images/team/nikhil.png',      color: '#D4A853' },
-  { name: 'Anushiya Thapa',     role: 'Content Manager',     img: '/images/team/anushiya.png',    color: '#A89F8C' },
-  { name: 'Zahid Ansari',       role: 'Storytelling',        img: '/images/team/zahid.png',       color: '#7C9A5E' },
-  { name: 'Rahul Chetrii',      role: 'Data & Tech',         img: '/images/team/rahul.png',       color: '#D4A853' },
-  { name: 'Ankita Chettri',     role: 'Sales',               img: '/images/team/ankita.png',      color: '#A89F8C' },
-  { name: 'Sankhadipta Bose',   role: 'Data & Tech',         img: '/images/team/sankhadipta.png', color: '#7C9A5E' },
-  { name: 'Astha Chettri',      role: 'Multimedia Designer', img: '/images/team/astha.png',       color: '#D4A853' },
+  { name: 'Anjali Chettri',     role: 'Co-Founder',          img: '/images/team/anjali.png',      color: '#A463EE' },
+  { name: 'Nikhil Raj Subba',   role: 'Marketing',           img: '/images/team/nikhil.png',      color: '#780FF0' },
+  { name: 'Anushiya Thapa',     role: 'Content Manager',     img: '/images/team/anushiya.png',    color: '#9E9E9E' },
+  { name: 'Zahid Ansari',       role: 'Storytelling',        img: '/images/team/zahid.png',       color: '#A463EE' },
+  { name: 'Rahul Chetrii',      role: 'Data & Tech',         img: '/images/team/rahul.png',       color: '#780FF0' },
+  { name: 'Ankita Chettri',     role: 'Sales',               img: '/images/team/ankita.png',      color: '#9E9E9E' },
+  { name: 'Sankhadipta Bose',   role: 'Data & Tech',         img: '/images/team/sankhadipta.png', color: '#A463EE' },
+  { name: 'Astha Chettri',      role: 'Multimedia Designer', img: '/images/team/astha.png',       color: '#780FF0' },
 ];
 
 function TeamCard({ member, index }: { member: typeof team[0]; index: number }) {
@@ -25,7 +25,7 @@ function TeamCard({ member, index }: { member: typeof team[0]; index: number }) 
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: (index % 4) * 0.1 }}
-      className="group relative overflow-hidden rounded-2xl bg-[#141414] border border-[#2A2A2A] hover:border-[#D4A853]/40 transition-all"
+      className="group relative overflow-hidden rounded-2xl bg-[#1F1E1F] border border-[#525252] hover:border-[#780FF0]/40 transition-all"
     >
       {/* Image */}
       <div className="aspect-square overflow-hidden">
@@ -43,7 +43,7 @@ function TeamCard({ member, index }: { member: typeof team[0]; index: number }) 
 
       {/* Info */}
       <div className="absolute bottom-0 left-0 right-0 p-4">
-        <p className="text-[#F5F0E8] font-bold text-base leading-tight">{member.name}</p>
+        <p className="text-[#FFFFFF] font-bold text-base leading-tight">{member.name}</p>
         <p
           className="text-xs font-mono-display tracking-widest mt-0.5"
           style={{ color: member.color }}
@@ -60,7 +60,7 @@ export default function Team() {
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="team" className="bg-[#0C0C0C] py-28 border-t border-[#2A2A2A]">
+    <section id="team" className="bg-[#1F1E1F] py-28 border-t border-[#525252]">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="mb-16">
           <motion.span
@@ -74,10 +74,10 @@ export default function Team() {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="text-4xl md:text-6xl font-black text-[#F5F0E8] leading-tight"
+            className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight"
           >
             People Behind{' '}
-            <span className="text-[#D4A853]">Your Growth</span>
+            <span className="text-[#780FF0]">Your Growth</span>
           </motion.h2>
         </div>
 

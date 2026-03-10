@@ -211,7 +211,9 @@ export default function CartDrawer() {
                             background: 'rgba(212,168,83,0.05)', borderRadius: '8px',
                             padding: '8px 10px', border: '1px solid rgba(212,168,83,0.12)',
                           }}>
-                            <Info size={13} color="#D4A853" style={{ flexShrink: 0, marginTop: '1px' }} strokeWidth={2} />
+                            <div style={{ marginTop: '3px' }}>
+                              <Info size={13} color="#D4A853" strokeWidth={2} />
+                            </div>
                             <p style={{ color: '#7A7060', fontSize: '11.5px', lineHeight: 1.55, margin: 0 }}>
                               Final price may vary with scope & features — we'll confirm before starting.
                             </p>

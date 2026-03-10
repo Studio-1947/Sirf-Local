@@ -33,10 +33,10 @@ const cards: CardData[] = [
     body: 'Short, engaging videos to trend locally',
     label: '4 ready-to-use reels created from your photos and clips',
     icon: Video,
-    accent: '#D4A853',
-    thumbFrom: '#2A1E00',
-    thumbTo: '#1A1200',
-    dotColor: 'rgba(212,168,83,0.12)',
+    accent: '#780FF0',
+    thumbFrom: '#3E0085',
+    thumbTo: '#1A003A',
+    dotColor: 'rgba(120,15,240,0.12)',
   },
   {
     title: 'Monthly Content Posts',
@@ -45,10 +45,10 @@ const cards: CardData[] = [
     body: 'For owners too busy to worry about posting',
     label: '8 ready-to-use posts per month — greetings, offers & highlights',
     icon: LayoutGrid,
-    accent: '#7DB87A',
-    thumbFrom: '#0E1F0D',
-    thumbTo: '#071208',
-    dotColor: 'rgba(125,184,122,0.12)',
+    accent: '#A463EE',
+    thumbFrom: '#5103AA',
+    thumbTo: '#200050',
+    dotColor: 'rgba(164,99,238,0.12)',
   },
   {
     title: 'The Brand Makeover',
@@ -57,10 +57,10 @@ const cards: CardData[] = [
     body: 'Give your "Old" Shop a modern facelift',
     label: 'New colors, a fresh logo, and updated social media banners',
     icon: Sparkles,
-    accent: '#D4A853',
-    thumbFrom: '#2A1E00',
-    thumbTo: '#1A1200',
-    dotColor: 'rgba(212,168,83,0.12)',
+    accent: '#780FF0',
+    thumbFrom: '#3E0085',
+    thumbTo: '#1A003A',
+    dotColor: 'rgba(120,15,240,0.12)',
   },
   {
     title: 'Premium Product Packaging',
@@ -69,10 +69,10 @@ const cards: CardData[] = [
     body: 'Perfect for local bakers, candle makers, or crafters',
     label: 'A professional label or box design that makes your products look premium',
     icon: Package,
-    accent: '#C49A6C',
-    thumbFrom: '#201810',
-    thumbTo: '#140F08',
-    dotColor: 'rgba(196,154,108,0.12)',
+    accent: '#B98AEF',
+    thumbFrom: '#6509CE',
+    thumbTo: '#2D0060',
+    dotColor: 'rgba(185,138,239,0.12)',
   },
   {
     title: 'Your One-Page Website',
@@ -81,10 +81,10 @@ const cards: CardData[] = [
     body: 'A simple, clean page that tells people who you are',
     label: 'Mobile-friendly with a big "Call/WhatsApp us" button and map directions',
     icon: Globe,
-    accent: '#D4A853',
-    thumbFrom: '#2A1E00',
-    thumbTo: '#1A1200',
-    dotColor: 'rgba(212,168,83,0.12)',
+    accent: '#780FF0',
+    thumbFrom: '#3E0085',
+    thumbTo: '#1A003A',
+    dotColor: 'rgba(120,15,240,0.12)',
   },
   {
     title: 'Catchy Social Media Posts',
@@ -93,10 +93,10 @@ const cards: CardData[] = [
     body: 'Beautiful designs to bring customers through your door',
     label: 'High-quality graphics for "Buy 1 Get 1" deals, flash sales & grand openings',
     icon: Megaphone,
-    accent: '#7DB87A',
-    thumbFrom: '#0E1F0D',
-    thumbTo: '#071208',
-    dotColor: 'rgba(125,184,122,0.12)',
+    accent: '#A463EE',
+    thumbFrom: '#5103AA',
+    thumbTo: '#200050',
+    dotColor: 'rgba(164,99,238,0.12)',
   },
   {
     title: 'Your WhatsApp Shop',
@@ -105,10 +105,10 @@ const cards: CardData[] = [
     body: "People love shopping on WhatsApp — let's make it easy for them",
     label: 'Product catalogue with photos & prices, plus auto-replies for instant answers',
     icon: MessageCircle,
-    accent: '#D4A853',
-    thumbFrom: '#2A1E00',
-    thumbTo: '#1A1200',
-    dotColor: 'rgba(212,168,83,0.12)',
+    accent: '#780FF0',
+    thumbFrom: '#3E0085',
+    thumbTo: '#1A003A',
+    dotColor: 'rgba(120,15,240,0.12)',
   },
   {
     title: 'The Professional Look',
@@ -117,10 +117,10 @@ const cards: CardData[] = [
     body: 'Move from a "Small Shop" to a "Big Brand" look',
     label: 'A unique logo designed just for you, plus a matching business card design',
     icon: Award,
-    accent: '#C49A6C',
-    thumbFrom: '#201810',
-    thumbTo: '#140F08',
-    dotColor: 'rgba(196,154,108,0.12)',
+    accent: '#B98AEF',
+    thumbFrom: '#6509CE',
+    thumbTo: '#2D0060',
+    dotColor: 'rgba(185,138,239,0.12)',
   },
   {
     title: 'Get Found on Google Maps',
@@ -129,10 +129,10 @@ const cards: CardData[] = [
     body: "If people can't find you on their phones, they can't visit you!",
     label: 'Listed on Google Maps & search, verified, with accurate hours & location',
     icon: MapPin,
-    accent: '#7DB87A',
-    thumbFrom: '#0E1F0D',
-    thumbTo: '#071208',
-    dotColor: 'rgba(125,184,122,0.12)',
+    accent: '#A463EE',
+    thumbFrom: '#5103AA',
+    thumbTo: '#200050',
+    dotColor: 'rgba(164,99,238,0.12)',
   },
 ];
 
@@ -169,8 +169,8 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
         display: 'flex',
         flexDirection: 'column',
         borderRadius: '20px',
-        border: `1px solid ${inCart ? card.accent + '70' : hovered ? card.accent + '55' : '#252525'}`,
-        background: inCart ? '#141210' : hovered ? '#161616' : '#111111',
+        border: `1px solid ${inCart ? card.accent + '70' : hovered ? card.accent + '55' : '#525252'}`,
+        background: inCart ? '#1F1E1F' : hovered ? '#383838' : '#1F1E1F',
         overflow: 'hidden',
         transition: 'border-color 0.3s, background 0.3s, box-shadow 0.3s',
         boxShadow: hovered ? `0 8px 40px ${card.accent}18` : '0 2px 16px rgba(0,0,0,0.4)',
@@ -247,7 +247,7 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
 
         <h3
           style={{
-            color: hovered ? card.accent : '#F0EBE0',
+            color: hovered ? card.accent : '#FFFFFF',
             fontWeight: 800,
             fontSize: '16px',
             lineHeight: 1.3,
@@ -257,7 +257,7 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
         >
           {card.title}
         </h3>
-        <p style={{ color: '#8A8178', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
+        <p style={{ color: '#858585', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
           {card.body}
           {card.period === 'one-time' && card.title.toLowerCase().includes('website') && (
             <span style={{ display: 'block', fontSize: '11px', color: '#555', marginTop: '4px', fontStyle: 'italic' }}>
@@ -271,7 +271,7 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
           style={{
             marginTop: 'auto',
             paddingTop: '14px',
-            borderTop: '1px solid #222222',
+            borderTop: '1px solid #525252',
             display: 'flex',
             gap: '8px',
             alignItems: 'flex-start',
@@ -309,7 +309,7 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
             fontWeight: 700,
             cursor: 'pointer',
             border: `1.5px solid ${inCart ? '#4CAF7D' : hovered ? card.accent : card.accent + '50'}`,
-            color: inCart ? '#0C0C0C' : hovered ? '#0C0C0C' : card.accent,
+            color: inCart ? '#1F1E1F' : hovered ? '#FFFFFF' : card.accent,
             background: inCart ? '#4CAF7D' : hovered ? card.accent : 'transparent',
             transition: 'background 0.25s, color 0.25s, border-color 0.25s',
             letterSpacing: '0.3px',
@@ -331,10 +331,10 @@ export default function Pricing() {
     <section
       id="pricing"
       style={{
-        background: '#0F0F0F',
+        background: '#1F1E1F',
         paddingTop: '112px',
         paddingBottom: '112px',
-        borderTop: '1px solid #1E1E1E',
+        borderTop: '1px solid #383838',
       }}
     >
       <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 24px' }}>
@@ -355,7 +355,7 @@ export default function Pricing() {
             style={{
               fontSize: 'clamp(2rem, 5vw, 3rem)',
               fontWeight: 900,
-              color: '#F5F0E8',
+              color: '#FFFFFF',
               lineHeight: 1.15,
               marginBottom: '14px',
               letterSpacing: '-0.5px',
@@ -363,13 +363,13 @@ export default function Pricing() {
           >
             Your Business Needs,
             <br />
-            <span style={{ color: '#D4A853' }}>Pick What Fits</span>
+            <span style={{ color: '#780FF0' }}>Pick What Fits</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.25 }}
-            style={{ color: '#8A8178', fontSize: '16px', maxWidth: '400px', margin: '0 auto', lineHeight: 1.6 }}
+            style={{ color: '#858585', fontSize: '16px', maxWidth: '400px', margin: '0 auto', lineHeight: 1.6 }}
           >
             Start small, grow big. Every service is built for Indian local businesses.
           </motion.p>
@@ -397,8 +397,8 @@ export default function Pricing() {
           transition={{ delay: 0.2 }}
           style={{
             marginTop: '40px',
-            background: 'linear-gradient(135deg, #1A1505 0%, #0F0F0F 60%)',
-            border: '1px solid #2A2010',
+            background: 'linear-gradient(135deg, #1A003A 0%, #1F1E1F 60%)',
+            border: '1px solid #3E0085',
             borderRadius: '20px',
             padding: '48px 40px',
             textAlign: 'center',
@@ -415,14 +415,14 @@ export default function Pricing() {
               transform: 'translateX(-50%)',
               width: '300px',
               height: '200px',
-              background: 'radial-gradient(ellipse, rgba(212,168,83,0.12) 0%, transparent 70%)',
+              background: 'radial-gradient(ellipse, rgba(120,15,240,0.12) 0%, transparent 70%)',
               pointerEvents: 'none',
             }}
           />
-          <p style={{ fontSize: '22px', fontWeight: 900, color: '#F5F0E8', marginBottom: '8px', position: 'relative' }}>
+          <p style={{ fontSize: '22px', fontWeight: 900, color: '#FFFFFF', marginBottom: '8px', position: 'relative' }}>
             Need Something Custom?
           </p>
-          <p style={{ color: '#8A8178', marginBottom: '28px', maxWidth: '420px', margin: '0 auto 28px', lineHeight: 1.6, position: 'relative' }}>
+          <p style={{ color: '#858585', marginBottom: '28px', maxWidth: '420px', margin: '0 auto 28px', lineHeight: 1.6, position: 'relative' }}>
             We craft tailored packages for businesses with unique needs. Let&apos;s build exactly what you require.
           </p>
           <a
@@ -432,8 +432,8 @@ export default function Pricing() {
               alignItems: 'center',
               gap: '8px',
               padding: '13px 32px',
-              background: '#D4A853',
-              color: '#0C0C0C',
+              background: '#780FF0',
+              color: '#FFFFFF',
               fontWeight: 800,
               fontSize: '14px',
               borderRadius: '999px',
@@ -441,8 +441,8 @@ export default function Pricing() {
               position: 'relative',
               letterSpacing: '0.3px',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#E5BA6A'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#D4A853'; }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#8E3AEE'; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#780FF0'; }}
           >
             Get a Custom Quote →
           </a>
