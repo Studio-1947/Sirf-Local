@@ -8,15 +8,12 @@ import TopographicBg from "./TopographicBg";
 
 const clientLogos = [
   { file: "/images/clients/bazmkaar.svg", alt: "Bazmkaar" },
-  { file: "/images/clients/givfunds.svg", alt: "GivFunds" },
   { file: "/images/clients/nesthomes.svg", alt: "NestHomes" },
   { file: "/images/clients/remodel.svg", alt: "Remodel" },
   { file: "/images/clients/bhagyam.svg", alt: "Bhagyam" },
   { file: "/images/clients/ecopt.svg", alt: "Ecopt" },
-  { file: "/images/clients/awch.svg", alt: "AWCH" },
   { file: "/images/clients/sikkim.svg", alt: "Sikkim" },
-  { file: "/images/clients/ecological.svg", alt: "Ecological" },
-  { file: "/images/clients/Sundergaan.svg", alt: "Sundergaan" },
+  { file: "/images/clients/Bhagirath.svg", alt: "Bhagirath" },
 ];
 
 // Drop images into public/images/hero/ and list them here
