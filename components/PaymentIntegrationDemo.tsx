@@ -114,7 +114,7 @@ export default function PaymentIntegrationDemo() {
                 disabled={loading}
                 className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
             >
-                {loading ? 'Opening Checkout...' : 'Pay INR 10,000 Now'}
+                {loading ? 'Opening Checkout...' : 'Pay ₹10,000 Now'}
             </button>
 
             {paymentStatus === 'success' && (
