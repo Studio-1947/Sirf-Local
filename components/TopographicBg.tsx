@@ -60,7 +60,7 @@ export default function TopographicBg() {
         preserveAspectRatio="xMidYMid slice"
         viewBox="0 0 1440 900"
         fill="none"
-        stroke="#D4A853"
+        stroke="#780FF0"
         strokeWidth="1"
       >
         {topoPaths}
@@ -80,7 +80,7 @@ export default function TopographicBg() {
           preserveAspectRatio="xMidYMid slice"
           viewBox="0 0 1440 900"
           fill="none"
-          stroke="#D4A853"
+          stroke="#780FF0"
           strokeWidth="1.5"
         >
           {topoPaths}
@@ -93,7 +93,7 @@ export default function TopographicBg() {
             preserveAspectRatio="xMidYMid slice"
             viewBox="0 0 1440 900"
             fill="none"
-            stroke="#F0C878"
+            stroke="#8E3AEE"
             strokeWidth="3"
             style={{ filter: 'blur(3px)' }}
           >
@@ -106,22 +106,22 @@ export default function TopographicBg() {
       <motion.div
         animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
         transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#D4A853]/4 blur-[100px]"
+        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#780FF0]/4 blur-[100px]"
       />
       <motion.div
         animate={{ x: [0, -50, 0], y: [0, 40, 0] }}
         transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-        className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-[#7C9A5E]/4 blur-[120px]"
+        className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-[#A463EE]/4 blur-[120px]"
       />
       <motion.div
         animate={{ x: [0, 30, -20, 0], y: [0, 20, -10, 0] }}
         transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
-        className="absolute top-2/3 left-1/2 w-[300px] h-[300px] rounded-full bg-[#D4A853]/3 blur-[80px]"
+        className="absolute top-2/3 left-1/2 w-[300px] h-[300px] rounded-full bg-[#780FF0]/3 blur-[80px]"
       />
 
       {/* Vignette edges */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0C0C0C] via-transparent to-[#0C0C0C] opacity-60" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#0C0C0C] via-transparent to-[#0C0C0C] opacity-40" />
+      <div className="absolute inset-0 bg-gradient-to-b from-[#1F1E1F] via-transparent to-[#1F1E1F] opacity-60" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#1F1E1F] via-transparent to-[#1F1E1F] opacity-40" />
     </div>
   );
 }

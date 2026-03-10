@@ -44,8 +44,8 @@ export default function CartDrawer() {
               bottom: 0,
               width: '420px',
               maxWidth: '100vw',
-              background: '#0E0E0E',
-              borderLeft: '1px solid #1E1E1E',
+              background: '#1F1E1F',
+              borderLeft: '1px solid #383838',
               zIndex: 101,
               display: 'flex',
               flexDirection: 'column',
@@ -58,19 +58,19 @@ export default function CartDrawer() {
                 alignItems: 'center',
                 justifyContent: 'space-between',
                 padding: '20px 24px',
-                borderBottom: '1px solid #1C1C1C',
+                borderBottom: '1px solid #383838',
               }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <ShoppingBag size={20} color="#D4A853" strokeWidth={1.8} />
-                <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '16px' }}>
+                <ShoppingBag size={20} color="#780FF0" strokeWidth={1.8} />
+                <span style={{ color: '#FFFFFF', fontWeight: 800, fontSize: '16px' }}>
                   Your Cart
                 </span>
                 {totalCount > 0 && (
                   <span
                     style={{
-                      background: '#D4A853',
-                      color: '#0C0C0C',
+                      background: '#780FF0',
+                      color: '#FFFFFF',
                       fontWeight: 800,
                       fontSize: '11px',
                       borderRadius: '999px',
@@ -84,8 +84,8 @@ export default function CartDrawer() {
               <button
                 onClick={closeDrawer}
                 style={{
-                  background: '#1A1A1A',
-                  border: '1px solid #252525',
+                  background: '#383838',
+                  border: '1px solid #525252',
                   borderRadius: '8px',
                   color: '#888',
                   cursor: 'pointer',
@@ -94,8 +94,8 @@ export default function CartDrawer() {
                   alignItems: 'center',
                   justifyContent: 'center',
                 }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#D4A853'; (e.currentTarget as HTMLElement).style.color = '#D4A853'; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#252525'; (e.currentTarget as HTMLElement).style.color = '#888'; }}
+                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#525252'; (e.currentTarget as HTMLElement).style.color = '#888'; }}
               >
                 <X size={16} />
               </button>
@@ -121,16 +121,16 @@ export default function CartDrawer() {
                       width: '72px',
                       height: '72px',
                       borderRadius: '20px',
-                      background: '#161616',
-                      border: '1px solid #222',
+                      background: '#383838',
+                      border: '1px solid #525252',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
                     }}
                   >
-                    <ShoppingBag size={30} color="#333" strokeWidth={1.5} />
+                    <ShoppingBag size={30} color="#525252" strokeWidth={1.5} />
                   </div>
-                  <p style={{ color: '#555', fontSize: '14px', maxWidth: '200px', lineHeight: 1.5 }}>
+                  <p style={{ color: '#6B6B6B', fontSize: '14px', maxWidth: '200px', lineHeight: 1.5 }}>
                     Your cart is empty. Pick services that fit your business.
                   </p>
                 </div>
@@ -143,8 +143,8 @@ export default function CartDrawer() {
                     exit={{ opacity: 0, x: 20 }}
                     layout
                     style={{
-                      background: '#131313',
-                      border: '1px solid #1E1E1E',
+                      background: '#383838',
+                      border: '1px solid #525252',
                       borderRadius: '14px',
                       padding: '14px 16px',
                     }}
@@ -152,7 +152,7 @@ export default function CartDrawer() {
                     {/* Item top row */}
                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
                       <div style={{ flex: 1 }}>
-                        <p style={{ color: '#F0EBE0', fontWeight: 700, fontSize: '14px', margin: '0 0 4px' }}>
+                        <p style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '14px', margin: '0 0 4px' }}>
                           {item.title}
                         </p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -181,7 +181,7 @@ export default function CartDrawer() {
                         style={{
                           background: 'transparent',
                           border: 'none',
-                          color: '#444',
+                          color: '#6B6B6B',
                           cursor: 'pointer',
                           padding: '4px',
                           borderRadius: '6px',
@@ -189,7 +189,7 @@ export default function CartDrawer() {
                           flexShrink: 0,
                         }}
                         onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#E05353'; }}
-                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#444'; }}
+                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#6B6B6B'; }}
                         title="Remove item"
                       >
                         <Trash2 size={15} />
@@ -204,7 +204,7 @@ export default function CartDrawer() {
                           display: 'flex',
                           alignItems: 'center',
                           gap: '0',
-                          border: '1px solid #252525',
+                          border: '1px solid #525252',
                           borderRadius: '8px',
                           overflow: 'hidden',
                         }}
@@ -215,7 +215,7 @@ export default function CartDrawer() {
                           style={{
                             background: 'transparent',
                             border: 'none',
-                            color: item.qty <= 1 ? '#333' : '#888',
+                            color: item.qty <= 1 ? '#525252' : '#9E9E9E',
                             cursor: item.qty <= 1 ? 'not-allowed' : 'pointer',
                             padding: '5px 10px',
                             display: 'flex',
@@ -226,13 +226,13 @@ export default function CartDrawer() {
                         </button>
                         <span
                           style={{
-                            color: '#F0EBE0',
+                            color: '#FFFFFF',
                             fontWeight: 700,
                             fontSize: '13px',
                             minWidth: '28px',
                             textAlign: 'center',
-                            borderLeft: '1px solid #252525',
-                            borderRight: '1px solid #252525',
+                            borderLeft: '1px solid #525252',
+                            borderRight: '1px solid #525252',
                             padding: '5px 4px',
                           }}
                         >
@@ -243,21 +243,21 @@ export default function CartDrawer() {
                           style={{
                             background: 'transparent',
                             border: 'none',
-                            color: '#888',
+                            color: '#9E9E9E',
                             cursor: 'pointer',
                             padding: '5px 10px',
                             display: 'flex',
                             alignItems: 'center',
                           }}
                           onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = item.accent; }}
-                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#888'; }}
+                          onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#9E9E9E'; }}
                         >
                           <Plus size={12} />
                         </button>
                       </div>
 
                       {/* Subtotal */}
-                      <span style={{ color: '#A89F8C', fontSize: '13px', fontWeight: 600 }}>
+                      <span style={{ color: '#9E9E9E', fontSize: '13px', fontWeight: 600 }}>
                         {formatPrice(item.price * item.qty)}
                         {item.period === 'monthly' && (
                           <span style={{ opacity: 0.5, fontSize: '11px', marginLeft: '3px' }}>/mo</span>
@@ -273,28 +273,28 @@ export default function CartDrawer() {
             {items.length > 0 && (
               <div
                 style={{
-                  borderTop: '1px solid #1C1C1C',
+                  borderTop: '1px solid #383838',
                   padding: '20px 24px',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '12px',
-                  background: '#0A0A0A',
+                  background: '#1F1E1F',
                 }}
               >
                 {/* Breakdown */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {onetimeTotal > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#666', fontSize: '13px' }}>One-time</span>
-                      <span style={{ color: '#A89F8C', fontWeight: 600, fontSize: '13px' }}>
+                      <span style={{ color: '#6B6B6B', fontSize: '13px' }}>One-time</span>
+                      <span style={{ color: '#9E9E9E', fontWeight: 600, fontSize: '13px' }}>
                         {formatPrice(onetimeTotal)}
                       </span>
                     </div>
                   )}
                   {monthlyTotal > 0 && (
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ color: '#666', fontSize: '13px' }}>Monthly recurring</span>
-                      <span style={{ color: '#A89F8C', fontWeight: 600, fontSize: '13px' }}>
+                      <span style={{ color: '#6B6B6B', fontSize: '13px' }}>Monthly recurring</span>
+                      <span style={{ color: '#9E9E9E', fontWeight: 600, fontSize: '13px' }}>
                         {formatPrice(monthlyTotal)}<span style={{ opacity: 0.5, fontSize: '11px' }}>/mo</span>
                       </span>
                     </div>
@@ -305,12 +305,12 @@ export default function CartDrawer() {
                       justifyContent: 'space-between',
                       alignItems: 'center',
                       paddingTop: '10px',
-                      borderTop: '1px solid #1E1E1E',
+                      borderTop: '1px solid #525252',
                       marginTop: '4px',
                     }}
                   >
-                    <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '15px' }}>Total</span>
-                    <span style={{ color: '#D4A853', fontWeight: 900, fontSize: '18px', letterSpacing: '-0.5px' }}>
+                    <span style={{ color: '#FFFFFF', fontWeight: 800, fontSize: '15px' }}>Total</span>
+                    <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '18px', letterSpacing: '-0.5px' }}>
                       {formatPrice(grandTotal)}
                     </span>
                   </div>
@@ -324,8 +324,8 @@ export default function CartDrawer() {
                       width: '100%',
                       padding: '13px 0',
                       borderRadius: '999px',
-                      background: '#D4A853',
-                      color: '#0C0C0C',
+                      background: '#780FF0',
+                      color: '#FFFFFF',
                       fontWeight: 800,
                       fontSize: '14px',
                       border: 'none',
@@ -340,7 +340,7 @@ export default function CartDrawer() {
                   >
                     Proceed to Checkout <ArrowRight size={15} />
                   </button>
-                  <p style={{ color: '#444', fontSize: '11px', textAlign: 'center', marginTop: '8px' }}>
+                  <p style={{ color: '#6B6B6B', fontSize: '11px', textAlign: 'center', marginTop: '8px' }}>
                     💳 Payment integration coming soon
                   </p>
                 </div>
@@ -354,16 +354,16 @@ export default function CartDrawer() {
                     width: '100%',
                     padding: '11px 0',
                     borderRadius: '999px',
-                    border: '1.5px solid #2A2A2A',
-                    color: '#A89F8C',
+                    border: '1.5px solid #525252',
+                    color: '#9E9E9E',
                     fontWeight: 700,
                     fontSize: '13px',
                     textAlign: 'center',
                     textDecoration: 'none',
                     transition: 'border-color 0.2s, color 0.2s',
                   }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#D4A853'; (e.currentTarget as HTMLElement).style.color = '#D4A853'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2A2A2A'; (e.currentTarget as HTMLElement).style.color = '#A89F8C'; }}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#525252'; (e.currentTarget as HTMLElement).style.color = '#9E9E9E'; }}
                 >
                   Or enquire via Contact →
                 </a>
