@@ -255,20 +255,63 @@ export default function Services() {
 
   const maxIndex = Math.max(0, services.length - cardsPerView);
 
+  // Ref to the in-flight Framer animation so we can cancel it if the user
+  // clicks again before the previous scroll finishes.
+  const activeAnim = useRef<ReturnType<typeof animate> | null>(null);
+
+  // Guard flag — true while animate() is driving scrollLeft so the native
+  // onScroll listener doesn't race the animation and cause counter flicker.
+  const isProgrammaticScroll = useRef(false);
+
   const scrollTo = useCallback(
     (index: number) => {
       const clamped = Math.max(0, Math.min(index, maxIndex));
       setCurrentIndex(clamped);
       if (!trackRef.current) return;
+
       const cardWidth =
         (trackRef.current.offsetWidth - GAP * (cardsPerView - 1)) /
         cardsPerView;
       const offset = clamped * (cardWidth + GAP);
-      animate(trackRef.current.scrollLeft, offset, {
-        duration: 0.5,
-        ease: [0.32, 0.72, 0, 1],
-        onUpdate: (v) => {
-          if (trackRef.current) trackRef.current.scrollLeft = v;
+
+      // Cancel any in-flight animation immediately so rapid clicks don't stack.
+      if (activeAnim.current) {
+        activeAnim.current.stop();
+        activeAnim.current = null;
+      }
+
+      // Raise the guard so onScroll ignores events fired during the animation.
+      isProgrammaticScroll.current = true;
+
+      // Capture current scrollLeft as the start point so the tween always
+      // begins exactly where the track currently is.
+      const from = trackRef.current.scrollLeft;
+
+      // Disable scroll-snap for the duration of the spring animation.
+      // scroll-snap intercepts programmatic scrollLeft writes and immediately
+      // snaps to the nearest snap point, killing the animation mid-flight.
+      // We restore it in onComplete so drag/swipe still snaps after.
+      trackRef.current.style.scrollSnapType = "none";
+
+      // animate() tweens a plain number and calls onUpdate every RAF tick.
+      // type:"spring" gives physics-based easing with natural deceleration.
+      activeAnim.current = animate(from, offset, {
+        type: "spring",
+        stiffness: 280,
+        damping: 30,
+        mass: 0.8,
+        restDelta: 0.5,
+        onUpdate(latest) {
+          if (trackRef.current) {
+            trackRef.current.scrollLeft = latest;
+          }
+        },
+        onComplete() {
+          if (trackRef.current) {
+            trackRef.current.style.scrollSnapType = "x mandatory";
+          }
+          isProgrammaticScroll.current = false;
+          activeAnim.current = null;
         },
       });
     },
@@ -280,6 +323,7 @@ export default function Services() {
 
   /* Sync currentIndex on native scroll (drag / touch) */
   const onScroll = useCallback(() => {
+    if (isProgrammaticScroll.current) return;
     if (!trackRef.current) return;
     const cardWidth =
       (trackRef.current.offsetWidth - GAP * (cardsPerView - 1)) / cardsPerView;
@@ -358,12 +402,14 @@ export default function Services() {
           <div
             ref={trackRef}
             onScroll={onScroll}
-            className="flex overflow-x-auto scroll-smooth"
+            className="flex overflow-x-auto"
             style={{
               gap: GAP,
               scrollbarWidth: "none",
               msOverflowStyle: "none",
               cursor: "grab",
+              scrollSnapType: "x mandatory",
+              WebkitOverflowScrolling: "touch",
             }}
           >
             {services.map((svc) => (
@@ -372,6 +418,7 @@ export default function Services() {
                 style={{
                   flex: `0 0 calc((100% - ${GAP * (cardsPerView - 1)}px) / ${cardsPerView})`,
                   minWidth: 0,
+                  scrollSnapAlign: "start",
                 }}
               >
                 <ServiceCard svc={svc} />

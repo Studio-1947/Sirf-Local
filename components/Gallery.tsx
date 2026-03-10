@@ -1,9 +1,17 @@
 "use client";
 
-import { motion, AnimatePresence, useInView } from "framer-motion";
-import { useRef, useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence, useInView, animate } from "framer-motion";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
-import { ArrowUpRight, Play, X, ChevronLeft, ChevronRight } from "lucide-react";
+import {
+  ArrowUpRight,
+  Play,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  ArrowLeft,
+  ArrowRight,
+} from "lucide-react";
 
 type Category = "Photos" | "Branding" | "Logo" | "Packaging" | "Videos";
 
@@ -477,6 +485,7 @@ function Lightbox({
       {/* Close button */}
       <button
         onClick={onClose}
+        aria-label="Close lightbox"
         style={{
           position: "fixed",
           top: "20px",
@@ -503,6 +512,7 @@ function Lightbox({
             e.stopPropagation();
             onPrev();
           }}
+          aria-label="Previous image"
           style={{
             position: "fixed",
             left: "20px",
@@ -531,6 +541,7 @@ function Lightbox({
             e.stopPropagation();
             onNext();
           }}
+          aria-label="Next image"
           style={{
             position: "fixed",
             right: "20px",
@@ -565,16 +576,13 @@ function GalleryCard({
   index: number;
   onClick: () => void;
 }) {
-  const [hovered, setHovered] = useState(false);
   const videoRef = useRef<HTMLVideoElement>(null);
   const isVideo = item.src?.endsWith(".mp4");
 
   const handleMouseEnter = () => {
-    setHovered(true);
     if (isVideo && videoRef.current) videoRef.current.play();
   };
   const handleMouseLeave = () => {
-    setHovered(false);
     if (isVideo && videoRef.current) {
       videoRef.current.pause();
       videoRef.current.currentTime = 0;
@@ -582,13 +590,18 @@ function GalleryCard({
   };
 
   return (
+    // Fix #9: removed conflicting inline `transform` style and plain CSS
+    // `transition: transform`. Use Framer Motion's whileHover instead so it
+    // doesn't fight the `layout` prop's internal transform.
     <motion.div
       layout
       key={item.id}
       initial={{ opacity: 0, scale: 0.92 }}
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.88 }}
+      // Fix #3: index is now the real map index so stagger delay works
       transition={{ duration: 0.35, delay: index * 0.05 }}
+      whileHover={{ scale: 1.02 }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
@@ -597,13 +610,25 @@ function GalleryCard({
         borderRadius: "16px",
         overflow: "hidden",
         aspectRatio: "4/3",
-        border: `1px solid ${hovered ? item.accent + "55" : "#525252"}`,
         background: item.bg,
         cursor: "zoom-in",
-        transition: "border-color 0.3s, transform 0.2s",
-        transform: hovered ? "scale(1.02)" : "scale(1)",
       }}
     >
+      {/* Animated border via pseudo-like child so it doesn't interfere with layout */}
+      <motion.div
+        style={{
+          position: "absolute",
+          inset: 0,
+          borderRadius: "16px",
+          pointerEvents: "none",
+          zIndex: 4,
+        }}
+        animate={{ boxShadow: `inset 0 0 0 1px ${item.accent}55` }}
+        initial={{ boxShadow: "inset 0 0 0 1px #525252" }}
+        transition={{ duration: 0.3 }}
+        whileHover={{ boxShadow: `inset 0 0 0 1px ${item.accent}88` }}
+      />
+
       {/* Media */}
       {isVideo ? (
         <>
@@ -623,7 +648,8 @@ function GalleryCard({
             }}
           />
           <motion.div
-            animate={{ opacity: hovered ? 0 : 1 }}
+            initial={{ opacity: 1 }}
+            whileHover={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             style={{
               position: "absolute",
@@ -727,8 +753,6 @@ function GalleryCard({
       {/* Hover overlay */}
       <motion.div
         initial={false}
-        animate={{ opacity: hovered ? 1 : 0, y: hovered ? 0 : 10 }}
-        transition={{ duration: 0.25 }}
         style={{
           position: "absolute",
           inset: 0,
@@ -740,6 +764,9 @@ function GalleryCard({
           justifyContent: "flex-end",
           padding: "18px",
         }}
+        animate={{ opacity: 0, y: 10 }}
+        whileHover={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.25 }}
       >
         <div
           style={{
@@ -793,14 +820,345 @@ function GalleryCard({
   );
 }
 
-/* ─── Main ──────────────────────────────────────────────────────────────────── */
+/* ─── Carousel ──────────────────────────────────────────────────────────────── */
+function GalleryCarousel({
+  items: carouselItems,
+  onOpen,
+  inView,
+  // Fix #8: accept an optional controlled index so Gallery can sync the
+  // carousel position when the lightbox navigates past off-screen items.
+  syncToIndex,
+}: {
+  items: GalleryItem[];
+  onOpen: (id: string) => void;
+  inView: boolean;
+  syncToIndex?: number | null;
+}) {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [cardsPerView, setCardsPerView] = useState(3);
+  const GAP = 16;
+
+  // Ref to the in-flight Framer animation so we can cancel it if the user
+  // clicks again before the previous scroll finishes.
+  const activeAnim = useRef<ReturnType<typeof animate> | null>(null);
+
+  // Fix #4: memoize maxIndex so callbacks always capture the freshest value
+  // without depending on a variable that re-derives on every render.
+  const maxIndex = useMemo(
+    () => Math.max(0, carouselItems.length - cardsPerView),
+    [carouselItems.length, cardsPerView],
+  );
+
+  // Fix #5: total pages based on reachable stops, not raw item count.
+  // Math.floor(maxIndex / cardsPerView) + 1 gives only pages whose first stop
+  // is actually reachable via prev/next buttons.
+  const totalPages = useMemo(
+    () => Math.floor(maxIndex / cardsPerView) + 1,
+    [maxIndex, cardsPerView],
+  );
+
+  // Guard flag — true while animate() is driving scrollLeft so the native
+  // onScroll listener doesn't race the animation and cause counter flicker.
+  const isProgrammaticScroll = useRef(false);
+
+  // Fix #6: the redundant useEffect that reset on carouselItems change has
+  // been removed. The parent uses key={active} on the AnimatePresence wrapper
+  // which fully remounts this component on every tab switch, giving us a
+  // clean slate automatically. No manual reset needed.
+
+  // Fix #11: use ResizeObserver on the track element instead of window resize
+  // so card widths stay accurate even if the container resizes independently
+  // (e.g. a cart drawer opening/closing).
+  useEffect(() => {
+    const getCardsPerView = (width: number) => {
+      if (width < 640) return 1;
+      if (width < 1024) return 2;
+      return 3;
+    };
+
+    // Seed from window on mount
+    setCardsPerView(getCardsPerView(window.innerWidth));
+
+    if (!trackRef.current) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const entry of entries) {
+        setCardsPerView(getCardsPerView(entry.contentRect.width));
+      }
+    });
+    ro.observe(trackRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  const scrollTo = useCallback(
+    (index: number) => {
+      const clamped = Math.max(0, Math.min(index, maxIndex));
+      setCurrentIndex(clamped);
+      if (!trackRef.current) return;
+
+      const cardWidth =
+        (trackRef.current.offsetWidth - GAP * (cardsPerView - 1)) /
+        cardsPerView;
+      const offset = clamped * (cardWidth + GAP);
+
+      // Cancel any in-flight animation immediately so rapid clicks don't stack.
+      if (activeAnim.current) {
+        activeAnim.current.stop();
+        activeAnim.current = null;
+      }
+
+      // Raise the guard so onScroll ignores events fired during the animation.
+      isProgrammaticScroll.current = true;
+
+      // Capture current scrollLeft as the animation start point so the tween
+      // always begins exactly where the track currently is.
+      const from = trackRef.current.scrollLeft;
+
+      // Disable scroll-snap for the duration of the spring animation.
+      // scroll-snap intercepts programmatic scrollLeft writes and immediately
+      // snaps to the nearest snap point, killing the animation mid-flight.
+      // We restore it in onComplete so drag/swipe still snaps after.
+      trackRef.current.style.scrollSnapType = "none";
+
+      // animate() from Framer tweens a plain number and calls onUpdate every
+      // RAF tick. Using type:"spring" gives physics-based easing with a natural
+      // deceleration — no easing curve needed.
+      activeAnim.current = animate(from, offset, {
+        type: "spring",
+        stiffness: 280,
+        damping: 30,
+        mass: 0.8,
+        restDelta: 0.5,
+        onUpdate(latest) {
+          if (trackRef.current) {
+            trackRef.current.scrollLeft = latest;
+          }
+        },
+        onComplete() {
+          if (trackRef.current) {
+            trackRef.current.style.scrollSnapType = "x mandatory";
+          }
+          isProgrammaticScroll.current = false;
+          activeAnim.current = null;
+        },
+      });
+    },
+    [maxIndex, cardsPerView],
+  );
+
+  // Only update currentIndex from native scroll events (drag / touch) when
+  // animate() is NOT driving the scroll.
+  const onScroll = useCallback(() => {
+    if (isProgrammaticScroll.current) return;
+    if (!trackRef.current) return;
+    const cardWidth =
+      (trackRef.current.offsetWidth - GAP * (cardsPerView - 1)) / cardsPerView;
+    const idx = Math.round(trackRef.current.scrollLeft / (cardWidth + GAP));
+    setCurrentIndex(Math.max(0, Math.min(idx, maxIndex)));
+  }, [cardsPerView, maxIndex]);
+
+  // Fix #8: when the parent signals a specific item index (lightbox nav),
+  // scroll the carousel so that item is visible.
+  useEffect(() => {
+    if (syncToIndex == null) return;
+    const targetStop = Math.min(syncToIndex, maxIndex);
+    if (targetStop !== currentIndex) scrollTo(targetStop);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [syncToIndex]);
+
+  return (
+    <div>
+      {/* Carousel controls row */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ delay: 0.4 }}
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "flex-end",
+          gap: "8px",
+          marginBottom: "16px",
+        }}
+      >
+        {/* Fix #1: counter now uses page convention (current page / total pages)
+            which is consistent with how the dot indicators work and what users
+            intuitively expect. */}
+        <span
+          style={{
+            color: "#525252",
+            fontFamily: "Fragment Mono, monospace",
+            fontSize: "12px",
+            letterSpacing: "0.1em",
+            marginRight: "8px",
+          }}
+        >
+          {String(Math.floor(currentIndex / cardsPerView) + 1).padStart(2, "0")}{" "}
+          / {String(totalPages).padStart(2, "0")}
+        </span>
+
+        <button
+          onClick={() => scrollTo(currentIndex - 1)}
+          disabled={currentIndex === 0}
+          aria-label="Previous"
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            border: "1px solid #525252",
+            background: "transparent",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: currentIndex === 0 ? "not-allowed" : "pointer",
+            opacity: currentIndex === 0 ? 0.3 : 1,
+            transition: "border-color 0.2s, opacity 0.2s",
+            color: "#9E9E9E",
+          }}
+          onMouseEnter={(e) => {
+            if (currentIndex !== 0)
+              (e.currentTarget as HTMLButtonElement).style.borderColor =
+                "#780FF0";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor =
+              "#525252";
+          }}
+        >
+          <ArrowLeft size={15} strokeWidth={2} />
+        </button>
+
+        <button
+          onClick={() => scrollTo(currentIndex + 1)}
+          disabled={currentIndex >= maxIndex}
+          aria-label="Next"
+          style={{
+            width: "36px",
+            height: "36px",
+            borderRadius: "50%",
+            border: "1px solid #525252",
+            background: "transparent",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            cursor: currentIndex >= maxIndex ? "not-allowed" : "pointer",
+            opacity: currentIndex >= maxIndex ? 0.3 : 1,
+            transition: "border-color 0.2s, opacity 0.2s",
+            color: "#9E9E9E",
+          }}
+          onMouseEnter={(e) => {
+            if (currentIndex < maxIndex)
+              (e.currentTarget as HTMLButtonElement).style.borderColor =
+                "#780FF0";
+          }}
+          onMouseLeave={(e) => {
+            (e.currentTarget as HTMLButtonElement).style.borderColor =
+              "#525252";
+          }}
+        >
+          <ArrowRight size={15} strokeWidth={2} />
+        </button>
+      </motion.div>
+
+      {/* Track */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ delay: 0.35, duration: 0.5 }}
+      >
+        {/* Fix #7: scroll-snap on the track + snap-align on each card so
+            free drag/swipe always lands cleanly on a card boundary. */}
+        <div
+          ref={trackRef}
+          onScroll={onScroll}
+          style={{
+            display: "flex",
+            gap: GAP,
+            overflowX: "auto",
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
+            cursor: "grab",
+            // scroll-snap for native drag alignment
+            scrollSnapType: "x mandatory",
+            WebkitOverflowScrolling: "touch",
+          }}
+        >
+          {carouselItems.map((item, i) => (
+            <div
+              key={item.id}
+              style={{
+                flex: `0 0 calc((100% - ${GAP * (cardsPerView - 1)}px) / ${cardsPerView})`,
+                minWidth: 0,
+                // Fix #7: each card snaps to the start of the scroll container
+                scrollSnapAlign: "start",
+              }}
+            >
+              {/* Fix #3: pass the real map index so stagger delay works */}
+              <GalleryCard
+                item={item}
+                index={i}
+                onClick={() => onOpen(item.id)}
+              />
+            </div>
+          ))}
+        </div>
+      </motion.div>
+
+      {/* Dot indicators */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={inView ? { opacity: 1 } : {}}
+        transition={{ delay: 0.5 }}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          gap: "8px",
+          marginTop: "24px",
+        }}
+      >
+        {/* Fix #5: iterate over totalPages (reachable pages only) rather than
+            Math.ceil(items / cardsPerView) which could produce an unreachable
+            last dot when items don't divide evenly. */}
+        {Array.from({ length: totalPages }).map((_, i) => {
+          const pageStart = i * cardsPerView;
+          const isActive =
+            currentIndex >= pageStart &&
+            currentIndex < pageStart + cardsPerView;
+          return (
+            <button
+              key={i}
+              onClick={() => scrollTo(pageStart)}
+              aria-label={`Go to page ${i + 1}`}
+              style={{
+                width: isActive ? "24px" : "8px",
+                height: "8px",
+                borderRadius: "999px",
+                background: isActive ? "#780FF0" : "#525252",
+                border: "none",
+                cursor: "pointer",
+                padding: 0,
+                transition: "width 0.3s, background 0.3s",
+              }}
+            />
+          );
+        })}
+      </motion.div>
+    </div>
+  );
+}
+
+/* ─── Gallery (page section) ────────────────────────────────────────────────── */
 export default function Gallery() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
   const [active, setActive] = useState<Category>("Photos");
   const [lightboxId, setLightboxId] = useState<string | null>(null);
 
-  const filtered = items.filter((i) => i.category === active);
+  const filtered = useMemo(
+    () => items.filter((i) => i.category === active),
+    [active],
+  );
+
   const lightboxIndex = filtered.findIndex((i) => i.id === lightboxId);
   const lightboxItem = lightboxIndex >= 0 ? filtered[lightboxIndex] : null;
 
@@ -825,7 +1183,7 @@ export default function Gallery() {
     return () => window.removeEventListener("keydown", handler);
   }, [lightboxId, closeLightbox, goPrev, goNext]);
 
-  // Lock scroll when open
+  // Lock scroll when lightbox is open
   useEffect(() => {
     document.body.style.overflow = lightboxId ? "hidden" : "";
     return () => {
@@ -842,98 +1200,110 @@ export default function Gallery() {
       }}
     >
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
-        {/* Header */}
-        <div ref={ref} style={{ marginBottom: "48px" }}>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            className="section-tag"
-            style={{ display: "inline-block", marginBottom: "14px" }}
-          >
-            Gallery
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            style={{
-              fontSize: "clamp(2rem, 4vw, 3rem)",
-              fontWeight: 900,
-              color: "#FFFFFF",
-              lineHeight: 1.15,
-              letterSpacing: "-0.5px",
-            }}
-          >
-            A Glimpse of <span style={{ color: "#780FF0" }}>Our Works</span>
-          </motion.h2>
-        </div>
-
-        {/* Filter Tabs */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 0.35 }}
+        {/* Header + controls row */}
+        <div
+          ref={ref}
           style={{
             display: "flex",
-            gap: "4px",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
             marginBottom: "40px",
-            flexWrap: "wrap",
+            gap: "16px",
           }}
         >
-          {TABS.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActive(tab)}
+          <div>
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              className="section-tag"
+              style={{ display: "inline-block", marginBottom: "14px" }}
+            >
+              Gallery
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.2, duration: 0.7 }}
               style={{
-                position: "relative",
-                padding: "8px 20px",
-                borderRadius: "999px",
-                border: "none",
-                background: "transparent",
-                color: active === tab ? "#780FF0" : "#6B6B6B",
-                fontSize: "13px",
-                fontWeight: 600,
-                cursor: "pointer",
-                transition: "color 0.2s",
-                outline: "none",
+                fontSize: "clamp(2rem, 4vw, 3rem)",
+                fontWeight: 900,
+                color: "#FFFFFF",
+                lineHeight: 1.15,
+                letterSpacing: "-0.5px",
               }}
             >
-              {active === tab && (
-                <motion.span
-                  layoutId="tab-pill"
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    borderRadius: "999px",
-                    border: "1px solid rgba(120,15,240,0.35)",
-                    background: "rgba(120,15,240,0.08)",
-                  }}
-                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                />
-              )}
-              <span style={{ position: "relative", zIndex: 1 }}>{tab}</span>
-            </button>
-          ))}
-        </motion.div>
+              A Glimpse of <span style={{ color: "#780FF0" }}>Our Works</span>
+            </motion.h2>
+          </div>
 
-        {/* Grid */}
-        <AnimatePresence mode="popLayout">
+          {/* Filter Tabs */}
           <motion.div
-            key={active}
+            initial={{ opacity: 0, y: 16 }}
+            animate={inView ? { opacity: 1, y: 0 } : {}}
+            transition={{ delay: 0.35 }}
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(3, 1fr)",
-              gap: "16px",
+              display: "flex",
+              gap: "4px",
+              flexWrap: "wrap",
+              justifyContent: "flex-end",
             }}
           >
-            {filtered.map((item, i) => (
-              <GalleryCard
-                key={item.id}
-                item={item}
-                index={i}
-                onClick={() => setLightboxId(item.id)}
-              />
+            {TABS.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActive(tab)}
+                style={{
+                  position: "relative",
+                  padding: "8px 20px",
+                  borderRadius: "999px",
+                  border: "none",
+                  background: "transparent",
+                  color: active === tab ? "#780FF0" : "#6B6B6B",
+                  fontSize: "13px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "color 0.2s",
+                  outline: "none",
+                }}
+              >
+                {active === tab && (
+                  <motion.span
+                    layoutId="tab-pill"
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      borderRadius: "999px",
+                      border: "1px solid rgba(120,15,240,0.35)",
+                      background: "rgba(120,15,240,0.08)",
+                    }}
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+                <span style={{ position: "relative", zIndex: 1 }}>{tab}</span>
+              </button>
             ))}
+          </motion.div>
+        </div>
+
+        {/* Carousel — key={active} remounts on tab change for a clean reset */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={active}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.25 }}
+          >
+            {/* Fix #8: pass lightboxIndex as syncToIndex so the carousel
+                scrolls to keep the currently open lightbox item visible when
+                the user arrow-keys past the visible window. When the lightbox
+                is closed (-1) we pass null so no sync fires. */}
+            <GalleryCarousel
+              items={filtered}
+              onOpen={(id) => setLightboxId(id)}
+              inView={inView}
+              syncToIndex={lightboxIndex >= 0 ? lightboxIndex : null}
+            />
           </motion.div>
         </AnimatePresence>
       </div>
