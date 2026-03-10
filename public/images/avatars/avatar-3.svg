@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <rect width="100" height="100" fill="#1A2A0E"/>
+  <!-- Body -->
+  <ellipse cx="50" cy="88" rx="26" ry="16" fill="#C09060"/>
+  <!-- Neck -->
+  <rect x="44" y="64" width="12" height="14" rx="4" fill="#C09060"/>
+  <!-- Head -->
+  <ellipse cx="50" cy="52" rx="20" ry="22" fill="#C09060"/>
+  <!-- Hair long -->
+  <ellipse cx="50" cy="32" rx="20" ry="10" fill="#120A00"/>
+  <rect x="30" y="32" width="5" height="24" rx="3" fill="#120A00"/>
+  <rect x="65" y="32" width="5" height="24" rx="3" fill="#120A00"/>
+  <!-- Eyes -->
+  <ellipse cx="43" cy="51" rx="3" ry="3" fill="#120A00"/>
+  <ellipse cx="57" cy="51" rx="3" ry="3" fill="#120A00"/>
+  <ellipse cx="43.8" cy="50.4" rx="1" ry="1" fill="white" opacity="0.6"/>
+  <ellipse cx="57.8" cy="50.4" rx="1" ry="1" fill="white" opacity="0.6"/>
+  <!-- Eyebrows thin -->
+  <path d="M40 46.5 Q43 45 46 46.5" stroke="#120A00" stroke-width="1.2" stroke-linecap="round"/>
+  <path d="M54 46.5 Q57 45 60 46.5" stroke="#120A00" stroke-width="1.2" stroke-linecap="round"/>
+  <!-- Nose small -->
+  <path d="M49 54 Q50 57 51 54" stroke="#8A6040" stroke-width="1.2" stroke-linecap="round" fill="none"/>
+  <!-- Lips fuller -->
+  <path d="M44 62 Q50 67 56 62" stroke="#9A4A30" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <text x="50" y="97" text-anchor="middle" font-size="5" fill="#D4A853" font-family="monospace" opacity="0.8">AVATAR</text>
+</svg>
