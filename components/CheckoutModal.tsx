@@ -30,17 +30,23 @@ function loadRazorpayScript(): Promise<boolean> {
 interface CheckoutModalProps {
     open: boolean;
     onClose: () => void;
+    selectedPercent: number; // 25, 50, or 100
 }
 
 type ScreenState = 'form' | 'loading' | 'success' | 'failure';
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
+export default function CheckoutModal({ open, onClose, selectedPercent }: CheckoutModalProps) {
     const { items, monthlyTotal, onetimeTotal, clearCart } = useCart();
 
     const grandTotal = monthlyTotal + onetimeTotal;
-    const tokenAmount = Math.round(grandTotal * 0.1);   // 10%
-    const remaining = grandTotal - tokenAmount;
+
+    // Calculate token amount based on selection
+    const baseSelectedAmount = Math.round(grandTotal * (selectedPercent / 100));
+    const gstAmount = Math.round(baseSelectedAmount * 0.18);
+    const tokenAmount = baseSelectedAmount + gstAmount;
+
+    const remaining = grandTotal - baseSelectedAmount;
 
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
@@ -80,7 +86,7 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
             amount: tokenAmount * 100,           // paise
             currency: 'INR',
             name: 'Sirf Local',
-            description: `10% booking token — ${description}`,
+            description: `${selectedPercent}% booking token + 18% GST — ${description}`,
             prefill: { name: name.trim(), contact: phone.trim(), email: email.trim() },
             theme: { color: '#780FF0' },
             modal: { ondismiss: () => setScreen('form') },
@@ -197,7 +203,7 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
                                                 Booking token paid!
                                             </p>
                                             <p style={{ color: '#8A8178', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
-                                                We've received your <span style={{ color: '#780FF0', fontWeight: 700 }}>{formatPrice(tokenAmount)}</span> token.
+                                                We've received your <span style={{ color: '#780FF0', fontWeight: 700 }}>{formatPrice(tokenAmount)}</span> payment ({selectedPercent}% + GST).
                                                 Our team will reach out within <strong style={{ color: '#F0EBE0' }}>24 hours</strong> to kick things off.
                                             </p>
                                         </div>
@@ -336,18 +342,29 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
                                             </div>
                                         </div>
 
-                                        {/* 10% token callout */}
+                                        {/* Dynamic token callout */}
                                         <div style={{
-                                            background: 'rgba(212,168,83,0.07)', border: '1px solid rgba(212,168,83,0.25)',
+                                            background: 'rgba(120,15,240,0.05)', border: '1px solid rgba(120,15,240,0.2)',
                                             borderRadius: '14px', padding: '16px 18px',
-                                            display: 'flex', flexDirection: 'column', gap: '6px',
+                                            display: 'flex', flexDirection: 'column', gap: '8px',
                                         }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                                                <span style={{ color: '#A89F8C', fontSize: '13px' }}>Due today <span style={{ color: '#780FF0', fontWeight: 700 }}>(10% token)</span></span>
+                                                <span style={{ color: '#A89F8C', fontSize: '13px' }}>Base ({selectedPercent}%)</span>
+                                                <span style={{ color: '#F5F0E8', fontWeight: 600, fontSize: '14px' }}>{formatPrice(baseSelectedAmount)}</span>
+                                            </div>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                                                <span style={{ color: '#A89F8C', fontSize: '13px' }}>GST (18%)</span>
+                                                <span style={{ color: '#F5F0E8', fontWeight: 600, fontSize: '14px' }}>{formatPrice(gstAmount)}</span>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+                                                marginTop: '4px', paddingTop: '8px', borderTop: '1px solid rgba(120,15,240,0.1)'
+                                            }}>
+                                                <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '14px' }}>Due Today</span>
                                                 <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '20px', letterSpacing: '-0.5px' }}>{formatPrice(tokenAmount)}</span>
                                             </div>
-                                            <p style={{ color: '#555', fontSize: '12px', margin: 0, lineHeight: 1.55 }}>
-                                                You pay just 10% now to confirm your booking. Remaining <span style={{ color: '#A89F8C', fontWeight: 600 }}>{formatPrice(remaining)}</span> is settled after we finalise the details with you.
+                                            <p style={{ color: '#555', fontSize: '12px', margin: '4px 0 0', lineHeight: 1.55 }}>
+                                                You pay {selectedPercent}% now plus GST. Remaining <span style={{ color: '#A89F8C', fontWeight: 600 }}>{formatPrice(remaining)}</span> is settled after final confirmation.
                                             </p>
                                         </div>
 

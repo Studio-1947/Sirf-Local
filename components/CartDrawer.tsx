@@ -9,9 +9,14 @@ import CheckoutModal from './CheckoutModal';
 export default function CartDrawer() {
   const { items, drawerOpen, closeDrawer, removeItem, updateQty, monthlyTotal, onetimeTotal, totalCount } = useCart();
   const [checkoutOpen, setCheckoutOpen] = useState(false);
+  const [selectedPercent, setSelectedPercent] = useState(25); // 25, 50, or 100
 
   const grandTotal = monthlyTotal + onetimeTotal;
-  const tokenAmount = Math.round(grandTotal * 0.1);
+
+  // Calculations
+  const baseSelectedAmount = Math.round(grandTotal * (selectedPercent / 100));
+  const gstAmount = Math.round(baseSelectedAmount * 0.18);
+  const tokenAmount = baseSelectedAmount + gstAmount;
 
   const hasOneTime = items.some(i => i.period !== 'monthly');
 
@@ -270,19 +275,58 @@ export default function CartDrawer() {
                       </span>
                     </div>
 
-                    {/* 10% token highlight */}
+                    {/* Payment selection checkboxes */}
                     <div style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      background: 'rgba(120,15,240,0.08)', borderRadius: '10px',
-                      padding: '9px 12px', marginTop: '4px',
-                      border: '1px solid rgba(120,15,240,0.2)',
+                      marginTop: '12px', padding: '16px', borderRadius: '16px',
+                      background: '#111', border: '1px solid #1E1E1E'
                     }}>
-                      <span style={{ color: '#A89F8C', fontSize: '12.5px' }}>
-                        Due today <span style={{ color: '#780FF0', fontWeight: 700 }}>(10% token)</span>
-                      </span>
-                      <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '15px' }}>
-                        {formatPrice(tokenAmount)}
-                      </span>
+                      <p style={{ color: '#666', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.8px', fontWeight: 700, margin: '0 0 12px' }}>
+                        Select Token Payment Option
+                      </p>
+                      <div style={{ display: 'flex', gap: '8px' }}>
+                        {[25, 50, 100].map(pct => (
+                          <button
+                            key={pct}
+                            onClick={() => setSelectedPercent(pct)}
+                            style={{
+                              flex: 1, padding: '10px 0', borderRadius: '10px',
+                              background: selectedPercent === pct ? '#780FF01A' : 'transparent',
+                              border: `1px solid ${selectedPercent === pct ? '#780FF0' : '#222'}`,
+                              color: selectedPercent === pct ? '#780FF0' : '#888',
+                              fontWeight: 700, fontSize: '13px', cursor: 'pointer',
+                              transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                            }}
+                          >
+                            {pct}%
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Breakdown */}
+                    <div style={{
+                      display: 'flex', flexDirection: 'column', gap: '8px',
+                      background: 'rgba(120,15,240,0.05)', borderRadius: '16px',
+                      padding: '16px', marginTop: '4px',
+                      border: '1px solid rgba(120,15,240,0.12)',
+                    }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ color: '#A89F8C', fontSize: '13px' }}>Selected ({selectedPercent}%)</span>
+                        <span style={{ color: '#F5F0E8', fontWeight: 600, fontSize: '13px' }}>{formatPrice(baseSelectedAmount)}</span>
+                      </div>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <span style={{ color: '#A89F8C', fontSize: '13px' }}>GST (18%)</span>
+                        <span style={{ color: '#F5F0E8', fontWeight: 600, fontSize: '13px' }}>{formatPrice(gstAmount)}</span>
+                      </div>
+                      <div style={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                        paddingTop: '10px', borderTop: '1px solid rgba(120,15,240,0.15)', marginTop: '2px',
+                      }}>
+                        <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '14px' }}>Due Today</span>
+                        <span style={{ color: '#780FF0', fontWeight: 900, fontVariantNumeric: 'tabular-nums', fontSize: '20px', letterSpacing: '-0.5px' }}>
+                          {formatPrice(tokenAmount)}
+                        </span>
+                      </div>
                     </div>
                   </div>
 
@@ -328,7 +372,11 @@ export default function CartDrawer() {
       </AnimatePresence>
 
       {/* Checkout modal — rendered outside drawer */}
-      <CheckoutModal open={checkoutOpen} onClose={() => setCheckoutOpen(false)} />
+      <CheckoutModal
+        open={checkoutOpen}
+        onClose={() => setCheckoutOpen(false)}
+        selectedPercent={selectedPercent}
+      />
     </>
   );
 }
