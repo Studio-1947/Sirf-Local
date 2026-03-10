@@ -47,7 +47,7 @@ function HoverBorderBeam({ isHovered, filterId }: { isHovered: boolean; filterId
         width="calc(100% - 2px)" height="calc(100% - 2px)"
         rx={16} ry={16}
         fill="none"
-        stroke="#D4A853"
+        stroke="#780FF0"
         strokeWidth={6}
         strokeLinecap="round"
         strokeOpacity={0.6}
@@ -61,7 +61,7 @@ function HoverBorderBeam({ isHovered, filterId }: { isHovered: boolean; filterId
         width="calc(100% - 2px)" height="calc(100% - 2px)"
         rx={16} ry={16}
         fill="none"
-        stroke="#FFE08A"
+        stroke="#8E3AEE"
         strokeWidth={2}
         strokeLinecap="round"
         strokeDasharray="0 9999"
@@ -110,7 +110,7 @@ function ServiceCard({ svc, index }: { svc: typeof services[0]; index: number })
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.12 }}
-      className="group relative flex flex-col gap-5 border border-[#2A2A2A] rounded-2xl p-8 bg-[#0C0C0C] hover:bg-[#141414] transition-all card-glow"
+      className="group relative flex flex-col gap-5 border border-[#525252] rounded-2xl p-8 bg-[#1F1E1F] hover:bg-[#383838] transition-all card-glow"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -119,27 +119,27 @@ function ServiceCard({ svc, index }: { svc: typeof services[0]; index: number })
         {IconComp ? (
           <IconComp
             size={28}
-            color={isHovered ? '#D4A853' : '#FFFFFF'}
+            color={isHovered ? '#780FF0' : '#FFFFFF'}
             strokeWidth={1.5}
           />
         ) : (
-          <span className="font-mono-display text-[#D4A853] text-2xl">{svc.icon as string}</span>
+          <span className="font-mono-display text-[#780FF0] text-2xl">{svc.icon as string}</span>
         )}
-        <span className="font-mono-display text-[#2A2A2A] text-sm">{svc.id}</span>
+        <span className="font-mono-display text-[#525252] text-sm">{svc.id}</span>
       </div>
 
       <div className="relative z-10">
-        <h3 className="text-2xl font-black text-[#F5F0E8] mb-3 group-hover:text-[#D4A853] transition-colors">
+        <h3 className="text-2xl font-black text-[#FFFFFF] mb-3 group-hover:text-[#780FF0] transition-colors">
           {svc.title}
         </h3>
-        <p className="text-[#A89F8C] leading-relaxed text-base">{svc.description}</p>
+        <p className="text-[#9E9E9E] leading-relaxed text-base">{svc.description}</p>
       </div>
 
-      <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-[#2A2A2A] relative z-10">
+      <div className="flex flex-wrap gap-2 mt-auto pt-4 border-t border-[#525252] relative z-10">
         {svc.tags.map((tag) => (
           <span
             key={tag}
-            className="px-3 py-1 text-xs rounded-full bg-[#1A1A1A] text-[#A89F8C] border border-[#2A2A2A] font-mono-display tracking-wide"
+            className="px-3 py-1 text-xs rounded-full bg-[#383838] text-[#9E9E9E] border border-[#525252] font-mono-display tracking-wide"
           >
             {tag}
           </span>
@@ -154,7 +154,7 @@ export default function Services() {
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section id="services" className="bg-[#0C0C0C] py-28 border-t border-[#2A2A2A]">
+    <section id="services" className="bg-[#1F1E1F] py-28 border-t border-[#525252]">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="mb-16">
           <motion.span
@@ -169,17 +169,17 @@ export default function Services() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2, duration: 0.7 }}
-              className="text-4xl md:text-6xl font-black text-[#F5F0E8] leading-tight max-w-lg"
+              className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight max-w-lg"
             >
               Everything You Need to{' '}
-              <span className="text-[#D4A853]">Grow Online</span>
+              <span className="text-[#780FF0]">Grow Online</span>
             </motion.h2>
             <motion.a
               initial={{ opacity: 0 }}
               animate={inView ? { opacity: 1 } : {}}
               transition={{ delay: 0.4 }}
               href="#contact"
-              className="shrink-0 px-6 py-3 border border-[#2A2A2A] text-[#A89F8C] rounded-full hover:border-[#D4A853] hover:text-[#D4A853] transition-all text-sm font-medium"
+              className="shrink-0 px-6 py-3 border border-[#525252] text-[#9E9E9E] rounded-full hover:border-[#780FF0] hover:text-[#780FF0] transition-all text-sm font-medium"
             >
               View All Services →
             </motion.a>

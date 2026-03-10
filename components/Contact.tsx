@@ -56,8 +56,8 @@ function InputField({
   const [focused, setFocused] = useState(false);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      <label style={{ color: '#6A6158', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
-        {label}{required && <span style={{ color: '#D4A853', marginLeft: '3px' }}>*</span>}
+      <label style={{ color: '#6B6B6B', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+        {label}{required && <span style={{ color: '#780FF0', marginLeft: '3px' }}>*</span>}
       </label>
       <input
         type={type}
@@ -68,11 +68,11 @@ function InputField({
         onBlur={() => setFocused(false)}
         placeholder={placeholder}
         style={{
-          background: '#0C0C0C',
-          border: `1px solid ${focused ? '#D4A853' : '#2A2A2A'}`,
+          background: '#1F1E1F',
+          border: `1px solid ${focused ? '#780FF0' : '#525252'}`,
           borderRadius: '12px',
           padding: '12px 16px',
-          color: '#F5F0E8',
+          color: '#FFFFFF',
           fontSize: '14px',
           outline: 'none',
           transition: 'border-color 0.2s',
@@ -96,7 +96,7 @@ function SelectField({
   const [focused, setFocused] = useState(false);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      <label style={{ color: '#6A6158', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+      <label style={{ color: '#6B6B6B', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
         {label}
       </label>
       <select
@@ -105,11 +105,11 @@ function SelectField({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         style={{
-          background: '#0C0C0C',
-          border: `1px solid ${focused ? '#D4A853' : '#2A2A2A'}`,
+          background: '#1F1E1F',
+          border: `1px solid ${focused ? '#780FF0' : '#525252'}`,
           borderRadius: '12px',
           padding: '12px 16px',
-          color: value ? '#F5F0E8' : '#4A4440',
+          color: value ? '#FFFFFF' : '#6B6B6B',
           fontSize: '14px',
           outline: 'none',
           transition: 'border-color 0.2s',
@@ -120,7 +120,7 @@ function SelectField({
       >
         <option value="" disabled>Select a service…</option>
         {SERVICES.map((s) => (
-          <option key={s} value={s} style={{ background: '#1A1A1A', color: '#F5F0E8' }}>{s}</option>
+          <option key={s} value={s} style={{ background: '#383838', color: '#FFFFFF' }}>{s}</option>
         ))}
       </select>
     </div>
@@ -141,7 +141,7 @@ function TextareaField({
   const [focused, setFocused] = useState(false);
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-      <label style={{ color: '#6A6158', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
+      <label style={{ color: '#6B6B6B', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.15em', textTransform: 'uppercase' }}>
         {label}
       </label>
       <textarea
@@ -152,11 +152,11 @@ function TextareaField({
         onBlur={() => setFocused(false)}
         placeholder={placeholder}
         style={{
-          background: '#0C0C0C',
-          border: `1px solid ${focused ? '#D4A853' : '#2A2A2A'}`,
+          background: '#1F1E1F',
+          border: `1px solid ${focused ? '#780FF0' : '#525252'}`,
           borderRadius: '12px',
           padding: '12px 16px',
-          color: '#F5F0E8',
+          color: '#FFFFFF',
           fontSize: '14px',
           outline: 'none',
           transition: 'border-color 0.2s',
@@ -183,7 +183,7 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" style={{ background: '#0C0C0C', padding: '96px 0', borderTop: '1px solid #2A2A2A' }}>
+    <section id="contact" style={{ background: '#1F1E1F', padding: '96px 0', borderTop: '1px solid #525252' }}>
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 24px' }}>
         <div
           ref={ref}
@@ -204,17 +204,17 @@ export default function Contact() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2, duration: 0.7 }}
-              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#F5F0E8', lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: '20px' }}
+              style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '-0.5px', marginBottom: '20px' }}
             >
               Let&apos;s Build Something{' '}
-              <span style={{ color: '#D4A853' }}>Together</span>
+              <span style={{ color: '#780FF0' }}>Together</span>
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 }}
-              style={{ color: '#8A8178', fontSize: '16px', lineHeight: 1.7, marginBottom: '40px', maxWidth: '460px' }}
+              style={{ color: '#858585', fontSize: '16px', lineHeight: 1.7, marginBottom: '40px', maxWidth: '460px' }}
             >
               Whether you have a homestay in the hills or a shop in the market,
               we&apos;re here to bring your story online. Reach out — let&apos;s start.
@@ -234,26 +234,26 @@ export default function Contact() {
                   style={{
                     display: 'flex', alignItems: 'center', gap: '16px',
                     padding: '16px 20px',
-                    background: '#141414',
-                    border: '1px solid #2A2A2A',
+                    background: '#1F1E1F',
+                    border: '1px solid #525252',
                     borderRadius: '14px',
                     textDecoration: 'none',
                     transition: 'border-color 0.2s, background 0.2s',
                   }}
-                  whileHover={{ borderColor: 'rgba(212,168,83,0.35)', backgroundColor: '#1A1A1A' }}
+                  whileHover={{ borderColor: 'rgba(120,15,240,0.35)', backgroundColor: '#383838' }}
                 >
                   <div style={{
                     width: '40px', height: '40px', borderRadius: '10px',
-                    background: 'rgba(212,168,83,0.08)', border: '1px solid rgba(212,168,83,0.18)',
+                    background: 'rgba(120,15,240,0.08)', border: '1px solid rgba(120,15,240,0.18)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                   }}>
-                    <Icon size={18} color="#D4A853" strokeWidth={1.8} />
+                    <Icon size={18} color="#780FF0" strokeWidth={1.8} />
                   </div>
                   <div>
-                    <p style={{ color: '#6A6158', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '2px' }}>
+                    <p style={{ color: '#6B6B6B', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.12em', textTransform: 'uppercase', marginBottom: '2px' }}>
                       {label}
                     </p>
-                    <p style={{ color: '#F5F0E8', fontSize: '14px', fontWeight: 600 }}>{value}</p>
+                    <p style={{ color: '#FFFFFF', fontSize: '14px', fontWeight: 600 }}>{value}</p>
                   </div>
                 </motion.a>
               ))}
@@ -265,7 +265,7 @@ export default function Contact() {
             initial={{ opacity: 0, x: 30 }}
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.4, duration: 0.7 }}
-            style={{ background: '#111111', border: '1px solid #2A2A2A', borderRadius: '24px', padding: '36px' }}
+            style={{ background: '#1F1E1F', border: '1px solid #525252', borderRadius: '24px', padding: '36px' }}
           >
             <AnimatePresence mode="wait">
               {sent ? (
@@ -281,15 +281,15 @@ export default function Contact() {
                     animate={{ scale: 1 }}
                     transition={{ type: 'spring', stiffness: 260, damping: 18, delay: 0.1 }}
                   >
-                    <CheckCircle size={56} color="#7C9A5E" strokeWidth={1.5} />
+                    <CheckCircle size={56} color="#A463EE" strokeWidth={1.5} />
                   </motion.div>
-                  <h3 style={{ color: '#F5F0E8', fontSize: '22px', fontWeight: 900, marginTop: '8px' }}>Message Received!</h3>
-                  <p style={{ color: '#8A8178', fontSize: '15px', lineHeight: 1.6, maxWidth: '280px' }}>
+                  <h3 style={{ color: '#FFFFFF', fontSize: '22px', fontWeight: 900, marginTop: '8px' }}>Message Received!</h3>
+                  <p style={{ color: '#858585', fontSize: '15px', lineHeight: 1.6, maxWidth: '280px' }}>
                     We&apos;ll get back to you within 24 hours. Check your WhatsApp too!
                   </p>
                   <button
                     onClick={() => { setSent(false); setForm({ name: '', business: '', email: '', phone: '', service: '', message: '' }); }}
-                    style={{ marginTop: '8px', color: '#D4A853', fontSize: '13px', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
+                    style={{ marginTop: '8px', color: '#780FF0', fontSize: '13px', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}
                   >
                     Send another message
                   </button>
@@ -321,8 +321,8 @@ export default function Contact() {
                     style={{
                       display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
                       padding: '14px 28px', borderRadius: '999px',
-                      background: btnHovered ? '#E5BA6A' : '#D4A853',
-                      color: '#0C0C0C', fontWeight: 700, fontSize: '15px',
+                      background: btnHovered ? '#8E3AEE' : '#780FF0',
+                      color: '#FFFFFF', fontWeight: 700, fontSize: '15px',
                       border: 'none', cursor: 'pointer',
                       transition: 'background 0.2s, transform 0.15s',
                       transform: btnHovered ? 'scale(1.02)' : 'scale(1)',
@@ -340,4 +340,3 @@ export default function Contact() {
     </section>
   );
 }
-
