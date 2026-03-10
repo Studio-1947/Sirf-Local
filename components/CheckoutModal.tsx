@@ -52,6 +52,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
 
     const [screen, setScreen] = useState<ScreenState>('form');
     const [paymentId, setPaymentId] = useState<string | null>(null);
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
     const [successData, setSuccessData] = useState<{
         paidAmount: number;
         percent: number;
@@ -59,6 +60,10 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
     } | null>(null);
 
     const handlePay = useCallback(async () => {
+        if (!acceptedTerms) {
+            alert('Please accept the Terms & Conditions to proceed.');
+            return;
+        }
         setScreen('loading');
 
         try {
@@ -139,10 +144,11 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
             console.error("Payment initialization failed:", error);
             setScreen('failure');
         }
-    }, [tokenAmount, items, selectedPercent, clearCart, remaining]);
+    }, [tokenAmount, items, selectedPercent, clearCart, remaining, acceptedTerms]);
 
     const handleClose = () => {
         setScreen('form');
+        setAcceptedTerms(false);
         setPaymentId(null); // Clear payment ID on close
         setSuccessData(null); // Clear success data on close
         onClose();
@@ -153,7 +159,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
         + items.map(i => `• ${i.title} (×${i.qty})`).join('\n')
         + `\nTotal: ${formatPrice(grandTotal)}\nRemaining: ${formatPrice(successData?.remaining ?? remaining)}`
     );
-    const whatsappUrl = `https://wa.me/91XXXXXXXXXX?text=${whatsappText}`; // replace number
+    const whatsappUrl = `https://wa.me/919093277919?text=${whatsappText}`; // replace number
 
     return (
         <AnimatePresence>
@@ -409,18 +415,39 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             </p>
                                         </div>
 
+                                        {/* Terms & Conditions */}
+                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '4px 2px' }}>
+                                            <div
+                                                onClick={() => setAcceptedTerms(!acceptedTerms)}
+                                                style={{
+                                                    width: '18px', height: '18px', borderRadius: '4px', border: `1.5px solid ${acceptedTerms ? '#780FF0' : '#333'}`,
+                                                    background: acceptedTerms ? '#780FF0' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                    cursor: 'pointer', flexShrink: 0, marginTop: '2px', transition: 'all 0.2s'
+                                                }}
+                                            >
+                                                {acceptedTerms && <CheckCircle2 size={12} color="#000" strokeWidth={3} />}
+                                            </div>
+                                            <label style={{ color: '#8A8178', fontSize: '12px', lineHeight: 1.5, cursor: 'pointer', userSelect: 'none' }} onClick={() => setAcceptedTerms(!acceptedTerms)}>
+                                                I agree to the <span style={{ color: '#780FF0', fontWeight: 600 }}>Terms & Conditions</span> and understand that this booking token is non-refundable.
+                                            </label>
+                                        </div>
+
                                         {/* Pay button */}
                                         <button
                                             onClick={handlePay}
+                                            disabled={!acceptedTerms}
                                             style={{
                                                 width: '100%', padding: '14px 0', borderRadius: '999px',
-                                                background: '#780FF0', color: '#0C0C0C', fontWeight: 800, fontSize: '15px',
-                                                border: 'none', cursor: 'pointer', letterSpacing: '0.3px',
+                                                background: acceptedTerms ? '#780FF0' : '#1A1A1A',
+                                                color: acceptedTerms ? '#0C0C0C' : '#444',
+                                                fontWeight: 800, fontSize: '15px',
+                                                border: 'none', cursor: acceptedTerms ? 'pointer' : 'not-allowed', letterSpacing: '0.3px',
                                                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                                                transition: 'background 0.2s',
+                                                transition: 'all 0.2s',
+                                                opacity: acceptedTerms ? 1 : 0.6
                                             }}
-                                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#E5BA6A'; }}
-                                            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#780FF0'; }}
+                                            onMouseEnter={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#E5BA6A'; }}
+                                            onMouseLeave={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#780FF0'; }}
                                         >
                                             Pay {formatPrice(tokenAmount)} now <ArrowRight size={16} />
                                         </button>
