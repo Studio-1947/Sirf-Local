@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, AlertCircle, Loader2, Phone, Mail, User, ArrowRight } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { useCart, formatPrice } from '@/context/CartContext';
+import Link from 'next/link';
 import axios from 'axios';
 import apiClient from '@/lib/api/api-client';
 
@@ -428,7 +429,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                                 {acceptedTerms && <CheckCircle2 size={12} color="#000" strokeWidth={3} />}
                                             </div>
                                             <label style={{ color: '#8A8178', fontSize: '12px', lineHeight: 1.5, cursor: 'pointer', userSelect: 'none' }} onClick={() => setAcceptedTerms(!acceptedTerms)}>
-                                                I agree to the <span style={{ color: '#780FF0', fontWeight: 600 }}>Terms & Conditions</span> and understand that this booking token is non-refundable.
+                                                I agree to the <Link href="/terms-and-conditions" target="_blank" onClick={(e) => e.stopPropagation()} style={{ color: '#780FF0', fontWeight: 600, textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'} onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}>Terms & Conditions</Link> and understand that this booking token is non-refundable.
                                             </label>
                                         </div>
 
