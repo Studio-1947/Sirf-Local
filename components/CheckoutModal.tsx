@@ -58,6 +58,8 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
         paidAmount: number;
         percent: number;
         remaining: number;
+        items: typeof items;
+        grandTotal: number;
     } | null>(null);
 
     const handlePay = useCallback(async () => {
@@ -124,7 +126,9 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                             setSuccessData({
                                 paidAmount: tokenAmount,
                                 percent: selectedPercent,
-                                remaining: remaining
+                                remaining: remaining,
+                                items: [...items],
+                                grandTotal: grandTotal
                             });
                             setPaymentId(response.razorpay_payment_id);
                             setScreen('success');
@@ -155,10 +159,14 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
         onClose();
     };
 
+    const displayItems = successData?.items ?? items;
+    const displayTotal = successData?.grandTotal ?? grandTotal;
+    const displayRemaining = successData?.remaining ?? remaining;
+
     const whatsappText = encodeURIComponent(
         `Hi Sirf Local! I just paid ${formatPrice(successData?.paidAmount ?? tokenAmount)} as a token (ID: ${paymentId}). Here are my services:\n`
-        + items.map(i => `• ${i.title} (×${i.qty})`).join('\n')
-        + `\nTotal: ${formatPrice(grandTotal)}\nRemaining: ${formatPrice(successData?.remaining ?? remaining)}`
+        + displayItems.map(i => `• ${i.title} (×${i.qty})`).join('\n')
+        + `\nTotal: ${formatPrice(displayTotal)}\nRemaining: ${formatPrice(displayRemaining)}`
     );
     const whatsappUrl = `https://wa.me/919093277919?text=${whatsappText}`; // replace number
 
