@@ -41,10 +41,10 @@ export default function PaymentIntegrationDemo() {
 
         try {
             // 1. Create order on the backend
-            const orderResponse = await paymentService.createOrder(100); // Amount in INR
+            const orderResponse = await paymentService.createOrder({ amount: 100 }); // Amount in INR
 
-            if (orderResponse.success && orderResponse.data) {
-                const { id: order_id, amount, currency } = orderResponse.data;
+            if (orderResponse && orderResponse.id) {
+                const { id: order_id, amount, currency } = orderResponse;
 
                 // 2. Configure Razorpay options
                 const options: RazorpayOptions = {
