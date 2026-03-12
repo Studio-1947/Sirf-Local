@@ -77,12 +77,60 @@ export default function Contact() {
   const containerRef = useRef(null);
   const inView = useInView(containerRef, { once: true, margin: "-100px" });
   const [form, setForm] = useState({ name: "", email: "", service: "", message: "" });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [focusedField, setFocusedField] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSent(true);
+    setStatus('sending');
+
+    const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_ACCESS_KEY;
+    
+    if (!accessKey) {
+      console.error("Web3Forms Access Key is missing!");
+      setStatus('error');
+      return;
+    }
+
+    formData.append("access_key", accessKey);
+    formData.append("name", form.name);
+    formData.append("email", form.email);
+    formData.append("service", form.service);
+    formData.append("message", form.message);
+    formData.append("from_name", "Sirf Local Website");
+    formData.append("subject", `New Inquiry from ${form.name}`);
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name: form.name,
+          email: form.email,
+          service: form.service,
+          message: form.message,
+          from_name: "Sirf Local Website",
+          subject: `New Inquiry from ${form.name}`,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setStatus('sent');
+        setForm({ name: "", email: "", service: "", message: "" });
+      } else {
+        console.error("Error", data);
+        setStatus('error');
+      }
+    } catch (error) {
+      console.error("Error", error);
+      setStatus('error');
+    }
   };
 
   const completion = [
@@ -126,7 +174,9 @@ export default function Contact() {
           >
             <div className="p-8 border-b border-white/5 bg-white/[0.01] flex items-center justify-between">
                <div className="flex items-center gap-3">
-                  <span className="text-white font-bold text-sm">Start a Conversation</span>
+                  <span className="text-white font-bold text-sm">
+                    {status === 'error' ? 'Submission Failed' : 'Start a Conversation'}
+                  </span>
                </div>
                <div className="flex gap-2.5">
                   {completion.map((filled, i) => (
@@ -144,21 +194,26 @@ export default function Contact() {
 
             <div className="relative z-10">
                <AnimatePresence mode="wait">
-                 {sent ? (
+                 {status === 'sent' ? (
                    <motion.div key="success" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-32">
                       <div className="w-20 h-20 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-8">
                          <CheckCircle size={40} className="text-accent" />
                       </div>
                       <h3 className="text-4xl font-black text-white mb-4 tracking-tighter">Inquiry Received.</h3>
                       <p className="text-text-secondary text-lg mb-12 max-w-sm mx-auto">Our studio will analyze your brief and contact you within 24 hours.</p>
-                      <button onClick={() => setSent(false)} className="text-accent font-mono-display text-[10px] uppercase tracking-[0.3em] font-bold border border-accent/20 px-8 py-3 rounded-full hover:bg-accent/10 transition-colors">Submit New Entry</button>
+                      <button onClick={() => setStatus('idle')} className="text-accent font-mono-display text-[10px] uppercase tracking-[0.3em] font-bold border border-accent/20 px-8 py-3 rounded-full hover:bg-accent/10 transition-colors">Submit New Entry</button>
                    </motion.div>
                  ) : (
                    <motion.form key="form" onSubmit={handleSubmit}>
+                      {status === 'error' && (
+                        <div className="p-4 bg-state-error/10 border-b border-state-error/20 text-state-error text-xs font-bold uppercase tracking-widest text-center">
+                          Something went wrong. Please try again or email us directly.
+                        </div>
+                      )}
                       <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/5 border-b border-white/5">
                          <FormCell label="Client Name" focused={focusedField === 'name'} filled={completion[0]}>
                             <input 
-                              type="text" required placeholder="Anjali Chettri" 
+                              type="text" name="name" required placeholder="Anjali Chettri" 
                               className="w-full bg-transparent py-2 text-white outline-none placeholder:text-white/20 placeholder:font-normal text-base font-bold"
                               onFocus={() => setFocusedField('name')} onBlur={() => setFocusedField(null)}
                               value={form.name} onChange={e => setForm({...form, name: e.target.value})}
@@ -166,7 +221,7 @@ export default function Contact() {
                          </FormCell>
                          <FormCell label="Email Address" focused={focusedField === 'email'} filled={completion[1]}>
                             <input 
-                              type="email" required placeholder="you@studio.com" 
+                              type="email" name="email" required placeholder="you@studio.com" 
                               className="w-full bg-transparent py-2 text-white outline-none placeholder:text-white/20 placeholder:font-normal text-base font-bold"
                               onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)}
                               value={form.email} onChange={e => setForm({...form, email: e.target.value})}
@@ -178,6 +233,7 @@ export default function Contact() {
                          <FormCell label="Technical Module" focused={focusedField === 'service'} filled={completion[2]}>
                             <div className="relative">
                                <select 
+                                 name="service"
                                  className={`w-full bg-transparent py-2 outline-none appearance-none cursor-pointer text-base transition-colors duration-500 ${
                                    form.service ? 'text-white font-bold' : 'text-white/20 font-normal'
                                  }`}
@@ -197,6 +253,7 @@ export default function Contact() {
                       <div>
                          <FormCell label="Project Brief" focused={focusedField === 'message'} filled={completion[3]}>
                             <textarea 
+                              name="message"
                               rows={4} placeholder="Describe your business vision..." 
                               className="w-full bg-transparent py-2 text-white outline-none placeholder:text-white/20 placeholder:font-normal resize-none text-base font-bold leading-relaxed"
                               onFocus={() => setFocusedField('message')} onBlur={() => setFocusedField(null)}
@@ -206,10 +263,20 @@ export default function Contact() {
                       </div>
                       
                       <div className="p-8 md:p-10 flex justify-between items-center bg-white/[0.005]">
-                         <span className="font-mono-display text-[9px] text-text-muted uppercase tracking-[0.4em] hidden md:block">Ready for Transmission</span>
-                         <button type="submit" className="group flex items-center gap-4 px-10 py-4 bg-white text-bg-primary font-bold text-sm rounded-full transition-all duration-300 hover:bg-accent hover:text-white hover:scale-[1.02] shadow-2xl">
-                            Send Inquiry
-                            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                         <span className="font-mono-display text-[9px] text-text-muted uppercase tracking-[0.4em] hidden md:block">
+                           {status === 'sending' ? 'Transmitting Data...' : 'Ready for Transmission'}
+                         </span>
+                         <button 
+                           type="submit" 
+                           disabled={status === 'sending'}
+                           className={`group flex items-center gap-4 px-10 py-4 font-bold text-sm rounded-full transition-all duration-300 shadow-2xl ${
+                             status === 'sending' 
+                               ? 'bg-white/20 text-white cursor-not-allowed' 
+                               : 'bg-white text-bg-primary hover:bg-accent hover:text-white hover:scale-[1.02]'
+                           }`}
+                         >
+                            {status === 'sending' ? 'Sending...' : 'Send Inquiry'}
+                            <ArrowRight size={18} className={`transition-transform ${status === 'sending' ? '' : 'group-hover:translate-x-1'}`} />
                          </button>
                       </div>
                    </motion.form>
