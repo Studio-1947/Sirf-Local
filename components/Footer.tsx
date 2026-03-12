@@ -1,95 +1,186 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-
-const socials = [
-  {
-    name: 'Instagram',
-    href: 'https://instagram.com/sirflocal',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-        <circle cx="12" cy="12" r="4"/>
-        <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
-      </svg>
-    ),
-  },
-  {
-    name: 'X (Twitter)',
-    href: 'https://x.com/sirflocal',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-      </svg>
-    ),
-  },
-  {
-    name: 'Bluesky',
-    href: 'https://bsky.app/profile/sirflocal.bsky.social',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479.815 2.736 3.713 3.66 6.383 3.364.136-.02.275-.039.415-.056-.138.022-.276.04-.415.056-3.912.58-7.387 2.005-2.83 7.078 5.013 5.19 6.87-1.113 7.823-4.308.953 3.195 2.05 9.271 7.733 4.308 4.267-4.308 1.172-6.498-2.74-7.078a8.741 8.741 0 0 1-.415-.056c.14.017.279.036.415.056 2.67.297 5.568-.628 6.383-3.364.246-.828.624-5.79.624-6.478 0-.69-.139-1.861-.902-2.204-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8z"/>
-      </svg>
-    ),
-  },
-  {
-    name: 'Facebook',
-    href: 'https://facebook.com/sirflocal',
-    icon: (
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
-      </svg>
-    ),
-  },
-];
-
-function SocialLink({ social }: { social: typeof socials[0] }) {
-  return (
-    <a
-      href={social.href}
-      target="_blank"
-      rel="noopener noreferrer"
-      title={social.name}
-      className="w-10 h-10 rounded-[10px] flex items-center justify-center bg-bg-surface border border-border text-text-dark-muted no-underline transition-all hover:bg-accent-pill-bg hover:border-accent-border hover:text-accent"
-    >
-      {social.icon}
-    </a>
-  );
-}
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { 
+  ArrowUpRight, 
+  MapPin, 
+  Clock, 
+  Cpu,
+  ArrowRight
+} from "lucide-react";
+import SVGLIcon from "./SVGLIcon";
 
 export default function Footer() {
-  const year = new Date().getFullYear();
+  const [time, setTime] = useState("");
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date();
+      setTime(now.toLocaleTimeString("en-US", { 
+        timeZone: "Asia/Kolkata", 
+        hour12: false, 
+        hour: '2-digit', 
+        minute: '2-digit',
+        second: '2-digit'
+      }));
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  const navLinks = [
+    { label: 'About', href: '#about' },
+    { label: 'Solutions', href: '#services' },
+    { label: 'Process', href: '#process' },
+    { label: 'Team', href: '#team' },
+    { label: 'Pricing', href: '#pricing' },
+  ];
+
+  const socialLinks = [
+    { label: 'Instagram', svglName: 'Instagram', href: 'https://instagram.com/sirflocal' },
+    { label: 'WhatsApp', svglName: 'whatsapp', href: 'https://wa.me/919093277919' },
+    { label: 'Email', svglName: 'gmail', href: 'mailto:hello@sirflocal.com' },
+  ];
 
   return (
-    <footer className="bg-bg-primary border-t border-border">
-      <div className="max-w-7xl mx-auto px-6 py-10">
-        <div className="flex items-center justify-between flex-wrap gap-6">
+    <footer className="relative bg-[#1F1E1F] pt-24 pb-12 overflow-hidden border-t border-white/5">
+      {/* Subtle Background Elements */}
+      <div className="absolute top-0 left-1/4 w-[50%] h-[50%] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
+      
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        
+        {/* Top Section: High Impact CTA */}
+        <div className="mb-24">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8"
+          >
+            <div className="max-w-2xl">
+              <span className="font-mono-display text-[10px] text-accent uppercase tracking-[0.4em] mb-4 block">Ready to go global?</span>
+              <h2 className="text-4xl md:text-6xl font-black text-white leading-tight tracking-tight">
+                Let's build something <br />
+                <span className="text-accent">world-class</span> together.
+              </h2>
+            </div>
+            <motion.a
+              href="https://wa.me/919093277919"
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="group flex items-center gap-3 px-8 py-5 bg-accent text-white font-bold rounded-full hover:bg-accent-hover transition-all shadow-[0_0_20px_rgba(120,15,240,0.3)]"
+            >
+              Start Your Project
+              <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+            </motion.a>
+          </motion.div>
+        </div>
 
-          {/* Logo + tagline */}
-          <div className="flex items-center gap-5">
-            <Image src="/Logo.svg" alt="Sirf Local" width={110} height={36} style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
-            <div className="w-px h-7 bg-border" />
-            <p className="text-text-dark-muted text-xs font-mono-display tracking-[0.05em]">
-              An initiative by Studio 1947 · Mirik, Darjeeling
+        {/* Middle Section: Studio Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24 mb-24 py-12 border-y border-white/5">
+          
+          {/* Brand Info */}
+          <div className="space-y-8">
+            <Image src="/Logo.svg" alt="Sirf Local" width={140} height={40} className="h-10 w-auto object-contain" />
+            <p className="text-text-secondary text-base leading-relaxed opacity-80">
+              A digital design studio building high-performance architectures for regional brands. From Mirik to the world.
             </p>
           </div>
 
-          {/* Socials */}
-          <div className="flex items-center gap-2">
-            {socials.map((s) => <SocialLink key={s.name} social={s} />)}
+          {/* Navigation */}
+          <div>
+            <span className="font-mono-display text-[9px] text-text-muted uppercase tracking-[0.3em] block mb-8">Navigation</span>
+            <ul className="space-y-4">
+              {navLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="flex items-center justify-between text-text-secondary hover:text-white font-bold text-sm transition-colors group/link">
+                    {link.label}
+                    <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover/link:opacity-100 group-hover/link:translate-y-0 group-hover/link:translate-x-0 transition-all text-accent" />
+                  </a>
+                </li>
+              ))}
+            </ul>
           </div>
 
+          {/* Connect */}
+          <div>
+            <span className="font-mono-display text-[9px] text-text-muted uppercase tracking-[0.3em] block mb-8">Connect</span>
+            <ul className="space-y-4">
+              {socialLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-text-secondary hover:text-white font-bold text-sm transition-colors group/link">
+                    <span className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center text-text-muted group-hover/link:text-accent group-hover/link:bg-accent/10 transition-all overflow-hidden p-1.5">
+                      <SVGLIcon name={link.svglName} size={18} className="transition-transform group-hover/link:scale-110" />
+                    </span>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Studio Telemetry */}
+          <div className="space-y-8">
+            <span className="font-mono-display text-[9px] text-text-muted uppercase tracking-[0.3em] block mb-8">Studio: Telemetry</span>
+            
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-accent">
+                  <MapPin size={18} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-mono-display text-text-muted uppercase tracking-widest mb-0.5">Location</p>
+                  <p className="text-white font-bold text-xs">Mirik, WB, India</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-accent">
+                  <Clock size={18} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-mono-display text-text-muted uppercase tracking-widest mb-0.5">Mirik_Time (IST)</p>
+                  <p className="text-xl font-black text-white tracking-tighter tabular-nums">{time || "00:00:00"}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-accent">
+                  <Cpu size={18} />
+                </div>
+                <div>
+                  <p className="text-[10px] font-mono-display text-text-muted uppercase tracking-widest mb-0.5">Status</p>
+                  <p className="text-state-success font-bold text-xs flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 bg-state-success rounded-full animate-pulse" />
+                    Operational
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-8 pt-6 border-t border-bg-secondary flex items-center justify-between flex-wrap gap-2">
-          <p className="text-text-dark-muted text-[11px] font-mono-display tracking-[0.08em]">
-            © {year} Sirf Local. All rights reserved.
+        {/* Bottom Section: Legal & Credits */}
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8">
+          <p className="text-text-muted text-[10px] font-mono-display uppercase tracking-[0.2em]">
+            © 2025 Studio 1947 Initiative. All Rights Reserved.
           </p>
-          <p className="text-text-dark-muted text-[11px] font-mono-display tracking-[0.08em]">
-            Built with ♥ for local businesses
-          </p>
+          <div className="flex items-center gap-2 text-[10px] font-mono-display uppercase tracking-[0.2em] text-text-muted">
+            Crafted with 
+            <motion.span 
+              animate={{ scale: [1, 1.2, 1] }} 
+              transition={{ repeat: Infinity, duration: 1.5 }}
+              className="text-accent"
+            >
+              ❤
+            </motion.span> 
+            by Sirf Local
+          </div>
         </div>
+
       </div>
     </footer>
   );

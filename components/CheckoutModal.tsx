@@ -191,7 +191,7 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
                                                 Booking token paid!
                                             </p>
                                             <p style={{ color: 'var(--text-earth)', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
-                                                We've received your <span className="text-accent font-bold">{formatPrice(tokenAmount)}</span> token.
+                                                We&apos;ve received your <span className="text-accent font-bold">{formatPrice(tokenAmount)}</span> token.
                                                 Our team will reach out within <strong className="text-text-warm">24 hours</strong> to kick things off.
                                             </p>
                                         </div>
@@ -212,10 +212,10 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
                                             borderRadius: '12px', padding: '14px 18px', width: '100%', textAlign: 'left',
                                         }}>
                                             <p className="text-accent font-bold text-[13px]" style={{ margin: '0 0 4px' }}>Remaining balance</p>
-                                            <p style={{ color: 'var(--text-earth)', fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
-                                                <p style={{ color: 'var(--text-warm)', fontWeight: 700 }}>{formatPrice(remaining)}</p> is due after we confirm the
+                                            <div style={{ color: 'var(--text-earth)', fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
+                                                <span style={{ color: 'var(--text-warm)', fontWeight: 700 }}>{formatPrice(remaining)}</span> is due after we confirm the
                                                 final scope with you — no surprises.
-                                            </p>
+                                            </div>
                                         </div>
 
                                         <a
@@ -245,7 +245,7 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
                                             <AlertCircle size={36} color="var(--state-error)" strokeWidth={1.6} />
                                         </div>
                                         <div>
-                                            <p style={{ color: 'var(--text-warm)', fontWeight: 800, fontSize: '18px', margin: '0 0 6px' }}>Payment didn't go through</p>
+                                            <p style={{ color: 'var(--text-warm)', fontWeight: 800, fontSize: '18px', margin: '0 0 6px' }}>Payment didn&apos;t go through</p>
                                             <p style={{ color: 'var(--text-sand)', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
                                                 No money was deducted. You can try again or reach us directly on WhatsApp.
                                             </p>

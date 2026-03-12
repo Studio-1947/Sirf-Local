@@ -1,998 +1,237 @@
 "use client";
 
-import { motion, AnimatePresence, useInView, animate } from "framer-motion";
-import { useRef, useState, useEffect, useCallback, useMemo } from "react";
+import { motion, AnimatePresence, useInView } from "framer-motion";
+import { useRef, useState, useMemo } from "react";
 import Image from "next/image";
-import {
-  ArrowUpRight,
-  Play,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  ArrowLeft,
-  ArrowRight,
-} from "lucide-react";
+import { Play, X, ArrowLeft, ArrowRight } from "lucide-react";
+import { useCarousel } from "@/hooks/use-carousel";
 
 type Category = "Photos" | "Branding" | "Logo" | "Packaging" | "Videos";
 
 interface GalleryItem {
   id: string;
-  category: Exclude<Category, "All">;
+  category: Category;
   label: string;
   sublabel: string;
   src?: string;
-  accent: string;
-  bg: string;
 }
 
 const TABS: Category[] = ["Photos", "Branding", "Logo", "Packaging", "Videos"];
 
-// Named palette entries — map gallery accent variants to design tokens
-const GPAL = {
-  primary:   { accent: 'var(--accent)',           bg: 'var(--bg-primary)' },
-  secondary: { accent: 'var(--accent-secondary)', bg: 'var(--bg-secondary)' },
-  light:     { accent: 'var(--accent-light)',     bg: 'var(--bg-primary)' },
-  hover:     { accent: 'var(--accent-hover)',       bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)' },
-} as const;
-
 const items: GalleryItem[] = [
-  // Photos  →  public/images/gallery/photos/
-  { id: 'p1', category: 'Photos', label: 'Photo 1', sublabel: 'Photography', src: '/images/gallery/photos/1.png', ...GPAL.secondary },
-  { id: 'p2', category: 'Photos', label: 'Photo 2', sublabel: 'Photography', src: '/images/gallery/photos/2.png', ...GPAL.primary },
-  { id: 'p3', category: 'Photos', label: 'Photo 3', sublabel: 'Photography', src: '/images/gallery/photos/3.png', ...GPAL.light },
-  { id: 'p4', category: 'Photos', label: 'Photo 4', sublabel: 'Photography', src: '/images/gallery/photos/4.png', ...GPAL.hover },
-  { id: 'p5', category: 'Photos', label: 'Photo 5', sublabel: 'Photography', src: '/images/gallery/photos/5.png', ...GPAL.secondary },
-  { id: 'p6', category: 'Photos', label: 'Photo 6', sublabel: 'Photography', src: '/images/gallery/photos/6.png', ...GPAL.primary },
-  { id: 'p7', category: 'Photos', label: 'Photo 7', sublabel: 'Photography', src: '/images/gallery/photos/7.png', ...GPAL.light },
-  { id: 'p8', category: 'Photos', label: 'Photo 8', sublabel: 'Photography', src: '/images/gallery/photos/8.png', ...GPAL.hover },
-  // Branding  →  public/images/gallery/branding/
-  { id: 'b1',  category: 'Branding', label: 'Branding Work 1',  sublabel: 'Brand Identity', src: '/images/gallery/branding/1.png',  ...GPAL.primary },
-  { id: 'b2',  category: 'Branding', label: 'Branding Work 2',  sublabel: 'Brand Identity', src: '/images/gallery/branding/2.png',  ...GPAL.hover },
-  { id: 'b3',  category: 'Branding', label: 'Branding Work 3',  sublabel: 'Brand Identity', src: '/images/gallery/branding/3.png',  ...GPAL.secondary },
-  { id: 'b4',  category: 'Branding', label: 'Branding Work 4',  sublabel: 'Brand Identity', src: '/images/gallery/branding/4.png',  ...GPAL.primary },
-  { id: 'b5',  category: 'Branding', label: 'Branding Work 5',  sublabel: 'Brand Identity', src: '/images/gallery/branding/5.png',  ...GPAL.hover },
-  { id: 'b6',  category: 'Branding', label: 'Branding Work 6',  sublabel: 'Brand Identity', src: '/images/gallery/branding/6.png',  ...GPAL.secondary },
-  { id: 'b7',  category: 'Branding', label: 'Branding Work 7',  sublabel: 'Brand Identity', src: '/images/gallery/branding/7.png',  ...GPAL.primary },
-  { id: 'b8',  category: 'Branding', label: 'Branding Work 8',  sublabel: 'Brand Identity', src: '/images/gallery/branding/8.png',  ...GPAL.light },
-  { id: 'b9',  category: 'Branding', label: 'Branding Work 9',  sublabel: 'Brand Identity', src: '/images/gallery/branding/9.png',  ...GPAL.hover },
-  { id: 'b10', category: 'Branding', label: 'Branding Work 10', sublabel: 'Brand Identity', src: '/images/gallery/branding/10.png', ...GPAL.secondary },
-  // Logo  →  public/images/gallery/logo/
-  { id: 'l1', category: 'Logo', label: 'Logo Design 1', sublabel: 'Logo Design', src: '/images/gallery/logo/1.png', ...GPAL.primary },
-  { id: 'l2', category: 'Logo', label: 'Logo Design 2', sublabel: 'Logo Design', src: '/images/gallery/logo/2.png', ...GPAL.secondary },
-  { id: 'l3', category: 'Logo', label: 'Logo Design 3', sublabel: 'Logo Design', src: '/images/gallery/logo/3.png', ...GPAL.hover },
-  { id: 'l4', category: 'Logo', label: 'Logo Design 4', sublabel: 'Logo Design', src: '/images/gallery/logo/4.png', ...GPAL.primary },
-  { id: 'l5', category: 'Logo', label: 'Logo Design 5', sublabel: 'Logo Design', src: '/images/gallery/logo/5.png', ...GPAL.light },
-  { id: 'l6', category: 'Logo', label: 'Logo Design 6', sublabel: 'Logo Design', src: '/images/gallery/logo/6.png', ...GPAL.secondary },
-  // Packaging  →  public/images/gallery/packaging/
-  { id: 'pk1', category: 'Packaging', label: 'Packaging Design 1', sublabel: 'Packaging Design', src: '/images/gallery/packaging/1.png', ...GPAL.hover },
-  { id: 'pk2', category: 'Packaging', label: 'Packaging Design 2', sublabel: 'Packaging Design', src: '/images/gallery/packaging/2.png', ...GPAL.primary },
-  { id: 'pk3', category: 'Packaging', label: 'Packaging Design 3', sublabel: 'Packaging Design', src: '/images/gallery/packaging/3.png', ...GPAL.secondary },
-  { id: 'pk4', category: 'Packaging', label: 'Packaging Design 4', sublabel: 'Packaging Design', src: '/images/gallery/packaging/4.png', ...GPAL.light },
-  { id: 'pk5', category: 'Packaging', label: 'Packaging Design 5', sublabel: 'Packaging Design', src: '/images/gallery/packaging/5.png', ...GPAL.hover },
-  { id: 'pk6', category: 'Packaging', label: 'Packaging Design 6', sublabel: 'Packaging Design', src: '/images/gallery/packaging/6.png', ...GPAL.primary },
-  // Videos  →  public/images/gallery/videos/
-  { id: 'v1', category: 'Videos', label: 'Video 1', sublabel: 'Reel / Promo', src: '/images/gallery/videos/1.mp4', ...GPAL.secondary },
-  { id: 'v2', category: 'Videos', label: 'Video 2', sublabel: 'Reel / Promo', src: '/images/gallery/videos/2.mp4', ...GPAL.primary },
-  { id: 'v3', category: 'Videos', label: 'Video 3', sublabel: 'Reel / Promo', src: '/images/gallery/videos/3.mp4', ...GPAL.hover },
-  { id: 'v4', category: 'Videos', label: 'Video 4', sublabel: 'Reel / Promo', src: '/images/gallery/videos/4.mp4', ...GPAL.light },
+  // Photos
+  { id: 'p1', category: 'Photos', label: 'Landscape Study', sublabel: 'Photography', src: '/images/gallery/photos/1.png' },
+  { id: 'p2', category: 'Photos', label: 'Local Portraits', sublabel: 'Photography', src: '/images/gallery/photos/2.png' },
+  { id: 'p3', category: 'Photos', label: 'Studio Capture', sublabel: 'Photography', src: '/images/gallery/photos/3.png' },
+  { id: 'p4', category: 'Photos', label: 'Himalayan Light', sublabel: 'Photography', src: '/images/gallery/photos/4.png' },
+  { id: 'p5', category: 'Photos', label: 'Local Context', sublabel: 'Photography', src: '/images/gallery/photos/5.png' },
+  { id: 'p6', category: 'Photos', label: 'Shadow Play', sublabel: 'Photography', src: '/images/gallery/photos/6.png' },
+  { id: 'p7', category: 'Photos', label: 'Atmospheric Depth', sublabel: 'Photography', src: '/images/gallery/photos/7.png' },
+  { id: 'p8', category: 'Photos', label: 'Regional Narrative', sublabel: 'Photography', src: '/images/gallery/photos/8.png' },
+  // Branding
+  { id: 'b1', category: 'Branding', label: 'Studio Identity', sublabel: 'Brand System', src: '/images/gallery/branding/1.png' },
+  { id: 'b2', category: 'Branding', label: 'Visual Audit', sublabel: 'Strategy', src: '/images/gallery/branding/2.png' },
+  { id: 'b3', category: 'Branding', label: 'Brand Book', sublabel: 'Design', src: '/images/gallery/branding/3.png' },
+  { id: 'b4', category: 'Branding', label: 'Market Study', sublabel: 'Positioning', src: '/images/gallery/branding/4.png' },
+  { id: 'b5', category: 'Branding', label: 'Color Theory', sublabel: 'Identity', src: '/images/gallery/branding/5.png' },
+  { id: 'b6', category: 'Branding', label: 'Typography Stack', sublabel: 'System', src: '/images/gallery/branding/6.png' },
+  { id: 'b7', category: 'Branding', label: 'Digital Presence', sublabel: 'Social', src: '/images/gallery/branding/7.png' },
+  { id: 'b8', category: 'Branding', label: 'Brand Guidelines', sublabel: 'Manual', src: '/images/gallery/branding/8.png' },
+  { id: 'b9', category: 'Branding', label: 'Visual Language', sublabel: 'Aesthetic', src: '/images/gallery/branding/9.png' },
+  { id: 'b10', category: 'Branding', label: 'Studio Showcase', sublabel: 'Portfolio', src: '/images/gallery/branding/10.png' },
+  // Logo
+  { id: 'l1', category: 'Logo', label: 'Modern Script', sublabel: 'Identity', src: '/images/gallery/logo/1.png' },
+  { id: 'l2', category: 'Logo', label: 'Geometric Mark', sublabel: 'Symbol', src: '/images/gallery/logo/2.png' },
+  { id: 'l3', category: 'Logo', label: 'Technical Logomark', sublabel: 'Precision', src: '/images/gallery/logo/3.png' },
+  { id: 'l4', category: 'Logo', label: 'Minimalist Icon', sublabel: 'Branding', src: '/images/gallery/logo/4.png' },
+  { id: 'l5', category: 'Logo', label: 'Corporate Mark', sublabel: 'Identity', src: '/images/gallery/logo/5.png' },
+  { id: 'l6', category: 'Logo', label: 'Custom Letterform', sublabel: 'Typography', src: '/images/gallery/logo/6.png' },
+  // Packaging
+  { id: 'pk1', category: 'Packaging', label: 'SKU System', sublabel: 'Print Design', src: '/images/gallery/packaging/1.png' },
+  { id: 'pk2', category: 'Packaging', label: 'Craft Box', sublabel: 'Structure', src: '/images/gallery/packaging/2.png' },
+  { id: 'pk3', category: 'Packaging', label: 'Product Label', sublabel: 'Packaging', src: '/images/gallery/packaging/3.png' },
+  { id: 'pk4', category: 'Packaging', label: 'Custom Wrap', sublabel: 'Print', src: '/images/gallery/packaging/4.png' },
+  { id: 'pk5', category: 'Packaging', label: 'Retail System', sublabel: 'Commerce', src: '/images/gallery/packaging/5.png' },
+  { id: 'pk6', category: 'Packaging', label: 'Branded Parcel', sublabel: 'Logistics', src: '/images/gallery/packaging/6.png' },
+  // Videos
+  { id: 'v1', category: 'Videos', label: 'Studio Reel', sublabel: 'Motion', src: '/images/gallery/videos/1.mp4' },
+  { id: 'v2', category: 'Videos', label: 'Local Story', sublabel: 'Film', src: '/images/gallery/videos/2.mp4' },
+  { id: 'v3', category: 'Videos', label: 'Promo Capture', sublabel: 'Advertising', src: '/images/gallery/videos/3.mp4' },
+  { id: 'v4', category: 'Videos', label: 'Technical Flow', sublabel: 'Animation', src: '/images/gallery/videos/4.mp4' },
 ];
 
-/* ─── Lightbox ─────────────────────────────────────────────────────────────── */
-function Lightbox({
-  item,
-  onClose,
-  onPrev,
-  onNext,
-  hasPrev,
-  hasNext,
-}: {
-  item: GalleryItem;
-  onClose: () => void;
-  onPrev: () => void;
-  onNext: () => void;
-  hasPrev: boolean;
-  hasNext: boolean;
-}) {
+function GalleryCard({ item, index, onClick }: { item: GalleryItem; index: number; onClick: () => void }) {
   const isVideo = item.src?.endsWith(".mp4");
+  const watermarkId = `${item.category.slice(0, 3).toUpperCase()}-${String(index + 1).padStart(2, "0")}`;
 
   return (
     <motion.div
-      key="lightbox-backdrop"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.25 }}
-      onClick={onClose}
-      style={{
-        position: "fixed",
-        inset: 0,
-        zIndex: 1000,
-        background: "rgba(5,5,5,0.92)",
-        backdropFilter: "blur(12px)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-      }}
-    >
-      {/* Modal content — stop propagation so clicks inside don't close */}
-      <motion.div
-        key={item.id}
-        initial={{ opacity: 0, scale: 0.92, y: 20 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.94, y: 10 }}
-        transition={{ type: "spring", stiffness: 300, damping: 28 }}
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          position: "relative",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "16px",
-          maxWidth: "90vw",
-          maxHeight: "90vh",
-        }}
-      >
-        {/* Asset */}
-        {isVideo ? (
-          <video
-            src={item.src}
-            autoPlay
-            controls
-            loop
-            playsInline
-            style={{
-              maxWidth: "85vw",
-              maxHeight: "75vh",
-              borderRadius: "16px",
-              border: `1px solid ${item.accent}33`,
-              background: item.bg,
-            }}
-          />
-        ) : item.src ? (
-          <div
-            style={{
-              position: "relative",
-              maxWidth: "85vw",
-              maxHeight: "75vh",
-            }}
-          >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={item.src}
-              alt={item.label}
-              style={{
-                maxWidth: "85vw",
-                maxHeight: "75vh",
-                objectFit: "contain",
-                borderRadius: "16px",
-                border: `1px solid ${item.accent}33`,
-                display: "block",
-              }}
-            />
-          </div>
-        ) : (
-          <div
-            style={{
-              width: "600px",
-              height: "400px",
-              borderRadius: "16px",
-              background: item.bg,
-              border: `1px solid ${item.accent}33`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <span
-              style={{ color: item.accent, opacity: 0.4, fontSize: "14px" }}
-            >
-              No preview
-            </span>
-          </div>
-        )}
-
-        {/* Label row */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "4px",
-          }}
-        >
-          <span
-            style={{
-              color: "var(--text-secondary)",
-              fontSize: "11px",
-              fontFamily: "Fragment Mono, monospace",
-              textTransform: "uppercase",
-              letterSpacing: "0.12em",
-            }}
-          >
-            {item.sublabel}
-          </span>
-          <span style={{ color: "var(--text-primary)", fontSize: "15px", fontWeight: 700 }}>
-            {item.label}
-          </span>
-        </div>
-      </motion.div>
-
-      {/* Close button */}
-      <button
-        onClick={onClose}
-        aria-label="Close lightbox"
-        style={{
-          position: "fixed",
-          top: "20px",
-          right: "20px",
-          width: "40px",
-          height: "40px",
-          borderRadius: "50%",
-          background: "rgba(30,30,30,0.9)",
-          border: "1px solid var(--border)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          cursor: "pointer",
-          zIndex: 1001,
-        }}
-      >
-        <X size={18} color="var(--text-primary)" />
-      </button>
-
-      {/* Prev arrow */}
-      {hasPrev && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onPrev();
-          }}
-          aria-label="Previous image"
-          style={{
-            position: "fixed",
-            left: "20px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: "44px",
-            height: "44px",
-            borderRadius: "50%",
-            background: "rgba(30,30,30,0.9)",
-            border: "1px solid var(--border)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            zIndex: 1001,
-          }}
-        >
-          <ChevronLeft size={22} color="var(--text-primary)" />
-        </button>
-      )}
-
-      {/* Next arrow */}
-      {hasNext && (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            onNext();
-          }}
-          aria-label="Next image"
-          style={{
-            position: "fixed",
-            right: "20px",
-            top: "50%",
-            transform: "translateY(-50%)",
-            width: "44px",
-            height: "44px",
-            borderRadius: "50%",
-            background: "rgba(30,30,30,0.9)",
-            border: "1px solid var(--border)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            zIndex: 1001,
-          }}
-        >
-          <ChevronRight size={22} color="var(--text-primary)" />
-        </button>
-      )}
-    </motion.div>
-  );
-}
-
-/* ─── Card ──────────────────────────────────────────────────────────────────── */
-function GalleryCard({
-  item,
-  index,
-  onClick,
-}: {
-  item: GalleryItem;
-  index: number;
-  onClick: () => void;
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const isVideo = item.src?.endsWith(".mp4");
-
-  const handleMouseEnter = () => {
-    if (isVideo && videoRef.current) videoRef.current.play();
-  };
-  const handleMouseLeave = () => {
-    if (isVideo && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  };
-
-  return (
-    // Fix #9: removed conflicting inline `transform` style and plain CSS
-    // `transition: transform`. Use Framer Motion's whileHover instead so it
-    // doesn't fight the `layout` prop's internal transform.
-    <motion.div
-      layout
-      key={item.id}
-      initial={{ opacity: 0, scale: 0.92 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.88 }}
-      // Fix #3: index is now the real map index so stagger delay works
-      transition={{ duration: 0.35, delay: index * 0.05 }}
-      whileHover={{ scale: 1.02 }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      initial={{ opacity: 0, scale: 0.95 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
       onClick={onClick}
-      style={{
-        position: "relative",
-        borderRadius: "16px",
-        overflow: "hidden",
-        aspectRatio: "4/3",
-        background: item.bg,
-        cursor: "zoom-in",
-      }}
+      className="group relative aspect-[4/3] rounded-3xl overflow-hidden border border-white/5 bg-white/[0.01] backdrop-blur-xl cursor-zoom-in transition-all duration-500 hover:border-white/10 h-full"
     >
-      {/* Animated border via pseudo-like child so it doesn't interfere with layout */}
-      <motion.div
-        style={{
-          position: "absolute",
-          inset: 0,
-          borderRadius: "16px",
-          pointerEvents: "none",
-          zIndex: 4,
-        }}
-        animate={{ boxShadow: `inset 0 0 0 1px ${item.accent}55` }}
-        initial={{ boxShadow: "inset 0 0 0 1px var(--border)" }}
-        transition={{ duration: 0.3 }}
-        whileHover={{ boxShadow: `inset 0 0 0 1px ${item.accent}88` }}
-      />
-
-      {/* Media */}
-      {isVideo ? (
-        <>
-          <video
-            ref={videoRef}
-            src={item.src}
-            muted
-            loop
-            playsInline
-            style={{
-              position: "absolute",
-              inset: 0,
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-              opacity: 0.85,
-            }}
-          />
-          <motion.div
-            initial={{ opacity: 1 }}
-            whileHover={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: 1,
-            }}
-          >
-            <div
-              style={{
-                width: "52px",
-                height: "52px",
-                borderRadius: "50%",
-                background: "rgba(31,30,31,0.6)",
-                backdropFilter: "blur(8px)",
-                border: `1px solid ${item.accent}55`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              <Play size={20} color={item.accent} fill={item.accent} />
-            </div>
-          </motion.div>
-        </>
-      ) : item.src ? (
-        <Image
-          src={item.src}
-          alt={item.label}
-          fill
-          style={{ objectFit: "cover", opacity: 0.85 }}
-        />
-      ) : (
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            opacity: 0.12,
-          }}
-        >
-          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-            <rect
-              x="8"
-              y="8"
-              width="48"
-              height="48"
-              rx="8"
-              stroke={item.accent}
-              strokeWidth="2"
-            />
-            <circle
-              cx="24"
-              cy="24"
-              r="6"
-              stroke={item.accent}
-              strokeWidth="2"
-            />
-            <path
-              d="M8 44L22 30L30 38L42 26L56 40"
-              stroke={item.accent}
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </div>
-      )}
-
-      {/* Category pill */}
-      <div
-        style={{
-          position: "absolute",
-          top: "12px",
-          left: "12px",
-          zIndex: 3,
-          padding: "4px 10px",
-          borderRadius: "999px",
-          background: "rgba(31,30,31,0.75)",
-          backdropFilter: "blur(8px)",
-          border: `1px solid ${item.accent}33`,
-        }}
-      >
-        <span
-          style={{
-            color: item.accent,
-            fontSize: "11px",
-            fontWeight: 700,
-            letterSpacing: "0.08em",
-            fontFamily: "Fragment Mono, monospace",
-            textTransform: "uppercase",
-          }}
-        >
-          {item.category}
-        </span>
+      <div className="absolute inset-0 flex items-center justify-center font-mono-display text-[80px] font-black text-white/[0.01] select-none leading-none pointer-events-none group-hover:text-white/[0.03] group-hover:scale-110 transition-all duration-700">
+        {watermarkId}
       </div>
 
-      {/* Hover overlay */}
-      <motion.div
-        initial={false}
-        style={{
-          position: "absolute",
-          inset: 0,
-          zIndex: 2,
-          background:
-            "linear-gradient(to top, rgba(31,30,31,0.92) 0%, rgba(31,30,31,0.4) 55%, transparent 100%)",
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "flex-end",
-          padding: "18px",
-        }}
-        animate={{ opacity: 0, y: 10 }}
-        whileHover={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.25 }}
-      >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            gap: "8px",
-          }}
-        >
-          <div>
-            <p
-              style={{
-                color: "var(--text-secondary)",
-                fontSize: "11px",
-                marginBottom: "4px",
-                fontFamily: "Fragment Mono, monospace",
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-              }}
-            >
-              {item.sublabel}
-            </p>
-            <p
-              style={{
-                color: "var(--text-primary)",
-                fontSize: "14px",
-                fontWeight: 700,
-                lineHeight: 1.3,
-              }}
-            >
-              {item.label}
-            </p>
+      <div className="absolute inset-0 z-10 overflow-hidden">
+        {isVideo ? (
+          <div className="w-full h-full relative">
+             <video src={item.src} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-700" muted loop playsInline />
+             <div className="absolute inset-0 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-all">
+                   <Play size={20} fill="currentColor" />
+                </div>
+             </div>
           </div>
-          <div
-            style={{
-              width: "32px",
-              height: "32px",
-              borderRadius: "50%",
-              flexShrink: 0,
-              background: item.accent,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <ArrowUpRight size={16} color="var(--text-primary)" strokeWidth={2.5} />
-          </div>
-        </div>
-      </motion.div>
+        ) : (
+          <Image src={item.src!} alt={item.label} fill className="object-cover opacity-80 group-hover:opacity-100 transition-all duration-1000 group-hover:scale-110" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-transparent to-transparent opacity-60" />
+      </div>
+
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none z-30">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+      </div>
     </motion.div>
   );
 }
 
-/* ─── Carousel ──────────────────────────────────────────────────────────────── */
-function GalleryCarousel({
-  items: carouselItems,
-  onOpen,
-  inView,
-  // Fix #8: accept an optional controlled index so Gallery can sync the
-  // carousel position when the lightbox navigates past off-screen items.
-  syncToIndex,
-}: {
-  items: GalleryItem[];
-  onOpen: (id: string) => void;
-  inView: boolean;
-  syncToIndex?: number | null;
-}) {
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [cardsPerView, setCardsPerView] = useState(3);
-  const GAP = 16;
-
-  // Ref to the in-flight Framer animation so we can cancel it if the user
-  // clicks again before the previous scroll finishes.
-  const activeAnim = useRef<ReturnType<typeof animate> | null>(null);
-
-  // Fix #4: memoize maxIndex so callbacks always capture the freshest value
-  // without depending on a variable that re-derives on every render.
-  const maxIndex = useMemo(
-    () => Math.max(0, carouselItems.length - cardsPerView),
-    [carouselItems.length, cardsPerView],
-  );
-
-  // Fix #5: total pages based on reachable stops, not raw item count.
-  // Math.floor(maxIndex / cardsPerView) + 1 gives only pages whose first stop
-  // is actually reachable via prev/next buttons.
-  const totalPages = useMemo(
-    () => Math.floor(maxIndex / cardsPerView) + 1,
-    [maxIndex, cardsPerView],
-  );
-
-  // Guard flag — true while animate() is driving scrollLeft so the native
-  // onScroll listener doesn't race the animation and cause counter flicker.
-  const isProgrammaticScroll = useRef(false);
-
-  // Fix #6: the redundant useEffect that reset on carouselItems change has
-  // been removed. The parent uses key={active} on the AnimatePresence wrapper
-  // which fully remounts this component on every tab switch, giving us a
-  // clean slate automatically. No manual reset needed.
-
-  // Fix #11: use ResizeObserver on the track element instead of window resize
-  // so card widths stay accurate even if the container resizes independently
-  // (e.g. a cart drawer opening/closing).
-  useEffect(() => {
-    const getCardsPerView = (width: number) => {
-      if (width < 640) return 1;
-      if (width < 1024) return 2;
-      return 3;
-    };
-
-    // Seed from window on mount
-    setCardsPerView(getCardsPerView(window.innerWidth));
-
-    if (!trackRef.current) return;
-    const ro = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        setCardsPerView(getCardsPerView(entry.contentRect.width));
-      }
-    });
-    ro.observe(trackRef.current);
-    return () => ro.disconnect();
-  }, []);
-
-  const scrollTo = useCallback(
-    (index: number) => {
-      const clamped = Math.max(0, Math.min(index, maxIndex));
-      setCurrentIndex(clamped);
-      if (!trackRef.current) return;
-
-      const cardWidth =
-        (trackRef.current.offsetWidth - GAP * (cardsPerView - 1)) /
-        cardsPerView;
-      const offset = clamped * (cardWidth + GAP);
-
-      // Cancel any in-flight animation immediately so rapid clicks don't stack.
-      if (activeAnim.current) {
-        activeAnim.current.stop();
-        activeAnim.current = null;
-      }
-
-      // Raise the guard so onScroll ignores events fired during the animation.
-      isProgrammaticScroll.current = true;
-
-      // Capture current scrollLeft as the animation start point so the tween
-      // always begins exactly where the track currently is.
-      const from = trackRef.current.scrollLeft;
-
-      // Disable scroll-snap for the duration of the spring animation.
-      // scroll-snap intercepts programmatic scrollLeft writes and immediately
-      // snaps to the nearest snap point, killing the animation mid-flight.
-      // We restore it in onComplete so drag/swipe still snaps after.
-      trackRef.current.style.scrollSnapType = "none";
-
-      // animate() from Framer tweens a plain number and calls onUpdate every
-      // RAF tick. Using type:"spring" gives physics-based easing with a natural
-      // deceleration — no easing curve needed.
-      activeAnim.current = animate(from, offset, {
-        type: "spring",
-        stiffness: 280,
-        damping: 30,
-        mass: 0.8,
-        restDelta: 0.5,
-        onUpdate(latest) {
-          if (trackRef.current) {
-            trackRef.current.scrollLeft = latest;
-          }
-        },
-        onComplete() {
-          if (trackRef.current) {
-            trackRef.current.style.scrollSnapType = "x mandatory";
-          }
-          isProgrammaticScroll.current = false;
-          activeAnim.current = null;
-        },
-      });
-    },
-    [maxIndex, cardsPerView],
-  );
-
-  // Only update currentIndex from native scroll events (drag / touch) when
-  // animate() is NOT driving the scroll.
-  const onScroll = useCallback(() => {
-    if (isProgrammaticScroll.current) return;
-    if (!trackRef.current) return;
-    const cardWidth =
-      (trackRef.current.offsetWidth - GAP * (cardsPerView - 1)) / cardsPerView;
-    const idx = Math.round(trackRef.current.scrollLeft / (cardWidth + GAP));
-    setCurrentIndex(Math.max(0, Math.min(idx, maxIndex)));
-  }, [cardsPerView, maxIndex]);
-
-  // Fix #8: when the parent signals a specific item index (lightbox nav),
-  // scroll the carousel so that item is visible.
-  useEffect(() => {
-    if (syncToIndex == null) return;
-    const targetStop = Math.min(syncToIndex, maxIndex);
-    if (targetStop !== currentIndex) scrollTo(targetStop);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [syncToIndex]);
-
+function Lightbox({ item, onClose }: { item: GalleryItem; onClose: () => void }) {
+  const isVideo = item.src?.endsWith(".mp4");
   return (
-    <div>
-      {/* Carousel controls row */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.4 }}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "flex-end",
-          gap: "8px",
-          marginBottom: "16px",
-        }}
-      >
-        <button
-          onClick={() => scrollTo(currentIndex - 1)}
-          disabled={currentIndex === 0}
-          aria-label="Previous"
-          className="w-9 h-9 rounded-full border border-border text-text-secondary flex items-center justify-center bg-transparent cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 enabled:hover:border-accent transition-colors"
-        >
-          <ArrowLeft size={15} strokeWidth={2} />
-        </button>
-
-        <button
-          onClick={() => scrollTo(currentIndex + 1)}
-          disabled={currentIndex >= maxIndex}
-          aria-label="Next"
-          className="w-9 h-9 rounded-full border border-border text-text-secondary flex items-center justify-center bg-transparent cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 enabled:hover:border-accent transition-colors"
-        >
-          <ArrowRight size={15} strokeWidth={2} />
-        </button>
-      </motion.div>
-
-      {/* Track */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
-        transition={{ delay: 0.35, duration: 0.5 }}
-      >
-        {/* Fix #7: scroll-snap on the track + snap-align on each card so
-            free drag/swipe always lands cleanly on a card boundary. */}
-        <div
-          ref={trackRef}
-          onScroll={onScroll}
-          style={{
-            display: "flex",
-            gap: GAP,
-            overflowX: "auto",
-            scrollbarWidth: "none",
-            msOverflowStyle: "none",
-            cursor: "grab",
-            // scroll-snap for native drag alignment
-            scrollSnapType: "x mandatory",
-            WebkitOverflowScrolling: "touch",
-          }}
-        >
-          {carouselItems.map((item, i) => (
-            <div
-              key={item.id}
-              style={{
-                flex: `0 0 calc((100% - ${GAP * (cardsPerView - 1)}px) / ${cardsPerView})`,
-                minWidth: 0,
-                // Fix #7: each card snaps to the start of the scroll container
-                scrollSnapAlign: "start",
-              }}
-            >
-              {/* Fix #3: pass the real map index so stagger delay works */}
-              <GalleryCard
-                item={item}
-                index={i}
-                onClick={() => onOpen(item.id)}
-              />
-            </div>
-          ))}
-        </div>
-      </motion.div>
-
-      {/* Dot indicators */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={inView ? { opacity: 1 } : {}}
-        transition={{ delay: 0.5 }}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "8px",
-          marginTop: "24px",
-        }}
-      >
-        {/* Fix #5: iterate over totalPages (reachable pages only) rather than
-            Math.ceil(items / cardsPerView) which could produce an unreachable
-            last dot when items don't divide evenly. */}
-        {Array.from({ length: totalPages }).map((_, i) => {
-          const pageStart = i * cardsPerView;
-          const isActive =
-            currentIndex >= pageStart &&
-            currentIndex < pageStart + cardsPerView;
-          return (
-            <button
-              key={i}
-              onClick={() => scrollTo(pageStart)}
-              aria-label={`Go to page ${i + 1}`}
-              style={{
-                width: isActive ? "24px" : "8px",
-                height: "8px",
-                borderRadius: "999px",
-                background: isActive ? "var(--accent)" : "var(--border)",
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-                transition: "width 0.3s, background 0.3s",
-              }}
-            />
-          );
-        })}
-      </motion.div>
-    </div>
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose} className="fixed inset-0 z-[100] bg-bg-primary/95 backdrop-blur-2xl flex items-center justify-center p-6 md:p-12">
+       <button className="absolute top-8 right-8 w-12 h-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:bg-accent transition-colors z-10"><X size={24} /></button>
+       <motion.div initial={{ scale: 0.95, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.95, opacity: 0 }} onClick={e => e.stopPropagation()} className="relative max-w-6xl w-full aspect-video rounded-3xl overflow-hidden border border-white/5 shadow-2xl">
+          {isVideo ? (
+            <video src={item.src} controls autoPlay className="w-full h-full object-contain" />
+          ) : (
+            <Image src={item.src!} alt={item.label} fill className="object-contain" />
+          )}
+       </motion.div>
+    </motion.div>
   );
 }
 
-/* ─── Gallery (page section) ────────────────────────────────────────────────── */
 export default function Gallery() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [active, setActive] = useState<Category>("Photos");
-  const [lightboxId, setLightboxId] = useState<string | null>(null);
+  const containerRef = useRef(null);
+  const inView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [activeTab, setActiveTab] = useState<Category>("Photos");
+  const [lightboxItem, setLightboxItem] = useState<GalleryItem | null>(null);
 
-  const filtered = useMemo(
-    () => items.filter((i) => i.category === active),
-    [active],
-  );
+  const filteredItems = useMemo(() => items.filter(i => i.category === activeTab), [activeTab]);
+  const GAP = 24;
 
-  const lightboxIndex = filtered.findIndex((i) => i.id === lightboxId);
-  const lightboxItem = lightboxIndex >= 0 ? filtered[lightboxIndex] : null;
-
-  const closeLightbox = useCallback(() => setLightboxId(null), []);
-  const goPrev = useCallback(() => {
-    if (lightboxIndex > 0) setLightboxId(filtered[lightboxIndex - 1].id);
-  }, [lightboxIndex, filtered]);
-  const goNext = useCallback(() => {
-    if (lightboxIndex < filtered.length - 1)
-      setLightboxId(filtered[lightboxIndex + 1].id);
-  }, [lightboxIndex, filtered]);
-
-  // ESC + arrow key navigation
-  useEffect(() => {
-    if (!lightboxId) return;
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeLightbox();
-      if (e.key === "ArrowLeft") goPrev();
-      if (e.key === "ArrowRight") goNext();
-    };
-    window.addEventListener("keydown", handler);
-    return () => window.removeEventListener("keydown", handler);
-  }, [lightboxId, closeLightbox, goPrev, goNext]);
-
-  // Lock scroll when lightbox is open
-  useEffect(() => {
-    document.body.style.overflow = lightboxId ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [lightboxId]);
+  const {
+    trackRef,
+    currentIndex,
+    maxIndex,
+    itemsPerView,
+    scrollTo,
+    prev,
+    next,
+    onScroll,
+  } = useCarousel({
+    itemCount: filteredItems.length,
+    gap: GAP,
+  });
 
   return (
-    <section
-      className="bg-bg-primary border-t border-border py-24"
-    >
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
-        {/* Header + controls row */}
-        <div
-          ref={ref}
-          style={{
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "space-between",
-            marginBottom: "40px",
-            gap: "16px",
-          }}
-        >
-          <div>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              className="section-tag"
-              style={{ display: "inline-block", marginBottom: "14px" }}
-            >
-              Gallery
-            </motion.span>
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2, duration: 0.7 }}
-              style={{
-                fontSize: "clamp(2rem, 4vw, 3rem)",
-                fontWeight: 900,
-                color: "var(--text-primary)",
-                lineHeight: 1.15,
-                letterSpacing: "-0.5px",
-              }}
-            >
-              A Glimpse of <span style={{ color: "var(--accent)" }}>Our Works</span>
+    <section id="gallery" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* Header row */}
+        <div ref={containerRef} className="flex flex-col md:flex-row items-end justify-between mb-12 gap-8">
+          <div className="max-w-2xl">
+            <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">Studio Portfolio</motion.span>
+            <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
+              Visual <span className="text-accent">Artifacts.</span>
             </motion.h2>
           </div>
 
-          {/* Filter Tabs */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.35 }}
-            style={{
-              display: "flex",
-              gap: "4px",
-              flexWrap: "wrap",
-              justifyContent: "flex-end",
-            }}
-          >
-            {TABS.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActive(tab)}
-                style={{
-                  position: "relative",
-                  padding: "8px 20px",
-                  borderRadius: "999px",
-                  border: "none",
-                  background: "transparent",
-                  color: active === tab ? "var(--accent)" : "var(--text-secondary)",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  transition: "color 0.2s",
-                  outline: "none",
-                }}
-              >
-                {active === tab && (
-                  <motion.span
-                    layoutId="tab-pill"
-                    style={{
-                      position: "absolute",
-                      inset: 0,
-                      borderRadius: "999px",
-                      border: "1px solid rgba(120,15,240,0.35)",
-                      background: "rgba(120,15,240,0.08)",
-                    }}
-                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                  />
-                )}
-                <span style={{ position: "relative", zIndex: 1 }}>{tab}</span>
-              </button>
-            ))}
-          </motion.div>
+          {/* Navigation Controls */}
+          <div className="flex items-center gap-3">
+            <button
+              onClick={prev}
+              disabled={currentIndex === 0}
+              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-white hover:border-accent hover:text-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              aria-label="Previous artifacts"
+            >
+              <ArrowLeft size={18} />
+            </button>
+            <button
+              onClick={next}
+              disabled={currentIndex >= maxIndex}
+              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-white hover:border-accent hover:text-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              aria-label="Next artifacts"
+            >
+              <ArrowRight size={18} />
+            </button>
+          </div>
         </div>
 
-        {/* Carousel — key={active} remounts on tab change for a clean reset */}
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={active}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.25 }}
-          >
-            {/* Fix #8: pass lightboxIndex as syncToIndex so the carousel
-                scrolls to keep the currently open lightbox item visible when
-                the user arrow-keys past the visible window. When the lightbox
-                is closed (-1) we pass null so no sync fires. */}
-            <GalleryCarousel
-              items={filtered}
-              onOpen={(id) => setLightboxId(id)}
-              inView={inView}
-              syncToIndex={lightboxIndex >= 0 ? lightboxIndex : null}
-            />
-          </motion.div>
-        </AnimatePresence>
-      </div>
+        {/* Technical Tabs (Static for easy selection) */}
+        <div className="flex flex-wrap gap-2 mb-16">
+           {TABS.map(tab => (
+             <button
+               key={tab}
+               onClick={() => {
+                 setActiveTab(tab);
+                 scrollTo(0); // Reset carousel on tab change
+               }}
+               className={`px-6 py-2.5 rounded-full text-xs font-bold font-mono-display uppercase tracking-widest transition-all duration-300 border shrink-0 ${
+                 activeTab === tab ? 'bg-accent border-accent text-white shadow-[0_0_20px_rgba(120,15,240,0.3)]' : 'bg-white/5 border-white/10 text-text-muted hover:border-white/20'
+               }`}
+             >
+               {tab}
+             </button>
+           ))}
+        </div>
 
-      {/* Lightbox */}
-      <AnimatePresence>
-        {lightboxItem && (
-          <Lightbox
-            item={lightboxItem}
-            onClose={closeLightbox}
-            onPrev={goPrev}
-            onNext={goNext}
-            hasPrev={lightboxIndex > 0}
-            hasNext={lightboxIndex < filtered.length - 1}
-          />
-        )}
-      </AnimatePresence>
+        {/* Portfolio Carousel */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={inView ? { opacity: 1, y: 0 } : {}}
+          className="relative group/carousel"
+        >
+           {/* Fade Masks */}
+           <div className="absolute inset-y-0 left-0 w-24 z-10 pointer-events-none bg-gradient-to-r from-bg-primary to-transparent opacity-0 group-hover/carousel:opacity-100 transition-opacity" />
+           <div className="absolute inset-y-0 right-0 w-24 z-10 pointer-events-none bg-gradient-to-l from-bg-primary to-transparent opacity-0 group-hover/carousel:opacity-100 transition-opacity" />
+
+           <div
+             ref={trackRef}
+             onScroll={onScroll}
+             className="flex overflow-x-auto no-scrollbar scroll-smooth-manual grab-cursor"
+             style={{
+               gap: GAP,
+               scrollSnapType: "x mandatory",
+             }}
+           >
+             {filteredItems.map((item, i) => (
+               <div 
+                 key={item.id} 
+                 className="shrink-0 scroll-snap-start"
+                 style={{
+                   flex: `0 0 calc((100% - ${GAP * (itemsPerView - 1)}px) / ${itemsPerView})`,
+                   minWidth: 0,
+                 }}
+               >
+                 <GalleryCard item={item} index={i} onClick={() => setLightboxItem(item)} />
+               </div>
+             ))}
+           </div>
+        </motion.div>
+
+        {/* Lightbox */}
+        <AnimatePresence>
+           {lightboxItem && <Lightbox item={lightboxItem} onClose={() => setLightboxItem(null)} />}
+        </AnimatePresence>
+
+      </div>
     </section>
   );
 }

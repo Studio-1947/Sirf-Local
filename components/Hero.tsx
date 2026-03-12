@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
-import { ArrowRight, Star } from "lucide-react";
+import { Star, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import TopographicBg from "./TopographicBg";
 
@@ -16,7 +16,6 @@ const clientLogos = [
   { file: "/images/clients/Bhagirath.svg", alt: "Bhagirath" },
 ];
 
-// Drop images into public/images/hero/ and list them here
 const heroPhotos = [
   { file: "/images/hero/1.webp", alt: "" },
   { file: "/images/hero/2.webp", alt: "" },
@@ -38,7 +37,6 @@ export default function Hero() {
       ref={ref}
       className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#1F1E1F]"
     >
-      {/* Topographic animated background */}
       <TopographicBg />
 
       <motion.div
@@ -46,9 +44,7 @@ export default function Hero() {
         className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20"
       >
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          {/* Left column */}
           <div>
-            {/* Eyebrow */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -58,7 +54,6 @@ export default function Hero() {
               Welcome to Sirf Local
             </motion.p>
 
-            {/* Main Headline */}
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
@@ -73,7 +68,6 @@ export default function Hero() {
               <span className="text-[#FFFFFF]">Local Business</span>
             </motion.h1>
 
-            {/* Subheading */}
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -84,7 +78,6 @@ export default function Hero() {
               deserve at a price that makes meaningful impact.
             </motion.p>
 
-            {/* CTAs */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -110,11 +103,8 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right column — photo marquee with pills */}
           <div className="relative hidden lg:block">
-            {/* Top pill: Trusted Clients */}
             <div className="absolute top-0 left-6 -translate-y-1/2 z-20 flex items-center gap-2 px-3 py-2 rounded-full bg-[#383838] border border-[#525252] text-sm font-semibold text-white shadow-lg whitespace-nowrap">
-              {/* Stacked avatars */}
               <div className="flex items-center">
                 {[1, 2, 3, 4].map((n, i) => (
                   <div
@@ -134,11 +124,8 @@ export default function Hero() {
               10+ Trusted Clients
             </div>
 
-            {/* Photo marquee container */}
             <div className="relative h-[520px] rounded-2xl overflow-hidden border border-[#525252]">
-              {/* Left fade */}
               <div className="absolute left-0 inset-y-0 w-16 bg-gradient-to-r from-[#1F1E1F] to-transparent z-10 pointer-events-none" />
-              {/* Right fade */}
               <div className="absolute right-0 inset-y-0 w-16 bg-gradient-to-l from-[#1F1E1F] to-transparent z-10 pointer-events-none" />
               <div className="flex flex-row h-full w-max gap-3 animate-marquee-horizontal">
                 {[...heroPhotos, ...heroPhotos].map((photo, i) => (
@@ -154,7 +141,6 @@ export default function Hero() {
               </div>
             </div>
 
-            {/* Bottom pill: Google Rating */}
             <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 flex items-center gap-2 px-4 py-2 rounded-full bg-[#383838] border border-[#525252] text-sm font-semibold text-white shadow-lg whitespace-nowrap">
               <Star size={16} className="text-yellow-400 fill-yellow-400" />
               5.0 on Google
@@ -163,7 +149,6 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      {/* Client Logo Marquee */}
       <div className="relative z-10 border-t border-[#525252] overflow-hidden py-5 bg-[#1F1E1F]/80 backdrop-blur-sm">
         <p className="text-center text-xs text-[#6B6B6B] font-mono-display tracking-widest uppercase mb-4">
           Trusted by local businesses across India

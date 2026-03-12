@@ -40,64 +40,59 @@ export default function PaymentIntegrationDemo() {
         setPaymentStatus('idle');
 
         try {
-            // Step 1: Create Order on Backend
-            const order = await paymentService.createOrder({
-                amount: 10000, // INR 500
-                currency: 'INR',
-                receipt: 'receipt_demo_' + Date.now(),
-            });
+            // 1. Create order on the backend
+            const orderResponse = await paymentService.createOrder(100); // Amount in INR
 
-            console.log('Order created:', order);
+            if (orderResponse.success && orderResponse.data) {
+                const { id: order_id, amount, currency } = orderResponse.data;
 
-            // Step 2: Configure Razorpay Checkout
-            const options: RazorpayOptions = {
-                key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || 'rzp_test_SPXwwqnMfW4j1u',
-                amount: order.amount,
-                currency: order.currency,
-                name: 'Sirf Local',
-                description: 'Test Transaction',
-                order_id: order.id,
-                handler: async (response: any) => {
-                    // Step 3: Verify Payment on Backend
-                    try {
-                        const verification = await paymentService.verifyPayment({
-                            razorpay_order_id: response.razorpay_order_id,
-                            razorpay_payment_id: response.razorpay_payment_id,
-                            razorpay_signature: response.razorpay_signature,
-                        });
-                        console.log('Payment verified:', verification);
-                        setPaymentStatus('success');
-                        alert('🎉 Payment successful and verified!');
-                    } catch (error) {
-                        console.error('Verification failed:', error);
-                        setPaymentStatus('error');
-                        alert('❌ Payment verification failed.');
-                    }
-                },
-                prefill: {
-                    name: 'Sirf User',
-                    email: 'user@sirflocal.in',
-                    contact: '9999999999',
-                },
-                notes: {
-                    address: 'Sirf Local Corporate Office',
-                },
-                theme: {
-                    color: 'var(--razorpay)',
-                },
-            };
+                // 2. Configure Razorpay options
+                const options: RazorpayOptions = {
+                    key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || '',
+                    amount: amount,
+                    currency: currency,
+                    name: 'Sirf Local',
+                    description: 'Payment Integration Test',
+                    order_id: order_id,
+                    handler: async function (response: any) {
+                        // 3. Verify payment on the backend
+                        try {
+                            const verifyResponse = await paymentService.verifyPayment({
+                                razorpay_order_id: response.razorpay_order_id,
+                                razorpay_payment_id: response.razorpay_payment_id,
+                                razorpay_signature: response.razorpay_signature,
+                            });
 
-            const rzp = new window.Razorpay(options);
-            rzp.on('payment.failed', function (response: any) {
-                alert(`Payment failed: ${response.error.description}`);
+                            if (verifyResponse.success) {
+                                setPaymentStatus('success');
+                            } else {
+                                setPaymentStatus('error');
+                            }
+                        } catch (error) {
+                            console.error('Payment verification failed:', error);
+                            setPaymentStatus('error');
+                        }
+                    },
+                    prefill: {
+                        name: 'Test User',
+                        email: 'test@example.com',
+                        contact: '9999999999',
+                    },
+                    notes: {
+                        address: 'Mirik, Darjeeling',
+                    },
+                    theme: {
+                        color: '#780FF0',
+                    },
+                };
+
+                const rzp = new window.Razorpay(options);
+                rzp.open();
+            } else {
                 setPaymentStatus('error');
-            });
-
-            // Step 4: Open Checkout Modal
-            rzp.open();
-
-        } catch (error: any) {
-            alert('Error initiating payment: ' + error.message);
+            }
+        } catch (error) {
+            console.error('Payment creation failed:', error);
             setPaymentStatus('error');
         } finally {
             setLoading(false);
@@ -105,29 +100,38 @@ export default function PaymentIntegrationDemo() {
     };
 
     return (
-        <div className="p-8 max-w-md mx-auto bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl shadow-xl">
-            <h2 className="text-2xl font-bold text-white mb-4">Razorpay Checkout Test</h2>
-            <p className="text-gray-400 mb-6">Experience the full end-to-end payment flow from order to verification.</p>
-
-            <button
-                onClick={handlePayment}
-                disabled={loading}
-                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-3 px-6 rounded-xl transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
-            >
-                {loading ? 'Opening Checkout...' : 'Pay ₹10,000 Now'}
-            </button>
+        <div className="p-8 border border-[#333] rounded-2xl bg-[#1A1A1A] max-w-md mx-auto my-10">
+            <h2 className="text-2xl font-bold text-white mb-4">Payment Integration</h2>
+            <p className="text-gray-400 mb-6 text-sm">
+                This is a demo of the Razorpay payment integration.
+            </p>
 
             {paymentStatus === 'success' && (
-                <div className="mt-8 p-4 bg-green-500/10 border border-green-500/20 rounded-lg">
-                    <p className="text-sm font-medium text-green-400">✅ Payment Completed Successfully!</p>
+                <div className="mb-6 p-4 bg-green-900/30 border border-green-500/50 rounded-xl text-green-400 text-sm">
+                    Payment Successful! Thank you for your order.
                 </div>
             )}
 
             {paymentStatus === 'error' && (
-                <div className="mt-8 p-4 bg-red-500/10 border border-red-500/20 rounded-lg">
-                    <p className="text-sm font-medium text-red-400">❌ Payment failed or cancelled.</p>
+                <div className="mb-6 p-4 bg-red-900/30 border border-red-500/50 rounded-xl text-red-400 text-sm">
+                    Payment Failed. Please try again.
                 </div>
             )}
+
+            <button
+                onClick={handlePayment}
+                disabled={loading}
+                className="w-full py-4 px-6 bg-[#780FF0] hover:bg-[#8E3AEE] disabled:bg-gray-700 text-white font-bold rounded-full transition-all flex items-center justify-center gap-2 shadow-lg"
+            >
+                {loading ? (
+                    <>
+                        <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                        Processing...
+                    </>
+                ) : (
+                    'Test Pay ₹100'
+                )}
+            </button>
         </div>
     );
 }

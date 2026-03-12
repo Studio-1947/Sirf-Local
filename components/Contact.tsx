@@ -2,67 +2,8 @@
 
 import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { Send, CheckCircle } from "lucide-react";
-
-// ── Brand SVG icons — fills are official brand colours, not design tokens ──────
-function GoogleMapsIcon({ size = 18 }: { size?: number }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 92.3 132.3"
-      width={size}
-      height={size}
-      style={{ display: "block" }}
-    >
-      <path fill="#1a73e8" d="M60.2 2.2C55.8.8 51 0 46.1 0 32 0 19.3 6.4 10.8 16.5l21.8 18.3L60.2 2.2z" />
-      <path fill="#ea4335" d="M10.8 16.5C4.1 24.5 0 34.9 0 46.1c0 8.7 1.7 15.7 4.6 22l28-33.3-21.8-18.3z" />
-      <path fill="#4285f4" d="M46.2 28.5c9.8 0 17.7 7.9 17.7 17.7 0 4.3-1.6 8.3-4.2 11.4 0 0 13.9-16.6 27.5-32.7-5.6-10.8-15.3-19-27-22.7L32.6 34.8c3.3-3.8 8.1-6.3 13.6-6.3" />
-      <path fill="#fbbc04" d="M46.2 63.8c-9.8 0-17.7-7.9-17.7-17.7 0-4.3 1.5-8.3 4.1-11.3l-28 33.3c4.8 10.6 12.8 19.2 21 29.9l34.1-40.5c-3.3 3.9-8.1 6.3-13.5 6.3" />
-      <path fill="#34a853" d="M59.1 109.2c15.4-24.1 33.3-35 33.3-63 0-7.7-1.9-14.9-5.2-21.3L25.6 98c2.6 3.4 5.3 7.3 7.9 11.3 9.4 14.5 6.8 23.1 12.8 23.1s3.4-8.7 12.8-23.2" />
-    </svg>
-  );
-}
-
-function WhatsAppIcon({ size = 18 }: { size?: number }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 360 362"
-      width={size}
-      height={size}
-      style={{ display: "block" }}
-    >
-      <path
-        fill="#25D366"
-        fillRule="evenodd"
-        d="M307.546 52.566C273.709 18.684 228.706.017 180.756 0 81.951 0 1.538 80.404 1.504 179.235c-.017 31.594 8.242 62.432 23.928 89.609L0 361.736l95.024-24.925c26.179 14.285 55.659 21.805 85.655 21.814h.077c98.788 0 179.21-80.413 179.244-179.244.017-47.898-18.608-92.926-52.454-126.807v-.008Zm-126.79 275.788h-.06c-26.73-.008-52.952-7.194-75.831-20.765l-5.44-3.231-56.391 14.791 15.05-54.981-3.542-5.638c-14.912-23.721-22.793-51.139-22.776-79.286.035-82.14 66.867-148.973 149.051-148.973 39.793.017 77.198 15.53 105.328 43.695 28.131 28.157 43.61 65.596 43.593 105.398-.035 82.149-66.867 148.982-148.982 148.982v.008Zm81.719-111.577c-4.478-2.243-26.497-13.073-30.606-14.568-4.108-1.496-7.09-2.243-10.073 2.243-2.982 4.487-11.568 14.577-14.181 17.559-2.613 2.991-5.226 3.361-9.704 1.117-4.477-2.243-18.908-6.97-36.02-22.226-13.313-11.878-22.304-26.54-24.916-31.027-2.613-4.486-.275-6.91 1.959-9.136 2.011-2.011 4.478-5.234 6.721-7.847 2.244-2.613 2.983-4.486 4.478-7.469 1.496-2.991.748-5.603-.369-7.847-1.118-2.243-10.073-24.289-13.812-33.253-3.636-8.732-7.331-7.546-10.073-7.692-2.613-.13-5.595-.155-8.586-.155-2.991 0-7.839 1.118-11.947 5.604-4.108 4.486-15.677 15.324-15.677 37.361s16.047 43.344 18.29 46.335c2.243 2.991 31.585 48.225 76.51 67.632 10.684 4.615 19.029 7.374 25.535 9.437 10.727 3.412 20.49 2.931 28.208 1.779 8.604-1.289 26.498-10.838 30.228-21.298 3.73-10.46 3.73-19.433 2.613-21.298-1.117-1.865-4.108-2.991-8.586-5.234l.008-.017Z"
-        clipRule="evenodd"
-      />
-    </svg>
-  );
-}
-
-function GmailIcon({ size = 18 }: { size?: number }) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 49.4 512 399.42"
-      width={size}
-      height={size}
-      style={{ display: "block" }}
-    >
-      <g fill="none" fillRule="evenodd">
-        <g fillRule="nonzero">
-          <path fill="#4285f4" d="M34.91 448.818h81.454V251L0 163.727V413.91c0 19.287 15.622 34.91 34.91 34.91z" />
-          <path fill="#34a853" d="M395.636 448.818h81.455c19.287 0 34.909-15.622 34.909-34.909V163.727L395.636 251z" />
-          <path fill="#fbbc04" d="M395.636 99.727V251L512 163.727v-46.545c0-43.142-49.25-67.782-83.782-41.891z" />
-        </g>
-        <path fill="#ea4335" d="M116.364 251V99.727L256 204.455 395.636 99.727V251L256 355.727z" />
-        <path fill="#c5221f" fillRule="nonzero" d="M0 117.182v46.545L116.364 251V99.727L83.782 75.291C49.25 49.4 0 74.04 0 117.18z" />
-      </g>
-    </svg>
-  );
-}
+import { CheckCircle, ArrowRight, Mail, MessageSquare, MapPin } from "lucide-react";
+import SVGLIcon from "./SVGLIcon";
 
 const SERVICES = [
   "Monthly Reels",
@@ -72,445 +13,211 @@ const SERVICES = [
   "Your One-Page Website",
   "Catchy Social Media Posts",
   "Your WhatsApp Shop",
-  "The Professional Look (Logo + Business Cards)",
+  "The Professional Look",
   "Get Found on Google Maps",
   "Not sure yet — need guidance",
 ];
 
-const contactInfo: {
-  icon: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }> | null;
+interface ContactCard {
+  id: string;
   label: string;
   value: string;
   href: string;
-}[] = [
-  { icon: null, label: "Email",     value: "hello@sirflocal.in",           href: "mailto:hello@sirflocal.in" },
-  { icon: null, label: "WhatsApp",  value: "+91 90932 77919",              href: "https://wa.me/919093277919" },
-  { icon: null, label: "Location",  value: "Mirik, Darjeeling, West Bengal", href: "https://maps.google.com/?q=Mirik,Darjeeling" },
+  brand: string;
+}
+
+const contactCards: ContactCard[] = [
+  { id: 'COMM-01', label: "Email", value: "team@1947.io", href: "mailto:team@1947.io", brand: "Gmail" },
+  { id: 'COMM-02', label: "WhatsApp", value: "+91 90932 77919", href: "https://wa.me/919093277919", brand: "WhatsApp" },
+  { id: 'COMM-03', label: "Location", value: "Mirik, Darjeeling", href: "https://maps.google.com/?q=Mirik,Darjeeling", brand: "Google Maps" },
 ];
 
-// ── Shared input style helpers using CSS variables ─────────────────────────────
-const labelStyle: React.CSSProperties = {
-  color: "var(--text-secondary)",
-  fontSize: "11px",
-  fontFamily: "Fragment Mono, monospace",
-  letterSpacing: "0.15em",
-  textTransform: "uppercase",
-};
-
-const inputBaseStyle = (focused: boolean): React.CSSProperties => ({
-  background: "var(--bg-primary)",
-  border: `1px solid ${focused ? "var(--accent)" : "var(--border)"}`,
-  borderRadius: "12px",
-  padding: "12px 16px",
-  color: "var(--text-primary)",
-  fontSize: "14px",
-  outline: "none",
-  transition: "border-color 0.2s",
-  width: "100%",
-  boxSizing: "border-box",
-});
-
-function InputField({
-  label,
-  type = "text",
-  value,
-  onChange,
-  placeholder,
-  required,
-}: {
-  label: string;
-  type?: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-  required?: boolean;
-}) {
-  const [focused, setFocused] = useState(false);
+function InfoCard({ card, index }: { card: ContactCard; index: number }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <label style={labelStyle}>
-        {label}
-        {required && (
-          <span style={{ color: "var(--accent)", marginLeft: "3px" }}>*</span>
-        )}
-      </label>
-      <input
-        type={type}
-        required={required}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        placeholder={placeholder}
-        style={inputBaseStyle(focused)}
-      />
-    </div>
+    <motion.a
+      href={card.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1 }}
+      className="group relative p-8 rounded-3xl border border-white/5 bg-white/[0.01] backdrop-blur-xl hover:bg-white/[0.02] transition-all duration-500 overflow-hidden flex flex-col justify-between min-h-[180px]"
+    >
+       <div className="relative z-10">
+          <span className="font-mono-display text-[10px] text-text-muted uppercase tracking-[0.2em] group-hover:text-accent transition-colors">COMM-{index + 1}</span>
+          <div className="mt-4 w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(120,15,240,0.3)]">
+             <SVGLIcon name={card.brand} size={20} />
+          </div>
+       </div>
+       <div>
+          <p className="text-[10px] font-mono-display text-text-muted uppercase tracking-[0.2em] mb-2">{card.label}</p>
+          <p className="text-white font-bold text-base tracking-tight">{card.value}</p>
+       </div>
+       <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+       <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    </motion.a>
   );
 }
 
-function SelectField({
-  label,
-  value,
-  onChange,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-}) {
-  const [focused, setFocused] = useState(false);
+function FormCell({ label, children, focused }: { label: string; children: React.ReactNode; focused: boolean; filled: boolean }) {
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <label style={labelStyle}>{label}</label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        style={{
-          ...inputBaseStyle(focused),
-          color: value ? "var(--text-primary)" : "var(--text-secondary)",
-          cursor: "pointer",
-          appearance: "none",
-        }}
-      >
-        <option value="" disabled>
-          Select a service…
-        </option>
-        {SERVICES.map((s) => (
-          <option
-            key={s}
-            value={s}
-            style={{ background: "var(--bg-secondary)", color: "var(--text-primary)" }}
-          >
-            {s}
-          </option>
-        ))}
-      </select>
-    </div>
-  );
-}
-
-function TextareaField({
-  label,
-  value,
-  onChange,
-  placeholder,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
-}) {
-  const [focused, setFocused] = useState(false);
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <label style={labelStyle}>{label}</label>
-      <textarea
-        rows={4}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={() => setFocused(true)}
-        onBlur={() => setFocused(false)}
-        placeholder={placeholder}
-        style={{
-          ...inputBaseStyle(focused),
-          resize: "none",
-          fontFamily: "var(--font-inter), Inter, sans-serif",
-        }}
-      />
+    <div className={`relative p-8 transition-all duration-500 ${focused ? 'bg-white/[0.02]' : 'bg-transparent'}`}>
+       <label className="text-[11px] font-bold uppercase tracking-[0.2em] text-text-primary">
+          {label}
+       </label>
+       <div className="mt-2">{children}</div>
+       {/* Focus Beam */}
+       <div className={`absolute left-0 top-0 bottom-0 w-px bg-accent transition-transform duration-500 origin-top ${focused ? 'scale-y-100' : 'scale-y-0'}`} />
     </div>
   );
 }
 
 export default function Contact() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
-  const [form, setForm] = useState({
-    name: "",
-    business: "",
-    email: "",
-    phone: "",
-    service: "",
-    message: "",
-  });
+  const containerRef = useRef(null);
+  const inView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [form, setForm] = useState({ name: "", email: "", service: "", message: "" });
   const [sent, setSent] = useState(false);
+  const [focusedField, setFocusedField] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setSent(true);
   };
 
+  const completion = [
+    form.name.length > 0,
+    form.email.length > 0,
+    form.service.length > 0,
+    form.message.length > 0
+  ];
+
   return (
-    <section
-      id="contact"
-      className="bg-bg-primary border-t border-border py-24"
-    >
-      <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
-        <div
-          ref={ref}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "1fr 1fr",
-            gap: "80px",
-            alignItems: "start",
-          }}
-        >
-          {/* LEFT — Text + Contact Info */}
-          <div>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              className="section-tag"
-              style={{ display: "inline-block", marginBottom: "16px" }}
-            >
-              Get In Touch
-            </motion.span>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2, duration: 0.7 }}
-              style={{
-                fontSize: "clamp(2rem, 4vw, 3rem)",
-                fontWeight: 900,
-                color: "var(--text-primary)",
-                lineHeight: 1.15,
-                letterSpacing: "-0.5px",
-                marginBottom: "20px",
-              }}
-            >
-              Let&apos;s Build Something{" "}
-              <span style={{ color: "var(--accent)" }}>Together</span>
+    <section id="contact" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        
+        {/* Header */}
+        <div ref={containerRef} className="mb-20">
+          <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">Communication Hub</motion.span>
+          <div className="flex flex-col md:flex-row items-end justify-between gap-8">
+            <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
+              Let&apos;s Build <br />
+              <span className="text-accent italic">Together.</span>
             </motion.h2>
+            <p className="text-text-secondary text-lg leading-relaxed max-w-[320px] border-l border-accent/40 pl-6 mb-2">
+              Based in Mirik, built for the world. Reach out to start your digital journey.
+            </p>
+          </div>
+        </div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.3 }}
-              style={{
-                color: "var(--text-secondary)",
-                fontSize: "16px",
-                lineHeight: 1.7,
-                marginBottom: "40px",
-                maxWidth: "460px",
-              }}
-            >
-              Whether you have a homestay in the hills or a shop in the market,
-              we&apos;re here to bring your story online. Reach out — let&apos;s
-              start.
-            </motion.p>
-
-            {/* Contact info cards */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
-              {contactInfo.map(({ icon: Icon, label, value, href }, i) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={inView ? { opacity: 1, x: 0 } : {}}
-                  transition={{ delay: 0.38 + i * 0.08 }}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "16px",
-                    padding: "16px 20px",
-                    background: "var(--bg-primary)",
-                    border: "1px solid var(--border)",
-                    borderRadius: "14px",
-                    textDecoration: "none",
-                    transition: "border-color 0.2s, background 0.2s",
-                  }}
-                  whileHover={{
-                    borderColor: "rgba(120,15,240,0.35)",
-                    backgroundColor: "var(--bg-secondary)",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "10px",
-                      background: "rgba(120,15,240,0.08)",
-                      border: "1px solid rgba(120,15,240,0.18)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexShrink: 0,
-                    }}
-                  >
-                    {label === "Email" ? (
-                      <GmailIcon size={20} />
-                    ) : label === "WhatsApp" ? (
-                      <WhatsAppIcon size={20} />
-                    ) : label === "Location" ? (
-                      <GoogleMapsIcon size={20} />
-                    ) : Icon ? (
-                      <Icon size={18} color="var(--accent)" strokeWidth={1.8} />
-                    ) : null}
-                  </div>
-                  <div>
-                    <p
-                      style={{
-                        color: "var(--text-secondary)",
-                        fontSize: "11px",
-                        fontFamily: "Fragment Mono, monospace",
-                        letterSpacing: "0.12em",
-                        textTransform: "uppercase",
-                        marginBottom: "2px",
-                      }}
-                    >
-                      {label}
-                    </p>
-                    <p style={{ color: "var(--text-primary)", fontSize: "14px", fontWeight: 600 }}>
-                      {value}
-                    </p>
-                  </div>
-                </motion.a>
-              ))}
-            </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          
+          {/* Info Modules */}
+          <div className="lg:col-span-1 grid grid-cols-1 gap-6">
+             {contactCards.map((card, i) => (
+               <InfoCard key={card.label} card={card} index={i} />
+             ))}
           </div>
 
-          {/* RIGHT — Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.4, duration: 0.7 }}
-            style={{
-              background: "var(--bg-primary)",
-              border: "1px solid var(--border)",
-              borderRadius: "24px",
-              padding: "36px",
-            }}
+          {/* Form Module */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }}
+            className="lg:col-span-2 relative rounded-[2.5rem] border border-white/5 bg-white/[0.01] backdrop-blur-3xl overflow-hidden shadow-2xl"
           >
-            <AnimatePresence mode="wait">
-              {sent ? (
-                <motion.div
-                  key="success"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0 }}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    minHeight: "360px",
-                    gap: "16px",
-                    textAlign: "center",
-                  }}
-                >
-                  <motion.div
-                    initial={{ scale: 0 }}
-                    animate={{ scale: 1 }}
-                    transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
-                  >
-                    <CheckCircle size={56} color="var(--accent-secondary)" strokeWidth={1.5} />
-                  </motion.div>
-                  <h3
-                    style={{
-                      color: "var(--text-primary)",
-                      fontSize: "22px",
-                      fontWeight: 900,
-                      marginTop: "8px",
-                    }}
-                  >
-                    Message Received!
-                  </h3>
-                  <p
-                    style={{
-                      color: "var(--text-secondary)",
-                      fontSize: "15px",
-                      lineHeight: 1.6,
-                      maxWidth: "280px",
-                    }}
-                  >
-                    We&apos;ll get back to you within 24 hours. Check your
-                    WhatsApp too!
-                  </p>
-                  <button
-                    onClick={() => {
-                      setSent(false);
-                      setForm({ name: "", business: "", email: "", phone: "", service: "", message: "" });
-                    }}
-                    style={{
-                      marginTop: "8px",
-                      color: "var(--accent)",
-                      fontSize: "13px",
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      textDecoration: "underline",
-                    }}
-                  >
-                    Send another message
-                  </button>
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  onSubmit={handleSubmit}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                  style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-                >
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                    <InputField
-                      label="Your Name"
-                      value={form.name}
-                      onChange={(v) => setForm({ ...form, name: v })}
-                      placeholder="Anjali Chettri"
-                      required
+            <div className="p-8 border-b border-white/5 bg-white/[0.01] flex items-center justify-between">
+               <div className="flex items-center gap-3">
+                  <span className="text-white font-bold text-sm">Start a Conversation</span>
+               </div>
+               <div className="flex gap-2.5">
+                  {completion.map((filled, i) => (
+                    <div 
+                      key={i} 
+                      className={`w-2 h-2 rounded-full transition-all duration-500 ${
+                        filled 
+                          ? 'bg-accent shadow-[0_0_10px_rgba(120,15,240,0.8)]' 
+                          : 'bg-white/10'
+                      }`} 
                     />
-                    <InputField
-                      label="Business Name"
-                      value={form.business}
-                      onChange={(v) => setForm({ ...form, business: v })}
-                      placeholder="Mirik Homestay"
-                    />
-                  </div>
-                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                    <InputField
-                      label="Email"
-                      type="email"
-                      value={form.email}
-                      onChange={(v) => setForm({ ...form, email: v })}
-                      placeholder="you@email.com"
-                      required
-                    />
-                    <InputField
-                      label="Phone / WhatsApp"
-                      type="tel"
-                      value={form.phone}
-                      onChange={(v) => setForm({ ...form, phone: v })}
-                      placeholder="+91 98765 43210"
-                    />
-                  </div>
-                  <SelectField
-                    label="Interested Service"
-                    value={form.service}
-                    onChange={(v) => setForm({ ...form, service: v })}
-                  />
-                  <TextareaField
-                    label="Tell Us About Your Business"
-                    value={form.message}
-                    onChange={(v) => setForm({ ...form, message: v })}
-                    placeholder="I run a homestay in Mirik and I want to..."
-                  />
+                  ))}
+               </div>
+            </div>
 
-                  <button
-                    type="submit"
-                    className="flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-accent text-white font-bold text-[15px] border-none cursor-pointer transition-all hover:bg-accent-hover hover:scale-[1.02]"
-                  >
-                    <Send size={16} strokeWidth={2.5} />
-                    Send Message
-                  </button>
-                </motion.form>
-              )}
-            </AnimatePresence>
+            <div className="relative z-10">
+               <AnimatePresence mode="wait">
+                 {sent ? (
+                   <motion.div key="success" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center py-32">
+                      <div className="w-20 h-20 rounded-full bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-8">
+                         <CheckCircle size={40} className="text-accent" />
+                      </div>
+                      <h3 className="text-4xl font-black text-white mb-4 tracking-tighter">Inquiry Received.</h3>
+                      <p className="text-text-secondary text-lg mb-12 max-w-sm mx-auto">Our studio will analyze your brief and contact you within 24 hours.</p>
+                      <button onClick={() => setSent(false)} className="text-accent font-mono-display text-[10px] uppercase tracking-[0.3em] font-bold border border-accent/20 px-8 py-3 rounded-full hover:bg-accent/10 transition-colors">Submit New Entry</button>
+                   </motion.div>
+                 ) : (
+                   <motion.form key="form" onSubmit={handleSubmit}>
+                      <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-white/5 border-b border-white/5">
+                         <FormCell label="Client Name" focused={focusedField === 'name'} filled={completion[0]}>
+                            <input 
+                              type="text" required placeholder="Anjali Chettri" 
+                              className="w-full bg-transparent py-2 text-white outline-none placeholder:text-white/20 placeholder:font-normal text-base font-bold"
+                              onFocus={() => setFocusedField('name')} onBlur={() => setFocusedField(null)}
+                              value={form.name} onChange={e => setForm({...form, name: e.target.value})}
+                            />
+                         </FormCell>
+                         <FormCell label="Email Address" focused={focusedField === 'email'} filled={completion[1]}>
+                            <input 
+                              type="email" required placeholder="you@studio.com" 
+                              className="w-full bg-transparent py-2 text-white outline-none placeholder:text-white/20 placeholder:font-normal text-base font-bold"
+                              onFocus={() => setFocusedField('email')} onBlur={() => setFocusedField(null)}
+                              value={form.email} onChange={e => setForm({...form, email: e.target.value})}
+                            />
+                         </FormCell>
+                      </div>
+
+                      <div className="border-b border-white/5">
+                         <FormCell label="Technical Module" focused={focusedField === 'service'} filled={completion[2]}>
+                            <div className="relative">
+                               <select 
+                                 className={`w-full bg-transparent py-2 outline-none appearance-none cursor-pointer text-base transition-colors duration-500 ${
+                                   form.service ? 'text-white font-bold' : 'text-white/20 font-normal'
+                                 }`}
+                                 onFocus={() => setFocusedField('service')} onBlur={() => setFocusedField(null)}
+                                 value={form.service} onChange={e => setForm({...form, service: e.target.value})}
+                               >
+                                  <option value="" disabled className="bg-bg-primary text-white/20 font-normal">Select a Service...</option>
+                                  {SERVICES.map(s => <option key={s} value={s} className="bg-bg-primary text-white font-bold">{s}</option>)}
+                               </select>
+                               <div className="absolute right-0 top-1/2 -translate-y-1/2 pointer-events-none text-text-muted">
+                                  <ArrowRight size={14} className="rotate-90" />
+                                </div>
+                            </div>
+                         </FormCell>
+                      </div>
+
+                      <div>
+                         <FormCell label="Project Brief" focused={focusedField === 'message'} filled={completion[3]}>
+                            <textarea 
+                              rows={4} placeholder="Describe your business vision..." 
+                              className="w-full bg-transparent py-2 text-white outline-none placeholder:text-white/20 placeholder:font-normal resize-none text-base font-bold leading-relaxed"
+                              onFocus={() => setFocusedField('message')} onBlur={() => setFocusedField(null)}
+                              value={form.message} onChange={e => setForm({...form, message: e.target.value})}
+                            />
+                         </FormCell>
+                      </div>
+                      
+                      <div className="p-8 md:p-10 flex justify-between items-center bg-white/[0.005]">
+                         <span className="font-mono-display text-[9px] text-text-muted uppercase tracking-[0.4em] hidden md:block">Ready for Transmission</span>
+                         <button type="submit" className="group flex items-center gap-4 px-10 py-4 bg-white text-bg-primary font-bold text-sm rounded-full transition-all duration-300 hover:bg-accent hover:text-white hover:scale-[1.02] shadow-2xl">
+                            Send Inquiry
+                            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+                         </button>
+                      </div>
+                   </motion.form>
+                 )}
+               </AnimatePresence>
+            </div>
           </motion.div>
+
         </div>
       </div>
     </section>
