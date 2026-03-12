@@ -4,6 +4,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, CheckCircle2, AlertCircle, Loader2, Phone, Mail, User, ArrowRight } from 'lucide-react';
 import { useState, useCallback } from 'react';
 import { useCart, formatPrice } from '@/context/CartContext';
+import Link from 'next/link';
+import axios from 'axios';
+import apiClient from '@/lib/api/api-client';
 
 // ─── Razorpay global type shim ────────────────────────────────────────────────
 declare global {
@@ -30,83 +33,142 @@ function loadRazorpayScript(): Promise<boolean> {
 interface CheckoutModalProps {
     open: boolean;
     onClose: () => void;
+    selectedPercent: number; // 25, 50, or 100
 }
 
 type ScreenState = 'form' | 'loading' | 'success' | 'failure';
 
 // ─── Component ────────────────────────────────────────────────────────────────
-export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
+export default function CheckoutModal({ open, onClose, selectedPercent }: CheckoutModalProps) {
     const { items, monthlyTotal, onetimeTotal, clearCart } = useCart();
 
     const grandTotal = monthlyTotal + onetimeTotal;
-    const tokenAmount = Math.round(grandTotal * 0.1);   // 10%
-    const remaining = grandTotal - tokenAmount;
 
-    const [name, setName] = useState('');
-    const [phone, setPhone] = useState('');
-    const [email, setEmail] = useState('');
-    const [errors, setErrors] = useState<{ name?: string; phone?: string }>({});
+    // Calculate token amount based on selection
+    const baseSelectedAmount = Math.round(grandTotal * (selectedPercent / 100));
+    const gstAmount = Math.round(baseSelectedAmount * 0.18);
+    const tokenAmount = baseSelectedAmount + gstAmount;
+
+    const remaining = grandTotal - baseSelectedAmount;
+
     const [screen, setScreen] = useState<ScreenState>('form');
-    const [paymentId, setPaymentId] = useState('');
-
-    const validate = () => {
-        const e: { name?: string; phone?: string } = {};
-        if (!name.trim()) e.name = 'Please enter your name';
-        if (!/^\d{10}$/.test(phone.trim())) e.phone = 'Enter a valid 10-digit mobile number';
-        setErrors(e);
-        return Object.keys(e).length === 0;
-    };
+    const [paymentId, setPaymentId] = useState<string | null>(null);
+    const [acceptedTerms, setAcceptedTerms] = useState(false);
+    const [successData, setSuccessData] = useState<{
+        paidAmount: number;
+        percent: number;
+        remaining: number;
+        items: typeof items;
+        grandTotal: number;
+    } | null>(null);
 
     const handlePay = useCallback(async () => {
-        if (!validate()) return;
-        setScreen('loading');
-
-        const loaded = await loadRazorpayScript();
-        if (!loaded) { setScreen('failure'); return; }
-
-        const key = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
-        if (!key || key.startsWith('rzp_test_XXXX')) {
-            // Dev-mode: simulate success without real key
-            setPaymentId('dev_simulated_payment');
-            setScreen('success');
-            clearCart();
+        if (!acceptedTerms) {
+            alert('Please accept the Terms & Conditions to proceed.');
             return;
         }
+        setScreen('loading');
 
-        const description = items.map(i => `${i.title} (×${i.qty})`).join(', ');
+        try {
+            const loaded = await loadRazorpayScript();
+            if (!loaded) { setScreen('failure'); return; }
 
-        const rzp = new window.Razorpay({
-            key,
-            amount: tokenAmount * 100,           // paise
-            currency: 'INR',
-            name: 'Sirf Local',
-            description: `10% booking token — ${description}`,
-            prefill: { name: name.trim(), contact: phone.trim(), email: email.trim() },
-            theme: { color: 'var(--color-accent)' },
-            modal: { ondismiss: () => setScreen('form') },
-            handler: (response: { razorpay_payment_id: string }) => {
-                setPaymentId(response.razorpay_payment_id);
-                setScreen('success');
-                clearCart();
-            },
-        });
-        rzp.on('payment.failed', () => setScreen('failure'));
-        rzp.open();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [name, phone, email, tokenAmount, items]);
+            let key = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+            // If key is missing in frontend env, try fetching from backend
+            if (!key) {
+                try {
+                    const keyRes = await apiClient.get('/payment/key-id');
+                    key = keyRes.data.keyId;
+                } catch (err) {
+                    console.error("Failed to fetch Razorpay Key ID from backend:", err);
+                }
+            }
+
+            if (!key) {
+                console.error("Razorpay Key ID missing");
+                setScreen('failure');
+                return;
+            }
+
+            // 1. Create order on the backend
+            const orderRes = await apiClient.post('/payment/orders', {
+                amount: tokenAmount,
+                currency: 'INR',
+                receipt: `receipt_${Date.now()}`
+            });
+
+            const orderData = orderRes.data;
+            const description = items.map(i => `${i.title} (×${i.qty})`).join(', ');
+
+            // 2. Open Razorpay Checkout
+            const rzp = new window.Razorpay({
+                key,
+                amount: orderData.amount,
+                currency: orderData.currency,
+                name: 'Sirf Local',
+                description: `${selectedPercent}% booking token + 18% GST — ${description}`,
+                order_id: orderData.id,
+                theme: { color: '#780FF0' },
+                modal: { ondismiss: () => setScreen('form') },
+                handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
+                    try {
+                        setScreen('loading');
+                        // 3. Verify payment on the backend
+                        const verifyRes = await apiClient.post('/payment/verify', {
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_signature: response.razorpay_signature
+                        });
+
+                        if (verifyRes.status === 200) {
+                            // Capture data for success screen before clearing cart
+                            setSuccessData({
+                                paidAmount: tokenAmount,
+                                percent: selectedPercent,
+                                remaining: remaining,
+                                items: [...items],
+                                grandTotal: grandTotal
+                            });
+                            setPaymentId(response.razorpay_payment_id);
+                            setScreen('success');
+                            clearCart();
+                        } else {
+                            setScreen('failure');
+                        }
+                    } catch (err) {
+                        console.error("Verification failed:", err);
+                        setScreen('failure');
+                    }
+                },
+            });
+
+            rzp.on('payment.failed', () => setScreen('failure'));
+            rzp.open();
+        } catch (error) {
+            console.error("Payment initialization failed:", error);
+            setScreen('failure');
+        }
+    }, [tokenAmount, items, selectedPercent, clearCart, remaining, acceptedTerms]);
 
     const handleClose = () => {
         setScreen('form');
-        setErrors({});
+        setAcceptedTerms(false);
+        setPaymentId(null); // Clear payment ID on close
+        setSuccessData(null); // Clear success data on close
         onClose();
     };
 
+    const displayItems = successData?.items ?? items;
+    const displayTotal = successData?.grandTotal ?? grandTotal;
+    const displayRemaining = successData?.remaining ?? remaining;
+
     const whatsappText = encodeURIComponent(
-        `Hi Sirf Local! I just paid ${formatPrice(tokenAmount)} as a token (ID: ${paymentId}). Here are my services:\n`
-        + items.map(i => `• ${i.title} (×${i.qty})`).join('\n')
-        + `\nTotal: ${formatPrice(grandTotal)}\nRemaining: ${formatPrice(remaining)}`
+        `Hi Sirf Local! I just paid ${formatPrice(successData?.paidAmount ?? tokenAmount)} as a token (ID: ${paymentId}). Here are my services:\n`
+        + displayItems.map(i => `• ${i.title} (×${i.qty})`).join('\n')
+        + `\nTotal: ${formatPrice(displayTotal)}\nRemaining: ${formatPrice(displayRemaining)}`
     );
-    const whatsappUrl = `https://wa.me/91XXXXXXXXXX?text=${whatsappText}`; // replace number
+    const whatsappUrl = `https://wa.me/919093277919?text=${whatsappText}`; // replace number
 
     return (
         <AnimatePresence>
@@ -190,9 +252,9 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
                                             <p className="text-text-cream font-extrabold text-lg" style={{ margin: '0 0 6px' }}>
                                                 Booking token paid!
                                             </p>
-                                            <p style={{ color: 'var(--text-earth)', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
-                                                We&apos;ve received your <span className="text-accent font-bold">{formatPrice(tokenAmount)}</span> token.
-                                                Our team will reach out within <strong className="text-text-warm">24 hours</strong> to kick things off.
+                                            <p style={{ color: '#8A8178', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
+                                                We've received your <span style={{ color: '#780FF0', fontWeight: 700 }}>{formatPrice(successData?.paidAmount ?? 0)}</span> payment ({successData?.percent ?? selectedPercent}% + GST).
+                                                Our team will reach out within <strong style={{ color: '#F0EBE0' }}>24 hours</strong> to kick things off.
                                             </p>
                                         </div>
 
@@ -211,9 +273,9 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
                                             background: 'rgba(212,168,83,0.07)', border: '1px solid rgba(212,168,83,0.2)',
                                             borderRadius: '12px', padding: '14px 18px', width: '100%', textAlign: 'left',
                                         }}>
-                                            <p className="text-accent font-bold text-[13px]" style={{ margin: '0 0 4px' }}>Remaining balance</p>
-                                            <div style={{ color: 'var(--text-earth)', fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
-                                                <span style={{ color: 'var(--text-warm)', fontWeight: 700 }}>{formatPrice(remaining)}</span> is due after we confirm the
+                                            <p style={{ color: '#780FF0', fontWeight: 700, fontSize: '13px', margin: '0 0 4px' }}>Remaining balance</p>
+                                            <p style={{ color: '#8A8178', fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
+                                                <span style={{ color: '#F0EBE0', fontWeight: 700 }}>{formatPrice(successData?.remaining ?? 0)}</span> is due after we confirm the
                                                 final scope with you — no surprises.
                                             </div>
                                         </div>
@@ -326,99 +388,65 @@ export default function CheckoutModal({ open, onClose }: CheckoutModalProps) {
                                             </div>
                                         </div>
 
-                                        {/* 10% token callout */}
+                                        {/* Dynamic token callout */}
                                         <div style={{
-                                            background: 'rgba(212,168,83,0.07)', border: '1px solid rgba(212,168,83,0.25)',
+                                            background: 'rgba(120,15,240,0.05)', border: '1px solid rgba(120,15,240,0.2)',
                                             borderRadius: '14px', padding: '16px 18px',
-                                            display: 'flex', flexDirection: 'column', gap: '6px',
+                                            display: 'flex', flexDirection: 'column', gap: '8px',
                                         }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
-                                                <span className="text-sand text-[13px]">Due today <span className="text-accent font-bold">(10% token)</span></span>
-                                                <span className="text-accent font-black text-xl tracking-tight">{formatPrice(tokenAmount)}</span>
+                                                <span style={{ color: '#A89F8C', fontSize: '13px' }}>Base ({selectedPercent}%)</span>
+                                                <span style={{ color: '#F5F0E8', fontWeight: 600, fontSize: '14px' }}>{formatPrice(baseSelectedAmount)}</span>
                                             </div>
-                                            <p style={{ color: 'var(--text-dark-muted)', fontSize: '12px', margin: 0, lineHeight: 1.55 }}>
-                                                You pay just 10% now to confirm your booking. Remaining <span style={{ color: 'var(--text-sand)', fontWeight: 600 }}>{formatPrice(remaining)}</span> is settled after we finalise the details with you.
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                                                <span style={{ color: '#A89F8C', fontSize: '13px' }}>GST (18%)</span>
+                                                <span style={{ color: '#F5F0E8', fontWeight: 600, fontSize: '14px' }}>{formatPrice(gstAmount)}</span>
+                                            </div>
+                                            <div style={{
+                                                display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
+                                                marginTop: '4px', paddingTop: '8px', borderTop: '1px solid rgba(120,15,240,0.1)'
+                                            }}>
+                                                <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '14px' }}>Due Today</span>
+                                                <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '20px', letterSpacing: '-0.5px' }}>{formatPrice(tokenAmount)}</span>
+                                            </div>
+                                            <p style={{ color: '#555', fontSize: '12px', margin: '4px 0 0', lineHeight: 1.55 }}>
+                                                You pay {selectedPercent}% now plus GST. Remaining <span style={{ color: '#A89F8C', fontWeight: 600 }}>{formatPrice(remaining)}</span> is settled after final confirmation.
                                             </p>
                                         </div>
 
-                                        {/* Contact fields */}
-                                        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                                            <p style={{ color: 'var(--text-dark-muted)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.8px', fontWeight: 700, margin: 0 }}>
-                                                Your details
-                                            </p>
-
-                                            {/* Name */}
-                                            <div>
-                                                <div style={{
-                                                    display: 'flex', alignItems: 'center', gap: '10px',
-                                                    background: 'var(--bg-card)', border: `1px solid ${errors.name ? 'var(--state-error)' : 'var(--border-card)'}`,
-                                                    borderRadius: '12px', padding: '10px 14px',
-                                                    transition: 'border-color 0.2s',
+                                        {/* Terms & Conditions */}
+                                        <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', padding: '4px 2px' }}>
+                                            <div
+                                                onClick={() => setAcceptedTerms(!acceptedTerms)}
+                                                style={{
+                                                    width: '18px', height: '18px', borderRadius: '4px', border: `1.5px solid ${acceptedTerms ? '#780FF0' : '#333'}`,
+                                                    background: acceptedTerms ? '#780FF0' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                    cursor: 'pointer', flexShrink: 0, marginTop: '2px', transition: 'all 0.2s'
                                                 }}
-                                                    onFocus={() => setErrors(p => ({ ...p, name: undefined }))}
-                                                >
-                                                    <User size={15} color="var(--text-dark-muted)" strokeWidth={2} />
-                                                    <input
-                                                        type="text"
-                                                        placeholder="Your name"
-                                                        value={name}
-                                                        onChange={e => setName(e.target.value)}
-                                                        style={{
-                                                            flex: 1, background: 'transparent', border: 'none', outline: 'none',
-                                                            color: 'var(--text-warm)', fontSize: '14px',
-                                                        }}
-                                                    />
-                                                </div>
-                                                {errors.name && <p style={{ color: 'var(--state-error)', fontSize: '11px', margin: '4px 4px 0' }}>{errors.name}</p>}
+                                            >
+                                                {acceptedTerms && <CheckCircle2 size={12} color="#000" strokeWidth={3} />}
                                             </div>
-
-                                            {/* Phone */}
-                                            <div>
-                                                <div style={{
-                                                    display: 'flex', alignItems: 'center', gap: '10px',
-                                                    background: 'var(--bg-card)', border: `1px solid ${errors.phone ? 'var(--state-error)' : 'var(--border-card)'}`,
-                                                    borderRadius: '12px', padding: '10px 14px',
-                                                    transition: 'border-color 0.2s',
-                                                }}>
-                                                    <Phone size={15} color="var(--text-dark-muted)" strokeWidth={2} />
-                                                    <input
-                                                        type="tel"
-                                                        placeholder="10-digit mobile number"
-                                                        value={phone}
-                                                        onChange={e => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                                                        style={{
-                                                            flex: 1, background: 'transparent', border: 'none', outline: 'none',
-                                                            color: 'var(--text-warm)', fontSize: '14px',
-                                                        }}
-                                                    />
-                                                </div>
-                                                {errors.phone && <p style={{ color: 'var(--state-error)', fontSize: '11px', margin: '4px 4px 0' }}>{errors.phone}</p>}
-                                            </div>
-
-                                            {/* Email — optional */}
-                                            <div style={{
-                                                display: 'flex', alignItems: 'center', gap: '10px',
-                                                background: 'var(--bg-card)', border: '1px solid var(--border-card)',
-                                                borderRadius: '12px', padding: '10px 14px',
-                                            }}>
-                                                <Mail size={15} color="var(--text-dark-muted)" strokeWidth={2} />
-                                                <input
-                                                    type="email"
-                                                    placeholder="Email (optional)"
-                                                    value={email}
-                                                    onChange={e => setEmail(e.target.value)}
-                                                    style={{
-                                                        flex: 1, background: 'transparent', border: 'none', outline: 'none',
-                                                        color: 'var(--text-warm)', fontSize: '14px',
-                                                    }}
-                                                />
-                                            </div>
+                                            <label style={{ color: '#8A8178', fontSize: '12px', lineHeight: 1.5, cursor: 'pointer', userSelect: 'none' }} onClick={() => setAcceptedTerms(!acceptedTerms)}>
+                                                I agree to the <Link href="/terms-and-conditions" target="_blank" onClick={(e) => e.stopPropagation()} style={{ color: '#780FF0', fontWeight: 600, textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'} onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}>Terms & Conditions</Link> and understand that this booking token is non-refundable.
+                                            </label>
                                         </div>
 
                                         {/* Pay button */}
                                         <button
                                             onClick={handlePay}
-                                            className="w-full py-3.5 rounded-full bg-accent text-[#0C0C0C] font-extrabold text-[15px] border-none cursor-pointer tracking-[0.3px] flex items-center justify-center gap-2 hover:bg-[#E5BA6A] transition-colors"
+                                            disabled={!acceptedTerms}
+                                            style={{
+                                                width: '100%', padding: '14px 0', borderRadius: '999px',
+                                                background: acceptedTerms ? '#780FF0' : '#1A1A1A',
+                                                color: acceptedTerms ? '#0C0C0C' : '#444',
+                                                fontWeight: 800, fontSize: '15px',
+                                                border: 'none', cursor: acceptedTerms ? 'pointer' : 'not-allowed', letterSpacing: '0.3px',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                                                transition: 'all 0.2s',
+                                                opacity: acceptedTerms ? 1 : 0.6
+                                            }}
+                                            onMouseEnter={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#E5BA6A'; }}
+                                            onMouseLeave={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#780FF0'; }}
                                         >
                                             Pay {formatPrice(tokenAmount)} now <ArrowRight size={16} />
                                         </button>
