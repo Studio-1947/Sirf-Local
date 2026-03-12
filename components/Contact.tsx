@@ -147,7 +147,7 @@ export default function Contact() {
         {/* Header */}
         <div ref={containerRef} className="mb-20">
           <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">Communication Hub</motion.span>
-          <div className="flex flex-col md:flex-row items-end justify-between gap-8">
+          <div className="flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
             <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2 }} className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
               Let&apos;s Build <br />
               <span className="text-accent italic">Together.</span>
