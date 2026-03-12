@@ -28,12 +28,7 @@ export default function CartDrawer() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
               onClick={closeDrawer}
-              style={{
-                position: 'fixed', inset: 0,
-                background: 'rgba(0,0,0,0.65)',
-                zIndex: 100,
-                backdropFilter: 'blur(2px)',
-              }}
+              className="fixed inset-0 bg-black/65 backdrop-blur-sm z-[100]"
             />
 
             {/* Drawer panel */}
@@ -43,62 +38,35 @@ export default function CartDrawer() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ type: 'spring', stiffness: 340, damping: 36 }}
-              style={{
-                position: 'fixed', top: 0, right: 0, bottom: 0,
-                width: '420px', maxWidth: '100vw',
-                background: '#0E0E0E',
-                borderLeft: '1px solid #1E1E1E',
-                zIndex: 101,
-                display: 'flex', flexDirection: 'column',
-              }}
+              className="fixed top-0 right-0 bottom-0 w-[420px] max-w-full bg-bg-deep border-l border-[#1E1E1E] z-[101] flex flex-col"
             >
               {/* Header */}
-              <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '20px 24px', borderBottom: '1px solid #1C1C1C',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <ShoppingBag size={20} color="#780FF0" strokeWidth={1.8} />
-                  <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '16px' }}>Your Cart</span>
+              <div className="flex items-center justify-between px-6 py-5 border-b border-[#1C1C1C]">
+                <div className="flex items-center gap-2.5">
+                  <ShoppingBag size={20} className="text-accent" strokeWidth={1.8} />
+                  <span className="text-text-cream font-extrabold text-base">Your Cart</span>
                   {totalCount > 0 && (
-                    <span style={{
-                      background: '#780FF0', color: '#FFFFFF',
-                      fontWeight: 800, fontSize: '11px', borderRadius: '999px', padding: '2px 8px',
-                    }}>
+                    <span className="bg-accent text-white font-black text-[11px] rounded-full px-2 py-0.5">
                       {totalCount} {totalCount === 1 ? 'item' : 'items'}
                     </span>
                   )}
                 </div>
                 <button
                   onClick={closeDrawer}
-                  style={{
-                    background: '#1A1A1A', border: '1px solid #252525', borderRadius: '8px',
-                    color: '#888', cursor: 'pointer', padding: '6px',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#252525'; (e.currentTarget as HTMLElement).style.color = '#888'; }}
+                  className="p-1.5 bg-[#1A1A1A] border border-[#252525] rounded-lg text-[#888] flex items-center justify-center cursor-pointer hover:border-accent hover:text-accent transition-colors"
                 >
                   <X size={16} />
                 </button>
               </div>
 
               {/* Items list */}
-              <div style={{ flex: 1, overflowY: 'auto', padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div className="flex-1 overflow-y-auto px-6 py-4 flex flex-col gap-3">
                 {items.length === 0 ? (
-                  <div style={{
-                    flex: 1, display: 'flex', flexDirection: 'column',
-                    alignItems: 'center', justifyContent: 'center',
-                    gap: '14px', padding: '60px 0', textAlign: 'center',
-                  }}>
-                    <div style={{
-                      width: '72px', height: '72px', borderRadius: '20px',
-                      background: '#161616', border: '1px solid #222',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
-                      <ShoppingBag size={30} color="#333" strokeWidth={1.5} />
+                  <div className="flex-1 flex flex-col items-center justify-center gap-3.5 py-16 text-center">
+                    <div className="w-[72px] h-[72px] rounded-[20px] bg-[#161616] border border-[#222] flex items-center justify-center">
+                      <ShoppingBag size={30} color="var(--text-dark-muted)" strokeWidth={1.5} />
                     </div>
-                    <p style={{ color: '#555', fontSize: '14px', maxWidth: '200px', lineHeight: 1.5 }}>
+                    <p className="text-[#555] text-sm max-w-[200px] leading-relaxed">
                       Your cart is empty. Pick services that fit your business.
                     </p>
                   </div>
@@ -112,26 +80,24 @@ export default function CartDrawer() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0, x: 20 }}
                         layout
-                        style={{
-                          background: '#131313', border: '1px solid #383838',
-                          borderRadius: '14px', padding: '14px 16px',
-                        }}
+                        className="bg-bg-card border border-[#383838] rounded-[14px] p-4"
                       >
                         {/* Item top row */}
-                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
-                          <div style={{ flex: 1 }}>
-                            <p style={{ color: '#F0EBE0', fontWeight: 700, fontSize: '14px', margin: '0 0 4px' }}>
-                              {item.title}
-                            </p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <span style={{ color: item.accent, fontWeight: 800, fontSize: '13px' }}>
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div className="flex-1">
+                            <p className="text-[#F0EBE0] font-bold text-sm mb-1">{item.title}</p>
+                            <div className="flex items-center gap-1.5">
+                              <span style={{ color: item.accent }} className="font-extrabold text-[13px]">
                                 {formatPrice(item.price)}
                               </span>
-                              <span style={{
-                                color: item.accent, opacity: 0.55, fontSize: '11px',
-                                background: `${item.accent}12`, padding: '1px 7px',
-                                borderRadius: '999px', border: `1px solid ${item.accent}25`,
-                              }}>
+                              <span
+                                style={{
+                                  color: item.accent,
+                                  background: `${item.accent}12`,
+                                  border: `1px solid ${item.accent}25`,
+                                }}
+                                className="opacity-55 text-[11px] px-1.5 py-px rounded-full"
+                              >
                                 / {isMonthly ? 'month' : 'one-time'}
                               </span>
                             </div>
@@ -140,14 +106,8 @@ export default function CartDrawer() {
                           {/* Remove */}
                           <button
                             onClick={() => removeItem(item.id)}
-                            style={{
-                              background: 'transparent', border: 'none', color: '#444',
-                              cursor: 'pointer', padding: '4px', borderRadius: '6px',
-                              display: 'flex', flexShrink: 0,
-                            }}
-                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#E05353'; }}
-                            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#444'; }}
                             title="Remove service"
+                            className="text-[#444] hover:text-red-400 transition-colors cursor-pointer p-1 rounded-md flex shrink-0"
                           >
                             <Trash2 size={15} />
                           </button>
@@ -155,43 +115,27 @@ export default function CartDrawer() {
 
                         {/* Month qty + subtotal — ONLY for monthly services */}
                         {isMonthly ? (
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <div className="flex items-center justify-between">
                             {/* Months stepper */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <span style={{ color: '#555', fontSize: '12px' }}>Months:</span>
-                              <div style={{
-                                display: 'flex', alignItems: 'center',
-                                border: '1px solid #252525', borderRadius: '8px', overflow: 'hidden',
-                              }}>
+                            <div className="flex items-center gap-2">
+                              <span className="text-[#555] text-xs">Months:</span>
+                              <div className="flex items-center border border-[#252525] rounded-lg overflow-hidden">
                                 <button
                                   onClick={() => updateQty(item.id, -1)}
                                   disabled={item.qty <= 1}
-                                  style={{
-                                    background: 'transparent', border: 'none',
-                                    color: item.qty <= 1 ? '#333' : '#888',
-                                    cursor: item.qty <= 1 ? 'not-allowed' : 'pointer',
-                                    padding: '5px 10px', display: 'flex', alignItems: 'center',
-                                  }}
+                                  className="bg-transparent border-none px-2.5 py-1.5 flex items-center cursor-pointer disabled:cursor-not-allowed disabled:text-[#333] text-[#888]"
                                 >
                                   <Minus size={12} />
                                 </button>
-                                <span style={{
-                                  color: '#F0EBE0', fontWeight: 700, fontSize: '13px',
-                                  minWidth: '28px', textAlign: 'center',
-                                  borderLeft: '1px solid #252525', borderRight: '1px solid #252525',
-                                  padding: '5px 4px',
-                                }}>
+                                <span className="text-[#F0EBE0] font-bold text-[13px] min-w-7 text-center border-x border-[#252525] py-1.5 px-1">
                                   {item.qty}
                                 </span>
                                 <button
                                   onClick={() => updateQty(item.id, 1)}
-                                  style={{
-                                    background: 'transparent', border: 'none',
-                                    color: '#888', cursor: 'pointer',
-                                    padding: '5px 10px', display: 'flex', alignItems: 'center',
-                                  }}
-                                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = item.accent; }}
-                                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#888'; }}
+                                  className="bg-transparent border-none px-2.5 py-1.5 flex items-center cursor-pointer text-[#888] transition-colors"
+                                  style={{}}
+                                  onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.color = item.accent; }}
+                                  onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.color = 'var(--text-secondary)'; }}
                                 >
                                   <Plus size={12} />
                                 </button>
@@ -199,21 +143,17 @@ export default function CartDrawer() {
                             </div>
 
                             {/* Subtotal */}
-                            <span style={{ color: '#A89F8C', fontSize: '13px', fontWeight: 600 }}>
+                            <span className="text-sand text-[13px] font-semibold">
                               {formatPrice(item.price * item.qty)}
-                              <span style={{ opacity: 0.5, fontSize: '11px', marginLeft: '3px' }}> total</span>
+                              <span className="opacity-50 text-[11px] ml-0.5">total</span>
                             </span>
                           </div>
                         ) : (
                           /* One-time disclaimer */
-                          <div style={{
-                            display: 'flex', gap: '7px', alignItems: 'flex-start',
-                            background: 'rgba(120,15,240,0.05)', borderRadius: '8px',
-                            padding: '8px 10px', border: '1px solid rgba(120,15,240,0.12)',
-                          }}>
-                            <Info size={13} color="#780FF0" style={{ flexShrink: 0, marginTop: '1px' }} strokeWidth={2} />
-                            <p style={{ color: '#7A7060', fontSize: '11.5px', lineHeight: 1.55, margin: 0 }}>
-                              Final price may vary with scope & features — we'll confirm before starting.
+                          <div className="flex gap-1.5 items-start bg-accent-muted rounded-lg p-2 border border-accent-border/40">
+                            <Info size={13} className="text-accent shrink-0 mt-px" strokeWidth={2} />
+                            <p className="text-[#7A7060] text-[11.5px] leading-relaxed m-0">
+                              Final price may vary with scope &amp; features — we'll confirm before starting.
                             </p>
                           </div>
                         )}
@@ -224,14 +164,10 @@ export default function CartDrawer() {
 
                 {/* One-time disclaimer banner (only when cart has one-time items) */}
                 {hasOneTime && items.length > 0 && (
-                  <div style={{
-                    background: '#111', border: '1px dashed #2A2A2A',
-                    borderRadius: '12px', padding: '12px 14px',
-                    display: 'flex', gap: '10px', alignItems: 'flex-start',
-                  }}>
-                    <Info size={14} color="#555" style={{ flexShrink: 0, marginTop: '1px' }} />
-                    <p style={{ color: '#555', fontSize: '12px', lineHeight: 1.6, margin: 0 }}>
-                      One-time service prices are <strong style={{ color: '#8E3AEE' }}>starting rates</strong>. Final cost is confirmed after a quick chat about your requirements — no hidden charges.
+                  <div className="bg-[#111] border border-dashed border-[#2A2A2A] rounded-xl p-3 flex gap-2.5 items-start">
+                    <Info size={14} color="var(--text-dark-muted)" className="shrink-0 mt-px" />
+                    <p className="text-[#555] text-xs leading-relaxed m-0">
+                      One-time service prices are <strong className="text-accent-hover">starting rates</strong>. Final cost is confirmed after a quick chat about your requirements — no hidden charges.
                     </p>
                   </div>
                 )}
@@ -239,48 +175,36 @@ export default function CartDrawer() {
 
               {/* Footer — totals + checkout */}
               {items.length > 0 && (
-                <div style={{
-                  borderTop: '1px solid #1C1C1C', padding: '20px 24px',
-                  display: 'flex', flexDirection: 'column', gap: '12px',
-                  background: '#0A0A0A',
-                }}>
+                <div className="border-t border-[#1C1C1C] px-6 py-5 flex flex-col gap-3 bg-[#0A0A0A]">
                   {/* Breakdown */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div className="flex flex-col gap-1.5">
                     {onetimeTotal > 0 && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ color: '#666', fontSize: '13px' }}>One-time services</span>
-                        <span style={{ color: '#A89F8C', fontWeight: 600, fontSize: '13px' }}>{formatPrice(onetimeTotal)}</span>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#666] text-[13px]">One-time services</span>
+                        <span className="text-sand font-semibold text-[13px]">{formatPrice(onetimeTotal)}</span>
                       </div>
                     )}
                     {monthlyTotal > 0 && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ color: '#666', fontSize: '13px' }}>Monthly services</span>
-                        <span style={{ color: '#A89F8C', fontWeight: 600, fontSize: '13px' }}>
-                          {formatPrice(monthlyTotal)}<span style={{ opacity: 0.5, fontSize: '11px' }}> total</span>
+                      <div className="flex justify-between items-center">
+                        <span className="text-[#666] text-[13px]">Monthly services</span>
+                        <span className="text-sand font-semibold text-[13px]">
+                          {formatPrice(monthlyTotal)}<span className="opacity-50 text-[11px]"> total</span>
                         </span>
                       </div>
                     )}
-                    <div style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      paddingTop: '10px', borderTop: '1px solid #1E1E1E', marginTop: '4px',
-                    }}>
-                      <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '15px' }}>Total</span>
-                      <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '18px', letterSpacing: '-0.5px' }}>
+                    <div className="flex justify-between items-center pt-2.5 border-t border-[#1E1E1E] mt-1">
+                      <span className="text-text-cream font-extrabold text-[15px]">Total</span>
+                      <span className="text-accent font-black text-[18px] tracking-tight">
                         {formatPrice(grandTotal)}
                       </span>
                     </div>
 
                     {/* 10% token highlight */}
-                    <div style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      background: 'rgba(120,15,240,0.08)', borderRadius: '10px',
-                      padding: '9px 12px', marginTop: '4px',
-                      border: '1px solid rgba(120,15,240,0.2)',
-                    }}>
-                      <span style={{ color: '#A89F8C', fontSize: '12.5px' }}>
-                        Due today <span style={{ color: '#780FF0', fontWeight: 700 }}>(10% token)</span>
+                    <div className="flex justify-between items-center bg-accent-muted rounded-[10px] px-3 py-2.5 mt-1 border border-accent-border/60">
+                      <span className="text-sand text-[12.5px]">
+                        Due today <span className="text-accent font-bold">(10% token)</span>
                       </span>
-                      <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '15px' }}>
+                      <span className="text-accent font-black text-[15px]">
                         {formatPrice(tokenAmount)}
                       </span>
                     </div>
@@ -289,17 +213,7 @@ export default function CartDrawer() {
                   {/* Checkout CTA */}
                   <button
                     onClick={() => { closeDrawer(); setCheckoutOpen(true); }}
-                    style={{
-                      width: '100%', padding: '13px 0', borderRadius: '999px',
-                      background: '#780FF0', color: '#FFFFFF',
-                      fontWeight: 800, fontSize: '14px', border: 'none',
-                      cursor: 'pointer', opacity: 1,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      gap: '8px', letterSpacing: '0.3px',
-                      transition: 'background 0.2s',
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#8E3AEE'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#780FF0'; }}
+                    className="w-full py-3.5 rounded-full bg-accent text-white font-extrabold text-sm border-none cursor-pointer flex items-center justify-center gap-2 tracking-[0.3px] hover:bg-accent-hover transition-colors"
                   >
                     Proceed to Checkout <ArrowRight size={15} />
                   </button>
@@ -308,15 +222,7 @@ export default function CartDrawer() {
                   <a
                     href="#contact"
                     onClick={closeDrawer}
-                    style={{
-                      display: 'block', width: '100%', padding: '11px 0',
-                      borderRadius: '999px', border: '1.5px solid #2A2A2A',
-                      color: '#A89F8C', fontWeight: 700, fontSize: '13px',
-                      textAlign: 'center', textDecoration: 'none',
-                      transition: 'border-color 0.2s, color 0.2s',
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2A2A2A'; (e.currentTarget as HTMLElement).style.color = '#A89F8C'; }}
+                    className="block w-full py-3 rounded-full border border-[#2A2A2A] text-sand font-bold text-[13px] text-center no-underline hover:border-accent hover:text-accent transition-colors"
                   >
                     Or enquire via Contact →
                   </a>

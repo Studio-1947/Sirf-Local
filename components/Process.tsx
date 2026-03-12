@@ -53,7 +53,6 @@ export default function Process() {
     return () => ro.disconnect();
   }, []);
 
-  // Drive pill position via motion value for smooth sync
   const pillX = useMotionValue(-80);
 
   useAnimationFrame((_, delta) => {
@@ -62,11 +61,10 @@ export default function Process() {
     pillX.set(next >= lw + 80 ? -80 : next);
   });
 
-  // Detect which card the pill is currently behind
   useMotionValueEvent(pillX, 'change', (x) => {
     const lw = lineWidthRef.current;
     const third = lw / 3;
-    const center = x + 40; // pill center (pill is 80px wide)
+    const center = x + 40;
     let next: number | null = null;
     if (center >= 0 && center < third) next = 0;
     else if (center >= third && center < third * 2) next = 1;
@@ -79,7 +77,7 @@ export default function Process() {
   });
 
   return (
-    <section id="process" className="bg-[#1F1E1F] py-28 border-t border-[#525252]">
+    <section id="process" className="bg-bg-primary py-28 border-t border-border">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="text-center mb-16">
           <motion.span
@@ -93,10 +91,10 @@ export default function Process() {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight"
+            className="text-4xl md:text-6xl font-black text-text-primary leading-tight"
           >
             Your Journey{' '}
-            <span className="text-[#780FF0]">With Us</span>
+            <span className="text-accent">With Us</span>
           </motion.h2>
         </div>
 
@@ -110,13 +108,13 @@ export default function Process() {
             zIndex: 0, pointerEvents: 'none', overflow: 'hidden',
             display: 'flex', alignItems: 'center',
           }}>
-            {/* Base line */}
-            <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, #780FF0 20%, #780FF0 80%, transparent)' }} />
+            {/* Base line — uses CSS vars in gradient (can't use Tailwind in gradients like this) */}
+            <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, var(--accent) 20%, var(--accent) 80%, transparent)' }} />
             {/* Traveling glow pill */}
             <motion.div style={{
               position: 'absolute', top: '50%', translateY: '-50%',
               x: pillX, width: 80, height: 4, borderRadius: 9999,
-              background: 'linear-gradient(90deg, transparent, #780FF0, #8E3AEE, #780FF0, transparent)',
+              background: 'linear-gradient(90deg, transparent, var(--accent), var(--accent-hover), var(--accent), transparent)',
               boxShadow: '0 0 14px 6px rgba(120,15,240,0.8)',
               zIndex: 1,
             }} />
@@ -136,12 +134,12 @@ export default function Process() {
                 transition={{ type: 'spring', stiffness: 350, damping: 28 }}
                 className={`relative rounded-2xl p-8 border ${
                   step.gold
-                    ? 'bg-[#780FF0] border-[#780FF0] text-white'
-                    : 'bg-[#383838] border-[#525252] text-[#FFFFFF]'
+                    ? 'bg-accent border-accent text-white'
+                    : 'bg-bg-secondary border-border text-text-primary'
                 }`}
               >
                 <div className={`absolute top-4 right-4 font-mono-display text-xs tracking-widest ${
-                  step.gold ? 'text-white/50' : 'text-[#9E9E9E]'
+                  step.gold ? 'text-white/50' : 'text-text-secondary'
                 }`}>
                   {step.phase}
                 </div>
@@ -156,10 +154,10 @@ export default function Process() {
                   {step.emoji}
                 </motion.span>
 
-                <h3 className={`text-xl font-black mb-3 ${step.gold ? 'text-white' : 'text-[#FFFFFF]'}`}>
+                <h3 className={`text-xl font-black mb-3 ${step.gold ? 'text-white' : 'text-text-primary'}`}>
                   {step.title}
                 </h3>
-                <p className={`text-sm leading-relaxed ${step.gold ? 'text-white/70' : 'text-[#9E9E9E]'}`}>
+                <p className={`text-sm leading-relaxed ${step.gold ? 'text-white/70' : 'text-text-secondary'}`}>
                   {step.description}
                 </p>
               </motion.div>
@@ -170,6 +168,3 @@ export default function Process() {
     </section>
   );
 }
-
-
-

@@ -53,14 +53,14 @@ export default function TopographicBg() {
 
   return (
     <div ref={containerRef} className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-      {/* Dim base layer */}
+      {/* Dim base layer — SVG stroke must use attribute, so CSS var() is appropriate */}
       <svg
         className="absolute inset-0 w-full h-full opacity-[0.07]"
         xmlns="http://www.w3.org/2000/svg"
         preserveAspectRatio="xMidYMid slice"
         viewBox="0 0 1440 900"
         fill="none"
-        stroke="#780FF0"
+        stroke="var(--accent)"
         strokeWidth="1"
       >
         {topoPaths}
@@ -80,7 +80,7 @@ export default function TopographicBg() {
           preserveAspectRatio="xMidYMid slice"
           viewBox="0 0 1440 900"
           fill="none"
-          stroke="#780FF0"
+          stroke="var(--accent)"
           strokeWidth="1.5"
         >
           {topoPaths}
@@ -93,7 +93,7 @@ export default function TopographicBg() {
             preserveAspectRatio="xMidYMid slice"
             viewBox="0 0 1440 900"
             fill="none"
-            stroke="#8E3AEE"
+            stroke="var(--accent-hover)"
             strokeWidth="3"
             style={{ filter: 'blur(3px)' }}
           >
@@ -102,26 +102,26 @@ export default function TopographicBg() {
         </div>
       </motion.div>
 
-      {/* Animated glowing orbs that drift slowly */}
+      {/* Animated glowing orbs */}
       <motion.div
         animate={{ x: [0, 40, 0], y: [0, -30, 0] }}
         transition={{ duration: 18, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-[#780FF0]/4 blur-[100px]"
+        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-accent/[0.04] blur-[100px]"
       />
       <motion.div
         animate={{ x: [0, -50, 0], y: [0, 40, 0] }}
         transition={{ duration: 24, repeat: Infinity, ease: 'easeInOut', delay: 4 }}
-        className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-[#A463EE]/4 blur-[120px]"
+        className="absolute bottom-1/3 right-1/4 w-[400px] h-[400px] rounded-full bg-accent-secondary/[0.04] blur-[120px]"
       />
       <motion.div
         animate={{ x: [0, 30, -20, 0], y: [0, 20, -10, 0] }}
         transition={{ duration: 30, repeat: Infinity, ease: 'easeInOut', delay: 8 }}
-        className="absolute top-2/3 left-1/2 w-[300px] h-[300px] rounded-full bg-[#780FF0]/3 blur-[80px]"
+        className="absolute top-2/3 left-1/2 w-[300px] h-[300px] rounded-full bg-accent/[0.03] blur-[80px]"
       />
 
-      {/* Vignette edges */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#1F1E1F] via-transparent to-[#1F1E1F] opacity-60" />
-      <div className="absolute inset-0 bg-gradient-to-r from-[#1F1E1F] via-transparent to-[#1F1E1F] opacity-40" />
+      {/* Vignette edges — gradient must reference bg token via CSS var */}
+      <div className="absolute inset-0 bg-gradient-to-b from-bg-primary via-transparent to-bg-primary opacity-60" />
+      <div className="absolute inset-0 bg-gradient-to-r from-bg-primary via-transparent to-bg-primary opacity-40" />
     </div>
   );
 }

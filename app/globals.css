@@ -1,16 +1,91 @@
-@import url("https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@300;400;500;600;700;800&display=swap");
 @import "tailwindcss";
 
+/* ─── Design tokens exposed as Tailwind utilities ──────────────────────────────
+   With Tailwind v4 @theme inline, these become:
+   bg-accent, text-accent, border-accent, hover:bg-accent-hover, etc.
+   ─────────────────────────────────────────────────────────────────────────── */
+@theme inline {
+    /* Accent / Brand */
+    --color-accent:           #780FF0;
+    --color-accent-hover:     #8E3AEE;
+    --color-accent-secondary: #A463EE;
+    --color-accent-muted:     rgba(120, 15, 240, 0.15);
+    --color-accent-border:    rgba(120, 15, 240, 0.35);
+    --color-accent-glow:      rgba(120, 15, 240, 0.1);
+    --color-accent-pill-bg:   rgba(120, 15, 240, 0.07);
+    --color-accent-pill-border: rgba(120, 15, 240, 0.22);
+
+    /* Backgrounds */
+    --color-bg-primary:     #1F1E1F;
+    --color-bg-secondary:   #383838;
+    --color-bg-card:        #131313;
+    --color-bg-deep:        #0E0E0E;
+    --color-bg-surface:     rgba(255, 255, 255, 0.05);
+
+    /* Text */
+    --color-text-primary:   #FFFFFF;
+    --color-text-secondary: #9E9E9E;
+    --color-text-muted:     #525252;
+    --color-text-dark-muted:#6B6B6B;
+    --color-text-warm:      #F0EBE0;
+    --color-text-cream:     #F5F0E8;
+    --color-text-lavender:  #CFB0F2;
+    --color-text-earth:     #8A8178;
+    --color-sand:           #A89F8C;
+
+    /* Brand specific */
+    --color-whatsapp:       #25D366;
+    --color-razorpay:       #3b82f6;
+
+    /* Borders */
+    --color-border:         #525252;
+    --color-border-subtle:  rgba(255, 255, 255, 0.08);
+
+    /* Semantic states */
+    --color-state-success:  #4CAF7D;
+    --color-state-error:    #E05353;
+}
+
+/* ─── CSS variables (for use in dynamic/inline styles that can't use Tailwind) */
 :root {
-    --bg-primary: #1f1e1f;
-    --bg-secondary: #1f1e1f;
-    --bg-card: #383838;
-    --text-primary: #ffffff;
-    --text-secondary: #9e9e9e;
-    --accent: #780ff0;
-    --accent-hover: #8e3aee;
-    --accent-green: #a463ee;
+    --bg-primary: #1F1E1F;
+    --bg-secondary: #383838;
+    --bg-card: #131313;
+    --bg-deep: #0E0E0E;
+    --bg-surface: rgba(255, 255, 255, 0.05);
+
+    --text-primary: #FFFFFF;
+    --text-secondary: #9E9E9E;
+    --text-muted: #525252;
+    --text-dark-muted: #6B6B6B;
+    --text-warm: #F0EBE0;
+    --text-cream: #F5F0E8;
+    --text-sand: #A89F8C;
+
+    --accent: #780FF0;
+    --accent-hover: #8E3AEE;
+    --accent-secondary: #A463EE;
+    --accent-light: #B98AEF;
+    --accent-muted: rgba(120, 15, 240, 0.15);
+    --accent-border: rgba(120, 15, 240, 0.35);
+    --accent-glow: rgba(120, 15, 240, 0.1);
+    --accent-pill-bg: rgba(120, 15, 240, 0.07);
+    --accent-pill-border: rgba(120, 15, 240, 0.22);
+    --text-lavender: #CFB0F2;
+    --text-earth: #8A8178;
+
+    /* Brand Colors */
+    --whatsapp: #25D366;
+    --razorpay: #3b82f6;
+
     --border: #525252;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-deep: #1C1C1C;
+    --border-card: #222;
+
+    /* Semantic states */
+    --state-success: #4CAF7D;
+    --state-error:   #E05353;
 }
 
 * {
@@ -24,12 +99,12 @@ html {
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
-    font-family: "Inter", sans-serif;
+    font-family: var(--font-inter), "Inter", sans-serif;
     overflow-x: hidden;
 }
 
 .font-mono-display {
-    font-family: "Fragment Mono", monospace;
+    font-family: var(--font-mono), "Fragment Mono", monospace;
 }
 
 /* Custom scrollbar */
@@ -133,4 +208,15 @@ body {
 /* Card glow */
 .card-glow:hover {
     box-shadow: 0 0 30px rgba(120, 15, 240, 0.1);
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+    display: none !important;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+    -ms-overflow-style: none !important;  /* IE and Edge */
+    scrollbar-width: none !important;  /* Firefox */
 }

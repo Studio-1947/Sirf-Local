@@ -83,7 +83,7 @@ export default function PaymentIntegrationDemo() {
                     address: 'Sirf Local Corporate Office',
                 },
                 theme: {
-                    color: '#3b82f6',
+                    color: 'var(--razorpay)',
                 },
             };
 

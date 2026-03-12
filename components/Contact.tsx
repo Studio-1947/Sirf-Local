@@ -4,6 +4,7 @@ import React, { useRef, useState } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { Send, CheckCircle } from "lucide-react";
 
+// ── Brand SVG icons — fills are official brand colours, not design tokens ──────
 function GoogleMapsIcon({ size = 18 }: { size?: number }) {
   return (
     <svg
@@ -13,26 +14,11 @@ function GoogleMapsIcon({ size = 18 }: { size?: number }) {
       height={size}
       style={{ display: "block" }}
     >
-      <path
-        fill="#1a73e8"
-        d="M60.2 2.2C55.8.8 51 0 46.1 0 32 0 19.3 6.4 10.8 16.5l21.8 18.3L60.2 2.2z"
-      />
-      <path
-        fill="#ea4335"
-        d="M10.8 16.5C4.1 24.5 0 34.9 0 46.1c0 8.7 1.7 15.7 4.6 22l28-33.3-21.8-18.3z"
-      />
-      <path
-        fill="#4285f4"
-        d="M46.2 28.5c9.8 0 17.7 7.9 17.7 17.7 0 4.3-1.6 8.3-4.2 11.4 0 0 13.9-16.6 27.5-32.7-5.6-10.8-15.3-19-27-22.7L32.6 34.8c3.3-3.8 8.1-6.3 13.6-6.3"
-      />
-      <path
-        fill="#fbbc04"
-        d="M46.2 63.8c-9.8 0-17.7-7.9-17.7-17.7 0-4.3 1.5-8.3 4.1-11.3l-28 33.3c4.8 10.6 12.8 19.2 21 29.9l34.1-40.5c-3.3 3.9-8.1 6.3-13.5 6.3"
-      />
-      <path
-        fill="#34a853"
-        d="M59.1 109.2c15.4-24.1 33.3-35 33.3-63 0-7.7-1.9-14.9-5.2-21.3L25.6 98c2.6 3.4 5.3 7.3 7.9 11.3 9.4 14.5 6.8 23.1 12.8 23.1s3.4-8.7 12.8-23.2"
-      />
+      <path fill="#1a73e8" d="M60.2 2.2C55.8.8 51 0 46.1 0 32 0 19.3 6.4 10.8 16.5l21.8 18.3L60.2 2.2z" />
+      <path fill="#ea4335" d="M10.8 16.5C4.1 24.5 0 34.9 0 46.1c0 8.7 1.7 15.7 4.6 22l28-33.3-21.8-18.3z" />
+      <path fill="#4285f4" d="M46.2 28.5c9.8 0 17.7 7.9 17.7 17.7 0 4.3-1.6 8.3-4.2 11.4 0 0 13.9-16.6 27.5-32.7-5.6-10.8-15.3-19-27-22.7L32.6 34.8c3.3-3.8 8.1-6.3 13.6-6.3" />
+      <path fill="#fbbc04" d="M46.2 63.8c-9.8 0-17.7-7.9-17.7-17.7 0-4.3 1.5-8.3 4.1-11.3l-28 33.3c4.8 10.6 12.8 19.2 21 29.9l34.1-40.5c-3.3 3.9-8.1 6.3-13.5 6.3" />
+      <path fill="#34a853" d="M59.1 109.2c15.4-24.1 33.3-35 33.3-63 0-7.7-1.9-14.9-5.2-21.3L25.6 98c2.6 3.4 5.3 7.3 7.9 11.3 9.4 14.5 6.8 23.1 12.8 23.1s3.4-8.7 12.8-23.2" />
     </svg>
   );
 }
@@ -67,28 +53,12 @@ function GmailIcon({ size = 18 }: { size?: number }) {
     >
       <g fill="none" fillRule="evenodd">
         <g fillRule="nonzero">
-          <path
-            fill="#4285f4"
-            d="M34.91 448.818h81.454V251L0 163.727V413.91c0 19.287 15.622 34.91 34.91 34.91z"
-          />
-          <path
-            fill="#34a853"
-            d="M395.636 448.818h81.455c19.287 0 34.909-15.622 34.909-34.909V163.727L395.636 251z"
-          />
-          <path
-            fill="#fbbc04"
-            d="M395.636 99.727V251L512 163.727v-46.545c0-43.142-49.25-67.782-83.782-41.891z"
-          />
+          <path fill="#4285f4" d="M34.91 448.818h81.454V251L0 163.727V413.91c0 19.287 15.622 34.91 34.91 34.91z" />
+          <path fill="#34a853" d="M395.636 448.818h81.455c19.287 0 34.909-15.622 34.909-34.909V163.727L395.636 251z" />
+          <path fill="#fbbc04" d="M395.636 99.727V251L512 163.727v-46.545c0-43.142-49.25-67.782-83.782-41.891z" />
         </g>
-        <path
-          fill="#ea4335"
-          d="M116.364 251V99.727L256 204.455 395.636 99.727V251L256 355.727z"
-        />
-        <path
-          fill="#c5221f"
-          fillRule="nonzero"
-          d="M0 117.182v46.545L116.364 251V99.727L83.782 75.291C49.25 49.4 0 74.04 0 117.18z"
-        />
+        <path fill="#ea4335" d="M116.364 251V99.727L256 204.455 395.636 99.727V251L256 355.727z" />
+        <path fill="#c5221f" fillRule="nonzero" d="M0 117.182v46.545L116.364 251V99.727L83.782 75.291C49.25 49.4 0 74.04 0 117.18z" />
       </g>
     </svg>
   );
@@ -108,34 +78,37 @@ const SERVICES = [
 ];
 
 const contactInfo: {
-  icon: React.ComponentType<{
-    size?: number;
-    color?: string;
-    strokeWidth?: number;
-  }> | null;
+  icon: React.ComponentType<{ size?: number; color?: string; strokeWidth?: number }> | null;
   label: string;
   value: string;
   href: string;
 }[] = [
-  {
-    icon: null,
-    label: "Email",
-    value: "hello@sirflocal.in",
-    href: "mailto:hello@sirflocal.in",
-  },
-  {
-    icon: null,
-    label: "WhatsApp",
-    value: "+91 90932 77919",
-    href: "https://wa.me/919093277919",
-  },
-  {
-    icon: null,
-    label: "Location",
-    value: "Mirik, Darjeeling, West Bengal",
-    href: "https://maps.google.com/?q=Mirik,Darjeeling",
-  },
+  { icon: null, label: "Email",     value: "hello@sirflocal.in",           href: "mailto:hello@sirflocal.in" },
+  { icon: null, label: "WhatsApp",  value: "+91 90932 77919",              href: "https://wa.me/919093277919" },
+  { icon: null, label: "Location",  value: "Mirik, Darjeeling, West Bengal", href: "https://maps.google.com/?q=Mirik,Darjeeling" },
 ];
+
+// ── Shared input style helpers using CSS variables ─────────────────────────────
+const labelStyle: React.CSSProperties = {
+  color: "var(--text-secondary)",
+  fontSize: "11px",
+  fontFamily: "Fragment Mono, monospace",
+  letterSpacing: "0.15em",
+  textTransform: "uppercase",
+};
+
+const inputBaseStyle = (focused: boolean): React.CSSProperties => ({
+  background: "var(--bg-primary)",
+  border: `1px solid ${focused ? "var(--accent)" : "var(--border)"}`,
+  borderRadius: "12px",
+  padding: "12px 16px",
+  color: "var(--text-primary)",
+  fontSize: "14px",
+  outline: "none",
+  transition: "border-color 0.2s",
+  width: "100%",
+  boxSizing: "border-box",
+});
 
 function InputField({
   label,
@@ -155,18 +128,10 @@ function InputField({
   const [focused, setFocused] = useState(false);
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <label
-        style={{
-          color: "#6B6B6B",
-          fontSize: "11px",
-          fontFamily: "Fragment Mono, monospace",
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-        }}
-      >
+      <label style={labelStyle}>
         {label}
         {required && (
-          <span style={{ color: "#780FF0", marginLeft: "3px" }}>*</span>
+          <span style={{ color: "var(--accent)", marginLeft: "3px" }}>*</span>
         )}
       </label>
       <input
@@ -177,18 +142,7 @@ function InputField({
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         placeholder={placeholder}
-        style={{
-          background: "#1F1E1F",
-          border: `1px solid ${focused ? "#780FF0" : "#525252"}`,
-          borderRadius: "12px",
-          padding: "12px 16px",
-          color: "#FFFFFF",
-          fontSize: "14px",
-          outline: "none",
-          transition: "border-color 0.2s",
-          width: "100%",
-          boxSizing: "border-box",
-        }}
+        style={inputBaseStyle(focused)}
       />
     </div>
   );
@@ -206,32 +160,15 @@ function SelectField({
   const [focused, setFocused] = useState(false);
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <label
-        style={{
-          color: "#6B6B6B",
-          fontSize: "11px",
-          fontFamily: "Fragment Mono, monospace",
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-        }}
-      >
-        {label}
-      </label>
+      <label style={labelStyle}>{label}</label>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onFocus={() => setFocused(true)}
         onBlur={() => setFocused(false)}
         style={{
-          background: "#1F1E1F",
-          border: `1px solid ${focused ? "#780FF0" : "#525252"}`,
-          borderRadius: "12px",
-          padding: "12px 16px",
-          color: value ? "#FFFFFF" : "#6B6B6B",
-          fontSize: "14px",
-          outline: "none",
-          transition: "border-color 0.2s",
-          width: "100%",
+          ...inputBaseStyle(focused),
+          color: value ? "var(--text-primary)" : "var(--text-secondary)",
           cursor: "pointer",
           appearance: "none",
         }}
@@ -243,7 +180,7 @@ function SelectField({
           <option
             key={s}
             value={s}
-            style={{ background: "#383838", color: "#FFFFFF" }}
+            style={{ background: "var(--bg-secondary)", color: "var(--text-primary)" }}
           >
             {s}
           </option>
@@ -267,17 +204,7 @@ function TextareaField({
   const [focused, setFocused] = useState(false);
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-      <label
-        style={{
-          color: "#6B6B6B",
-          fontSize: "11px",
-          fontFamily: "Fragment Mono, monospace",
-          letterSpacing: "0.15em",
-          textTransform: "uppercase",
-        }}
-      >
-        {label}
-      </label>
+      <label style={labelStyle}>{label}</label>
       <textarea
         rows={4}
         value={value}
@@ -286,18 +213,9 @@ function TextareaField({
         onBlur={() => setFocused(false)}
         placeholder={placeholder}
         style={{
-          background: "#1F1E1F",
-          border: `1px solid ${focused ? "#780FF0" : "#525252"}`,
-          borderRadius: "12px",
-          padding: "12px 16px",
-          color: "#FFFFFF",
-          fontSize: "14px",
-          outline: "none",
-          transition: "border-color 0.2s",
-          width: "100%",
+          ...inputBaseStyle(focused),
           resize: "none",
-          boxSizing: "border-box",
-          fontFamily: "Inter, sans-serif",
+          fontFamily: "var(--font-inter), Inter, sans-serif",
         }}
       />
     </div>
@@ -316,7 +234,6 @@ export default function Contact() {
     message: "",
   });
   const [sent, setSent] = useState(false);
-  const [btnHovered, setBtnHovered] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -326,11 +243,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      style={{
-        background: "#1F1E1F",
-        padding: "96px 0",
-        borderTop: "1px solid #525252",
-      }}
+      className="bg-bg-primary border-t border-border py-24"
     >
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
         <div
@@ -360,14 +273,14 @@ export default function Contact() {
               style={{
                 fontSize: "clamp(2rem, 4vw, 3rem)",
                 fontWeight: 900,
-                color: "#FFFFFF",
+                color: "var(--text-primary)",
                 lineHeight: 1.15,
                 letterSpacing: "-0.5px",
                 marginBottom: "20px",
               }}
             >
               Let&apos;s Build Something{" "}
-              <span style={{ color: "#780FF0" }}>Together</span>
+              <span style={{ color: "var(--accent)" }}>Together</span>
             </motion.h2>
 
             <motion.p
@@ -375,7 +288,7 @@ export default function Contact() {
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 }}
               style={{
-                color: "#858585",
+                color: "var(--text-secondary)",
                 fontSize: "16px",
                 lineHeight: 1.7,
                 marginBottom: "40px",
@@ -388,9 +301,7 @@ export default function Contact() {
             </motion.p>
 
             {/* Contact info cards */}
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-            >
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
               {contactInfo.map(({ icon: Icon, label, value, href }, i) => (
                 <motion.a
                   key={label}
@@ -405,15 +316,15 @@ export default function Contact() {
                     alignItems: "center",
                     gap: "16px",
                     padding: "16px 20px",
-                    background: "#1F1E1F",
-                    border: "1px solid #525252",
+                    background: "var(--bg-primary)",
+                    border: "1px solid var(--border)",
                     borderRadius: "14px",
                     textDecoration: "none",
                     transition: "border-color 0.2s, background 0.2s",
                   }}
                   whileHover={{
                     borderColor: "rgba(120,15,240,0.35)",
-                    backgroundColor: "#383838",
+                    backgroundColor: "var(--bg-secondary)",
                   }}
                 >
                   <div
@@ -436,13 +347,13 @@ export default function Contact() {
                     ) : label === "Location" ? (
                       <GoogleMapsIcon size={20} />
                     ) : Icon ? (
-                      <Icon size={18} color="#780FF0" strokeWidth={1.8} />
+                      <Icon size={18} color="var(--accent)" strokeWidth={1.8} />
                     ) : null}
                   </div>
                   <div>
                     <p
                       style={{
-                        color: "#6B6B6B",
+                        color: "var(--text-secondary)",
                         fontSize: "11px",
                         fontFamily: "Fragment Mono, monospace",
                         letterSpacing: "0.12em",
@@ -452,13 +363,7 @@ export default function Contact() {
                     >
                       {label}
                     </p>
-                    <p
-                      style={{
-                        color: "#FFFFFF",
-                        fontSize: "14px",
-                        fontWeight: 600,
-                      }}
-                    >
+                    <p style={{ color: "var(--text-primary)", fontSize: "14px", fontWeight: 600 }}>
                       {value}
                     </p>
                   </div>
@@ -473,8 +378,8 @@ export default function Contact() {
             animate={inView ? { opacity: 1, x: 0 } : {}}
             transition={{ delay: 0.4, duration: 0.7 }}
             style={{
-              background: "#1F1E1F",
-              border: "1px solid #525252",
+              background: "var(--bg-primary)",
+              border: "1px solid var(--border)",
               borderRadius: "24px",
               padding: "36px",
             }}
@@ -499,18 +404,13 @@ export default function Contact() {
                   <motion.div
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 260,
-                      damping: 18,
-                      delay: 0.1,
-                    }}
+                    transition={{ type: "spring", stiffness: 260, damping: 18, delay: 0.1 }}
                   >
-                    <CheckCircle size={56} color="#A463EE" strokeWidth={1.5} />
+                    <CheckCircle size={56} color="var(--accent-secondary)" strokeWidth={1.5} />
                   </motion.div>
                   <h3
                     style={{
-                      color: "#FFFFFF",
+                      color: "var(--text-primary)",
                       fontSize: "22px",
                       fontWeight: 900,
                       marginTop: "8px",
@@ -520,7 +420,7 @@ export default function Contact() {
                   </h3>
                   <p
                     style={{
-                      color: "#858585",
+                      color: "var(--text-secondary)",
                       fontSize: "15px",
                       lineHeight: 1.6,
                       maxWidth: "280px",
@@ -532,18 +432,11 @@ export default function Contact() {
                   <button
                     onClick={() => {
                       setSent(false);
-                      setForm({
-                        name: "",
-                        business: "",
-                        email: "",
-                        phone: "",
-                        service: "",
-                        message: "",
-                      });
+                      setForm({ name: "", business: "", email: "", phone: "", service: "", message: "" });
                     }}
                     style={{
                       marginTop: "8px",
-                      color: "#780FF0",
+                      color: "var(--accent)",
                       fontSize: "13px",
                       background: "none",
                       border: "none",
@@ -561,19 +454,9 @@ export default function Contact() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "20px",
-                  }}
+                  style={{ display: "flex", flexDirection: "column", gap: "20px" }}
                 >
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: "16px",
-                    }}
-                  >
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                     <InputField
                       label="Your Name"
                       value={form.name}
@@ -588,13 +471,7 @@ export default function Contact() {
                       placeholder="Mirik Homestay"
                     />
                   </div>
-                  <div
-                    style={{
-                      display: "grid",
-                      gridTemplateColumns: "1fr 1fr",
-                      gap: "16px",
-                    }}
-                  >
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                     <InputField
                       label="Email"
                       type="email"
@@ -625,24 +502,7 @@ export default function Contact() {
 
                   <button
                     type="submit"
-                    onMouseEnter={() => setBtnHovered(true)}
-                    onMouseLeave={() => setBtnHovered(false)}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      gap: "10px",
-                      padding: "14px 28px",
-                      borderRadius: "999px",
-                      background: btnHovered ? "#8E3AEE" : "#780FF0",
-                      color: "#FFFFFF",
-                      fontWeight: 700,
-                      fontSize: "15px",
-                      border: "none",
-                      cursor: "pointer",
-                      transition: "background 0.2s, transform 0.15s",
-                      transform: btnHovered ? "scale(1.02)" : "scale(1)",
-                    }}
+                    className="flex items-center justify-center gap-2.5 px-7 py-3.5 rounded-full bg-accent text-white font-bold text-[15px] border-none cursor-pointer transition-all hover:bg-accent-hover hover:scale-[1.02]"
                   >
                     <Send size={16} strokeWidth={2.5} />
                     Send Message

@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 
 const socials = [
@@ -45,24 +44,13 @@ const socials = [
 ];
 
 function SocialLink({ social }: { social: typeof socials[0] }) {
-  const [hovered, setHovered] = useState(false);
   return (
     <a
       href={social.href}
       target="_blank"
       rel="noopener noreferrer"
       title={social.name}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        width: '40px', height: '40px', borderRadius: '10px',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: hovered ? 'rgba(120,15,240,0.12)' : 'rgba(255,255,255,0.04)',
-        border: `1px solid ${hovered ? 'rgba(120,15,240,0.35)' : '#525252'}`,
-        color: hovered ? '#780FF0' : '#6B6B6B',
-        transition: 'all 0.2s',
-        textDecoration: 'none',
-      }}
+      className="w-10 h-10 rounded-[10px] flex items-center justify-center bg-bg-surface border border-border text-text-dark-muted no-underline transition-all hover:bg-accent-pill-bg hover:border-accent-border hover:text-accent"
     >
       {social.icon}
     </a>
@@ -73,32 +61,32 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer style={{ background: '#1F1E1F', borderTop: '1px solid #525252' }}>
-      <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '40px 24px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '24px' }}>
+    <footer className="bg-bg-primary border-t border-border">
+      <div className="max-w-7xl mx-auto px-6 py-10">
+        <div className="flex items-center justify-between flex-wrap gap-6">
 
           {/* Logo + tagline */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          <div className="flex items-center gap-5">
             <Image src="/Logo.svg" alt="Sirf Local" width={110} height={36} style={{ height: '36px', width: 'auto', objectFit: 'contain' }} />
-            <div style={{ width: '1px', height: '28px', background: '#525252' }} />
-            <p style={{ color: '#6B6B6B', fontSize: '12px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.05em' }}>
+            <div className="w-px h-7 bg-border" />
+            <p className="text-text-dark-muted text-xs font-mono-display tracking-[0.05em]">
               An initiative by Studio 1947 · Mirik, Darjeeling
             </p>
           </div>
 
           {/* Socials */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <div className="flex items-center gap-2">
             {socials.map((s) => <SocialLink key={s.name} social={s} />)}
           </div>
 
         </div>
 
         {/* Bottom bar */}
-        <div style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #383838', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
-          <p style={{ color: '#6B6B6B', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.08em' }}>
+        <div className="mt-8 pt-6 border-t border-bg-secondary flex items-center justify-between flex-wrap gap-2">
+          <p className="text-text-dark-muted text-[11px] font-mono-display tracking-[0.08em]">
             © {year} Sirf Local. All rights reserved.
           </p>
-          <p style={{ color: '#6B6B6B', fontSize: '11px', fontFamily: 'Fragment Mono, monospace', letterSpacing: '0.08em' }}>
+          <p className="text-text-dark-muted text-[11px] font-mono-display tracking-[0.08em]">
             Built with ♥ for local businesses
           </p>
         </div>

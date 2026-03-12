@@ -20,7 +20,6 @@ function BorderBeam({
   const [perimeter, setPerimeter] = useState(0);
   const offsetRef = useRef(0);
 
-  // Measure perimeter once mounted
   useEffect(() => {
     if (!rectRef.current) return;
     const p = rectRef.current.getTotalLength();
@@ -28,7 +27,6 @@ function BorderBeam({
     offsetRef.current = p;
   }, []);
 
-  // Animate offset every frame — pure linear travel
   useAnimationFrame((_, delta) => {
     if (!perimeter || !rectRef.current || !rectGlowRef.current) return;
     offsetRef.current -= (perimeter / duration) * delta;
@@ -56,7 +54,7 @@ function BorderBeam({
         </filter>
       </defs>
 
-      {/* Dim base border */}
+      {/* Dim base border — uses design token via CSS var */}
       <rect
         x="1"
         y="1"
@@ -65,7 +63,7 @@ function BorderBeam({
         rx={rx}
         ry={rx}
         fill="none"
-        stroke="#525252"
+        stroke="var(--border)"
         strokeWidth="1"
       />
 
@@ -79,7 +77,7 @@ function BorderBeam({
         rx={rx}
         ry={rx}
         fill="none"
-        stroke="#780FF0"
+        stroke="var(--accent)"
         strokeWidth="6"
         strokeLinecap="round"
         strokeDasharray={`${pillLength} ${perimeter - pillLength}`}
@@ -98,7 +96,7 @@ function BorderBeam({
         rx={rx}
         ry={rx}
         fill="none"
-        stroke="#8E3AEE"
+        stroke="var(--accent-hover)"
         strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray={`${pillLength} ${perimeter - pillLength}`}
@@ -113,22 +111,22 @@ const pillars = [
     title: "Local Roots",
     description:
       "We start by understanding the heartbeat of your business. Your story, our craft, and your local community are the foundation of our strategy.",
-    icon: <Mountains size={36} weight="fill" color="#FFFFFF" />,
-    color: "#A463EE",
+    icon: <Mountains size={36} weight="fill" color="var(--text-primary)" />,
+    color: "var(--accent-secondary)",
   },
   {
     title: "Digital Bridge",
     description:
       "We build the infrastructure from websites, social media to SEO that acts as the bridge connecting your physical store to the digital highway.",
-    icon: <Planet size={36} weight="fill" color="#FFFFFF" />,
-    color: "#780FF0",
+    icon: <Planet size={36} weight="fill" color="var(--text-primary)" />,
+    color: "var(--accent)",
   },
   {
     title: "Global Bridge",
     description:
       "Unlock new markets. From a customer down the street to a collector across the ocean, we ensure your business is visible everywhere.",
-    icon: <Eye size={36} weight="fill" color="#FFFFFF" />,
-    color: "#9E9E9E",
+    icon: <Eye size={36} weight="fill" color="var(--text-primary)" />,
+    color: "var(--text-secondary)",
   },
 ];
 
@@ -147,30 +145,49 @@ function PillarCard({
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
 
+  const watermarkId = String(index + 1).padStart(2, "0");
+
   return (
     <motion.div
       ref={ref}
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.15 }}
-      className="group relative bg-[#1F1E1F] border border-[#525252] rounded-2xl p-8 hover:border-[#780FF0]/40 transition-all card-glow overflow-hidden"
+      className="group relative flex flex-col justify-between gap-8 border border-white/5 rounded-3xl p-8 bg-white/[0.02] backdrop-blur-xl transition-all duration-500 hover:bg-white/[0.04] hover:border-white/10 overflow-hidden h-full"
     >
-      {/* Corner accent */}
-      <div
-        className="absolute top-0 right-0 w-32 h-32 rounded-bl-full opacity-5"
-        style={{ backgroundColor: pillar.color }}
-      />
+      {/* Background ID Watermark (Technical/Studio Look) */}
+      <div className="absolute -top-4 -right-2 font-mono-display text-[120px] font-black text-white/[0.02] select-none leading-none pointer-events-none">
+        {watermarkId}
+      </div>
 
-      <div className="mb-5 block">{pillar.icon}</div>
-      <h3
-        className="text-xl font-black mb-3 group-hover:text-[#780FF0] transition-colors"
-        style={{ color: "#FFFFFF" }}
-      >
-        {pillar.title}
-      </h3>
-      <p className="text-[#9E9E9E] text-base leading-relaxed">
-        {pillar.description}
-      </p>
+      {/* Top: Icon Container */}
+      <div className="relative z-10">
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5 border border-white/10 shadow-[0_0_25px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_35px_rgba(255,255,255,0.1)] transition-all duration-500">
+          <div className="flex items-center justify-center">
+            {pillar.icon}
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom: Title + Description */}
+      <div className="relative z-10 flex flex-col gap-3">
+        <div className="flex items-center gap-3">
+          <span className="font-mono-display text-text-secondary text-[10px] uppercase tracking-[0.2em] font-bold">
+            Pillar {watermarkId}
+          </span>
+        </div>
+        
+        <h3 className="text-xl font-bold text-text-primary group-hover:text-white transition-colors leading-tight">
+          {pillar.title}
+        </h3>
+        
+        <p className="text-text-secondary leading-relaxed text-sm opacity-70 group-hover:opacity-100 transition-opacity duration-500 max-w-[90%]">
+          {pillar.description}
+        </p>
+      </div>
+
+      {/* Subtle corner accent */}
+      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/10 rounded-tl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </motion.div>
   );
 }
@@ -180,7 +197,7 @@ export default function Mission() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="bg-[#1F1E1F] py-28 border-t border-[#525252]">
+    <section className="bg-bg-primary py-28 border-t border-border">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="text-center mb-16">
           <motion.span
@@ -194,10 +211,10 @@ export default function Mission() {
             initial={{ opacity: 0, y: 30 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.2, duration: 0.7 }}
-            className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight"
+            className="text-4xl md:text-6xl font-black text-text-primary leading-tight"
           >
             Bridging Tradition{" "}
-            <span className="text-[#780FF0]">&amp; Technology</span>
+            <span className="text-accent">&amp; Technology</span>
           </motion.h2>
         </div>
 
@@ -216,20 +233,20 @@ export default function Mission() {
           className="mt-12 relative rounded-2xl"
         >
           <BorderBeam />
-          <div className="relative m-[1px] rounded-2xl bg-[#383838] p-8 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="relative m-[1px] rounded-2xl bg-bg-secondary p-8 flex flex-col md:flex-row items-center justify-between gap-6">
             <div>
-              <p className="text-[#9E9E9E] text-sm font-mono-display tracking-widest uppercase mb-1">
+              <p className="text-text-secondary text-sm font-mono-display tracking-widest uppercase mb-1">
                 Success Rate · Last 12 months
               </p>
-              <p className="text-7xl font-black text-[#FFFFFF]">
+              <p className="text-7xl font-black text-text-primary">
                 <CountUp value={98} suffix="%" />
               </p>
             </div>
             <div className="max-w-sm">
-              <p className="text-[#FFFFFF] text-lg font-semibold mb-2">
+              <p className="text-text-primary text-lg font-semibold mb-2">
                 We measure what matters
               </p>
-              <p className="text-[#9E9E9E] text-sm leading-relaxed">
+              <p className="text-text-secondary text-sm leading-relaxed">
                 Our success is defined by your growth — every project we take
                 on, we finish. Every business we work with, grows.
               </p>
@@ -242,7 +259,7 @@ export default function Mission() {
                     cy="60"
                     r="50"
                     fill="none"
-                    stroke="#525252"
+                    stroke="var(--border)"
                     strokeWidth="8"
                   />
                   <motion.circle
@@ -250,7 +267,7 @@ export default function Mission() {
                     cy="60"
                     r="50"
                     fill="none"
-                    stroke="#780FF0"
+                    stroke="var(--accent)"
                     strokeWidth="8"
                     strokeLinecap="round"
                     strokeDasharray={`${2 * Math.PI * 50}`}
@@ -260,7 +277,7 @@ export default function Mission() {
                     transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
                   />
                 </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-2xl font-black text-[#FFFFFF]">
+                <span className="absolute inset-0 flex items-center justify-center text-2xl font-black text-text-primary">
                   <CountUp value={98} suffix="%" />
                 </span>
               </div>

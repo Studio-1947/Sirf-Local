@@ -28,7 +28,7 @@ export default function Trust() {
   const inView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section className="bg-[#1F1E1F] border-t border-[#525252] overflow-hidden" style={{ padding: '96px 0' }}>
+    <section className="bg-bg-primary border-t border-border overflow-hidden" style={{ padding: '96px 0' }}>
       <div className="max-w-7xl mx-auto px-6">
 
         {/* Two-column grid */}
@@ -59,25 +59,25 @@ export default function Trust() {
               style={{
                 fontSize: 'clamp(2rem, 4vw, 3rem)',
                 fontWeight: 900,
-                color: '#FFFFFF',
                 lineHeight: 1.15,
                 letterSpacing: '-0.5px',
                 marginBottom: '20px',
               }}
+              className="text-text-primary"
             >
               Rooted in{' '}
-              <span style={{ color: '#780FF0' }}>Mirik,</span>
+              <span className="text-accent">Mirik,</span>
               <br />
               Designed for the{' '}
-              <span style={{ color: '#780FF0' }}>World</span>
+              <span className="text-accent">World</span>
             </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.3 }}
+              className="text-text-secondary"
               style={{
-                color: '#858585',
                 fontSize: '16px',
                 lineHeight: 1.7,
                 maxWidth: '520px',
@@ -98,19 +98,10 @@ export default function Trust() {
                   initial={{ opacity: 0, y: 16 }}
                   animate={inView ? { opacity: 1, y: 0 } : {}}
                   transition={{ delay: 0.38 + i * 0.08, duration: 0.45 }}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '8px',
-                    padding: '8px 16px',
-                    borderRadius: '999px',
-                    background: 'rgba(120,15,240,0.07)',
-                    border: '1px solid rgba(120,15,240,0.22)',
-                    cursor: 'default',
-                  }}
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-accent-pill-bg border border-accent-pill-border cursor-default"
                 >
-                  <Icon size={14} color="#780FF0" strokeWidth={2} />
-                  <span style={{ color: '#CFB0F2', fontSize: '13px', fontWeight: 600, letterSpacing: '0.1px' }}>
+                  <Icon size={14} className="text-accent" strokeWidth={2} />
+                  <span className="text-text-lavender text-[13px] font-semibold tracking-[0.1px]">
                     {label}
                   </span>
                 </motion.div>
@@ -131,10 +122,10 @@ export default function Trust() {
               minHeight: '300px',
             }}
           >
-            {/* Left + right fade masks */}
+            {/* Left + right fade masks — must reference CSS var for gradient */}
             <div style={{
               position: 'absolute', inset: 0, zIndex: 2, pointerEvents: 'none',
-              background: 'linear-gradient(to right, #1F1E1F 0%, transparent 12%, transparent 88%, #1F1E1F 100%)',
+              background: 'linear-gradient(to right, var(--bg-primary) 0%, transparent 12%, transparent 88%, var(--bg-primary) 100%)',
             }} />
 
             {/* Scrolling row — doubled images for seamless loop */}
@@ -158,7 +149,7 @@ export default function Trust() {
                     borderRadius: '12px',
                     overflow: 'hidden',
                     flexShrink: 0,
-                    border: '1px solid rgba(120,15,240,0.12)',
+                    border: '1px solid var(--accent-border)',
                   }}
                   className="img-zoom"
                 >

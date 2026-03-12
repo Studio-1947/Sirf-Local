@@ -27,318 +27,54 @@ interface GalleryItem {
 
 const TABS: Category[] = ["Photos", "Branding", "Logo", "Packaging", "Videos"];
 
+// Named palette entries — map gallery accent variants to design tokens
+const GPAL = {
+  primary:   { accent: 'var(--accent)',           bg: 'var(--bg-primary)' },
+  secondary: { accent: 'var(--accent-secondary)', bg: 'var(--bg-secondary)' },
+  light:     { accent: 'var(--accent-light)',     bg: 'var(--bg-primary)' },
+  hover:     { accent: 'var(--accent-hover)',       bg: 'linear-gradient(135deg,#1A003A 0%,#4A0090 100%)' },
+} as const;
+
 const items: GalleryItem[] = [
   // Photos  →  public/images/gallery/photos/
-  {
-    id: "p1",
-    category: "Photos",
-    label: "Photo 1",
-    sublabel: "Photography",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/photos/1.png",
-  },
-  {
-    id: "p2",
-    category: "Photos",
-    label: "Photo 2",
-    sublabel: "Photography",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/photos/2.png",
-  },
-  {
-    id: "p3",
-    category: "Photos",
-    label: "Photo 3",
-    sublabel: "Photography",
-    accent: "#B98AEF",
-    bg: "linear-gradient(135deg,#2D0060 0%,#6509CE 100%)",
-    src: "/images/gallery/photos/3.png",
-  },
-  {
-    id: "p4",
-    category: "Photos",
-    label: "Photo 4",
-    sublabel: "Photography",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/photos/4.png",
-  },
-  {
-    id: "p5",
-    category: "Photos",
-    label: "Photo 5",
-    sublabel: "Photography",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/photos/5.png",
-  },
-  {
-    id: "p6",
-    category: "Photos",
-    label: "Photo 6",
-    sublabel: "Photography",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/photos/6.png",
-  },
-  {
-    id: "p7",
-    category: "Photos",
-    label: "Photo 7",
-    sublabel: "Photography",
-    accent: "#B98AEF",
-    bg: "linear-gradient(135deg,#2D0060 0%,#6509CE 100%)",
-    src: "/images/gallery/photos/7.png",
-  },
-  {
-    id: "p8",
-    category: "Photos",
-    label: "Photo 8",
-    sublabel: "Photography",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/photos/8.png",
-  },
+  { id: 'p1', category: 'Photos', label: 'Photo 1', sublabel: 'Photography', src: '/images/gallery/photos/1.png', ...GPAL.secondary },
+  { id: 'p2', category: 'Photos', label: 'Photo 2', sublabel: 'Photography', src: '/images/gallery/photos/2.png', ...GPAL.primary },
+  { id: 'p3', category: 'Photos', label: 'Photo 3', sublabel: 'Photography', src: '/images/gallery/photos/3.png', ...GPAL.light },
+  { id: 'p4', category: 'Photos', label: 'Photo 4', sublabel: 'Photography', src: '/images/gallery/photos/4.png', ...GPAL.hover },
+  { id: 'p5', category: 'Photos', label: 'Photo 5', sublabel: 'Photography', src: '/images/gallery/photos/5.png', ...GPAL.secondary },
+  { id: 'p6', category: 'Photos', label: 'Photo 6', sublabel: 'Photography', src: '/images/gallery/photos/6.png', ...GPAL.primary },
+  { id: 'p7', category: 'Photos', label: 'Photo 7', sublabel: 'Photography', src: '/images/gallery/photos/7.png', ...GPAL.light },
+  { id: 'p8', category: 'Photos', label: 'Photo 8', sublabel: 'Photography', src: '/images/gallery/photos/8.png', ...GPAL.hover },
   // Branding  →  public/images/gallery/branding/
-  {
-    id: "b1",
-    category: "Branding",
-    label: "Branding Work 1",
-    sublabel: "Brand Identity",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/branding/1.png",
-  },
-  {
-    id: "b2",
-    category: "Branding",
-    label: "Branding Work 2",
-    sublabel: "Brand Identity",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/branding/2.png",
-  },
-  {
-    id: "b3",
-    category: "Branding",
-    label: "Branding Work 3",
-    sublabel: "Brand Identity",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/branding/3.png",
-  },
-  {
-    id: "b4",
-    category: "Branding",
-    label: "Branding Work 4",
-    sublabel: "Brand Identity",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/branding/4.png",
-  },
-  {
-    id: "b5",
-    category: "Branding",
-    label: "Branding Work 5",
-    sublabel: "Brand Identity",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/branding/5.png",
-  },
-  {
-    id: "b6",
-    category: "Branding",
-    label: "Branding Work 6",
-    sublabel: "Brand Identity",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/branding/6.png",
-  },
-  {
-    id: "b7",
-    category: "Branding",
-    label: "Branding Work 7",
-    sublabel: "Brand Identity",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/branding/7.png",
-  },
-  {
-    id: "b8",
-    category: "Branding",
-    label: "Branding Work 8",
-    sublabel: "Brand Identity",
-    accent: "#B98AEF",
-    bg: "linear-gradient(135deg,#2D0060 0%,#6509CE 100%)",
-    src: "/images/gallery/branding/8.png",
-  },
-  {
-    id: "b9",
-    category: "Branding",
-    label: "Branding Work 9",
-    sublabel: "Brand Identity",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/branding/9.png",
-  },
-  {
-    id: "b10",
-    category: "Branding",
-    label: "Branding Work 10",
-    sublabel: "Brand Identity",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/branding/10.png",
-  },
+  { id: 'b1',  category: 'Branding', label: 'Branding Work 1',  sublabel: 'Brand Identity', src: '/images/gallery/branding/1.png',  ...GPAL.primary },
+  { id: 'b2',  category: 'Branding', label: 'Branding Work 2',  sublabel: 'Brand Identity', src: '/images/gallery/branding/2.png',  ...GPAL.hover },
+  { id: 'b3',  category: 'Branding', label: 'Branding Work 3',  sublabel: 'Brand Identity', src: '/images/gallery/branding/3.png',  ...GPAL.secondary },
+  { id: 'b4',  category: 'Branding', label: 'Branding Work 4',  sublabel: 'Brand Identity', src: '/images/gallery/branding/4.png',  ...GPAL.primary },
+  { id: 'b5',  category: 'Branding', label: 'Branding Work 5',  sublabel: 'Brand Identity', src: '/images/gallery/branding/5.png',  ...GPAL.hover },
+  { id: 'b6',  category: 'Branding', label: 'Branding Work 6',  sublabel: 'Brand Identity', src: '/images/gallery/branding/6.png',  ...GPAL.secondary },
+  { id: 'b7',  category: 'Branding', label: 'Branding Work 7',  sublabel: 'Brand Identity', src: '/images/gallery/branding/7.png',  ...GPAL.primary },
+  { id: 'b8',  category: 'Branding', label: 'Branding Work 8',  sublabel: 'Brand Identity', src: '/images/gallery/branding/8.png',  ...GPAL.light },
+  { id: 'b9',  category: 'Branding', label: 'Branding Work 9',  sublabel: 'Brand Identity', src: '/images/gallery/branding/9.png',  ...GPAL.hover },
+  { id: 'b10', category: 'Branding', label: 'Branding Work 10', sublabel: 'Brand Identity', src: '/images/gallery/branding/10.png', ...GPAL.secondary },
   // Logo  →  public/images/gallery/logo/
-  {
-    id: "l1",
-    category: "Logo",
-    label: "Logo Design 1",
-    sublabel: "Logo Design",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/logo/1.png",
-  },
-  {
-    id: "l2",
-    category: "Logo",
-    label: "Logo Design 2",
-    sublabel: "Logo Design",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/logo/2.png",
-  },
-  {
-    id: "l3",
-    category: "Logo",
-    label: "Logo Design 3",
-    sublabel: "Logo Design",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/logo/3.png",
-  },
-  {
-    id: "l4",
-    category: "Logo",
-    label: "Logo Design 4",
-    sublabel: "Logo Design",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/logo/4.png",
-  },
-  {
-    id: "l5",
-    category: "Logo",
-    label: "Logo Design 5",
-    sublabel: "Logo Design",
-    accent: "#B98AEF",
-    bg: "linear-gradient(135deg,#2D0060 0%,#6509CE 100%)",
-    src: "/images/gallery/logo/5.png",
-  },
-  {
-    id: "l6",
-    category: "Logo",
-    label: "Logo Design 6",
-    sublabel: "Logo Design",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/logo/6.png",
-  },
+  { id: 'l1', category: 'Logo', label: 'Logo Design 1', sublabel: 'Logo Design', src: '/images/gallery/logo/1.png', ...GPAL.primary },
+  { id: 'l2', category: 'Logo', label: 'Logo Design 2', sublabel: 'Logo Design', src: '/images/gallery/logo/2.png', ...GPAL.secondary },
+  { id: 'l3', category: 'Logo', label: 'Logo Design 3', sublabel: 'Logo Design', src: '/images/gallery/logo/3.png', ...GPAL.hover },
+  { id: 'l4', category: 'Logo', label: 'Logo Design 4', sublabel: 'Logo Design', src: '/images/gallery/logo/4.png', ...GPAL.primary },
+  { id: 'l5', category: 'Logo', label: 'Logo Design 5', sublabel: 'Logo Design', src: '/images/gallery/logo/5.png', ...GPAL.light },
+  { id: 'l6', category: 'Logo', label: 'Logo Design 6', sublabel: 'Logo Design', src: '/images/gallery/logo/6.png', ...GPAL.secondary },
   // Packaging  →  public/images/gallery/packaging/
-  {
-    id: "pk1",
-    category: "Packaging",
-    label: "Packaging Design 1",
-    sublabel: "Packaging Design",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/packaging/1.png",
-  },
-  {
-    id: "pk2",
-    category: "Packaging",
-    label: "Packaging Design 2",
-    sublabel: "Packaging Design",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/packaging/2.png",
-  },
-  {
-    id: "pk3",
-    category: "Packaging",
-    label: "Packaging Design 3",
-    sublabel: "Packaging Design",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/packaging/3.png",
-  },
-  {
-    id: "pk4",
-    category: "Packaging",
-    label: "Packaging Design 4",
-    sublabel: "Packaging Design",
-    accent: "#B98AEF",
-    bg: "linear-gradient(135deg,#2D0060 0%,#6509CE 100%)",
-    src: "/images/gallery/packaging/4.png",
-  },
-  {
-    id: "pk5",
-    category: "Packaging",
-    label: "Packaging Design 5",
-    sublabel: "Packaging Design",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/packaging/5.png",
-  },
-  {
-    id: "pk6",
-    category: "Packaging",
-    label: "Packaging Design 6",
-    sublabel: "Packaging Design",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/packaging/6.png",
-  },
+  { id: 'pk1', category: 'Packaging', label: 'Packaging Design 1', sublabel: 'Packaging Design', src: '/images/gallery/packaging/1.png', ...GPAL.hover },
+  { id: 'pk2', category: 'Packaging', label: 'Packaging Design 2', sublabel: 'Packaging Design', src: '/images/gallery/packaging/2.png', ...GPAL.primary },
+  { id: 'pk3', category: 'Packaging', label: 'Packaging Design 3', sublabel: 'Packaging Design', src: '/images/gallery/packaging/3.png', ...GPAL.secondary },
+  { id: 'pk4', category: 'Packaging', label: 'Packaging Design 4', sublabel: 'Packaging Design', src: '/images/gallery/packaging/4.png', ...GPAL.light },
+  { id: 'pk5', category: 'Packaging', label: 'Packaging Design 5', sublabel: 'Packaging Design', src: '/images/gallery/packaging/5.png', ...GPAL.hover },
+  { id: 'pk6', category: 'Packaging', label: 'Packaging Design 6', sublabel: 'Packaging Design', src: '/images/gallery/packaging/6.png', ...GPAL.primary },
   // Videos  →  public/images/gallery/videos/
-  {
-    id: "v1",
-    category: "Videos",
-    label: "Video 1",
-    sublabel: "Reel / Promo",
-    accent: "#A463EE",
-    bg: "linear-gradient(135deg,#200050 0%,#5103AA 100%)",
-    src: "/images/gallery/videos/1.mp4",
-  },
-  {
-    id: "v2",
-    category: "Videos",
-    label: "Video 2",
-    sublabel: "Reel / Promo",
-    accent: "#780FF0",
-    bg: "linear-gradient(135deg,#1A003A 0%,#3E0085 100%)",
-    src: "/images/gallery/videos/2.mp4",
-  },
-  {
-    id: "v3",
-    category: "Videos",
-    label: "Video 3",
-    sublabel: "Reel / Promo",
-    accent: "#8E3AEE",
-    bg: "linear-gradient(135deg,#1A003A 0%,#4A0090 100%)",
-    src: "/images/gallery/videos/3.mp4",
-  },
-  {
-    id: "v4",
-    category: "Videos",
-    label: "Video 4",
-    sublabel: "Reel / Promo",
-    accent: "#B98AEF",
-    bg: "linear-gradient(135deg,#2D0060 0%,#6509CE 100%)",
-    src: "/images/gallery/videos/4.mp4",
-  },
+  { id: 'v1', category: 'Videos', label: 'Video 1', sublabel: 'Reel / Promo', src: '/images/gallery/videos/1.mp4', ...GPAL.secondary },
+  { id: 'v2', category: 'Videos', label: 'Video 2', sublabel: 'Reel / Promo', src: '/images/gallery/videos/2.mp4', ...GPAL.primary },
+  { id: 'v3', category: 'Videos', label: 'Video 3', sublabel: 'Reel / Promo', src: '/images/gallery/videos/3.mp4', ...GPAL.hover },
+  { id: 'v4', category: 'Videos', label: 'Video 4', sublabel: 'Reel / Promo', src: '/images/gallery/videos/4.mp4', ...GPAL.light },
 ];
 
 /* ─── Lightbox ─────────────────────────────────────────────────────────────── */
@@ -467,7 +203,7 @@ function Lightbox({
         >
           <span
             style={{
-              color: "#6B6B6B",
+              color: "var(--text-secondary)",
               fontSize: "11px",
               fontFamily: "Fragment Mono, monospace",
               textTransform: "uppercase",
@@ -476,7 +212,7 @@ function Lightbox({
           >
             {item.sublabel}
           </span>
-          <span style={{ color: "#FFFFFF", fontSize: "15px", fontWeight: 700 }}>
+          <span style={{ color: "var(--text-primary)", fontSize: "15px", fontWeight: 700 }}>
             {item.label}
           </span>
         </div>
@@ -494,7 +230,7 @@ function Lightbox({
           height: "40px",
           borderRadius: "50%",
           background: "rgba(30,30,30,0.9)",
-          border: "1px solid #525252",
+          border: "1px solid var(--border)",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -502,7 +238,7 @@ function Lightbox({
           zIndex: 1001,
         }}
       >
-        <X size={18} color="#FFFFFF" />
+        <X size={18} color="var(--text-primary)" />
       </button>
 
       {/* Prev arrow */}
@@ -522,7 +258,7 @@ function Lightbox({
             height: "44px",
             borderRadius: "50%",
             background: "rgba(30,30,30,0.9)",
-            border: "1px solid #525252",
+            border: "1px solid var(--border)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -530,7 +266,7 @@ function Lightbox({
             zIndex: 1001,
           }}
         >
-          <ChevronLeft size={22} color="#FFFFFF" />
+          <ChevronLeft size={22} color="var(--text-primary)" />
         </button>
       )}
 
@@ -551,7 +287,7 @@ function Lightbox({
             height: "44px",
             borderRadius: "50%",
             background: "rgba(30,30,30,0.9)",
-            border: "1px solid #525252",
+            border: "1px solid var(--border)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
@@ -559,7 +295,7 @@ function Lightbox({
             zIndex: 1001,
           }}
         >
-          <ChevronRight size={22} color="#FFFFFF" />
+          <ChevronRight size={22} color="var(--text-primary)" />
         </button>
       )}
     </motion.div>
@@ -624,7 +360,7 @@ function GalleryCard({
           zIndex: 4,
         }}
         animate={{ boxShadow: `inset 0 0 0 1px ${item.accent}55` }}
-        initial={{ boxShadow: "inset 0 0 0 1px #525252" }}
+        initial={{ boxShadow: "inset 0 0 0 1px var(--border)" }}
         transition={{ duration: 0.3 }}
         whileHover={{ boxShadow: `inset 0 0 0 1px ${item.accent}88` }}
       />
@@ -779,7 +515,7 @@ function GalleryCard({
           <div>
             <p
               style={{
-                color: "#9E9E9E",
+                color: "var(--text-secondary)",
                 fontSize: "11px",
                 marginBottom: "4px",
                 fontFamily: "Fragment Mono, monospace",
@@ -791,7 +527,7 @@ function GalleryCard({
             </p>
             <p
               style={{
-                color: "#FFFFFF",
+                color: "var(--text-primary)",
                 fontSize: "14px",
                 fontWeight: 700,
                 lineHeight: 1.3,
@@ -812,7 +548,7 @@ function GalleryCard({
               justifyContent: "center",
             }}
           >
-            <ArrowUpRight size={16} color="#FFFFFF" strokeWidth={2.5} />
+            <ArrowUpRight size={16} color="var(--text-primary)" strokeWidth={2.5} />
           </div>
         </div>
       </motion.div>
@@ -981,49 +717,11 @@ function GalleryCarousel({
           marginBottom: "16px",
         }}
       >
-        {/* Fix #1: counter now uses page convention (current page / total pages)
-            which is consistent with how the dot indicators work and what users
-            intuitively expect. */}
-        <span
-          style={{
-            color: "#525252",
-            fontFamily: "Fragment Mono, monospace",
-            fontSize: "12px",
-            letterSpacing: "0.1em",
-            marginRight: "8px",
-          }}
-        >
-          {String(Math.floor(currentIndex / cardsPerView) + 1).padStart(2, "0")}{" "}
-          / {String(totalPages).padStart(2, "0")}
-        </span>
-
         <button
           onClick={() => scrollTo(currentIndex - 1)}
           disabled={currentIndex === 0}
           aria-label="Previous"
-          style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "50%",
-            border: "1px solid #525252",
-            background: "transparent",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: currentIndex === 0 ? "not-allowed" : "pointer",
-            opacity: currentIndex === 0 ? 0.3 : 1,
-            transition: "border-color 0.2s, opacity 0.2s",
-            color: "#9E9E9E",
-          }}
-          onMouseEnter={(e) => {
-            if (currentIndex !== 0)
-              (e.currentTarget as HTMLButtonElement).style.borderColor =
-                "#780FF0";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor =
-              "#525252";
-          }}
+          className="w-9 h-9 rounded-full border border-border text-text-secondary flex items-center justify-center bg-transparent cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 enabled:hover:border-accent transition-colors"
         >
           <ArrowLeft size={15} strokeWidth={2} />
         </button>
@@ -1032,29 +730,7 @@ function GalleryCarousel({
           onClick={() => scrollTo(currentIndex + 1)}
           disabled={currentIndex >= maxIndex}
           aria-label="Next"
-          style={{
-            width: "36px",
-            height: "36px",
-            borderRadius: "50%",
-            border: "1px solid #525252",
-            background: "transparent",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: currentIndex >= maxIndex ? "not-allowed" : "pointer",
-            opacity: currentIndex >= maxIndex ? 0.3 : 1,
-            transition: "border-color 0.2s, opacity 0.2s",
-            color: "#9E9E9E",
-          }}
-          onMouseEnter={(e) => {
-            if (currentIndex < maxIndex)
-              (e.currentTarget as HTMLButtonElement).style.borderColor =
-                "#780FF0";
-          }}
-          onMouseLeave={(e) => {
-            (e.currentTarget as HTMLButtonElement).style.borderColor =
-              "#525252";
-          }}
+          className="w-9 h-9 rounded-full border border-border text-text-secondary flex items-center justify-center bg-transparent cursor-pointer disabled:cursor-not-allowed disabled:opacity-30 enabled:hover:border-accent transition-colors"
         >
           <ArrowRight size={15} strokeWidth={2} />
         </button>
@@ -1133,7 +809,7 @@ function GalleryCarousel({
                 width: isActive ? "24px" : "8px",
                 height: "8px",
                 borderRadius: "999px",
-                background: isActive ? "#780FF0" : "#525252",
+                background: isActive ? "var(--accent)" : "var(--border)",
                 border: "none",
                 cursor: "pointer",
                 padding: 0,
@@ -1193,11 +869,7 @@ export default function Gallery() {
 
   return (
     <section
-      style={{
-        background: "#1F1E1F",
-        padding: "96px 0",
-        borderTop: "1px solid #525252",
-      }}
+      className="bg-bg-primary border-t border-border py-24"
     >
       <div style={{ maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
         {/* Header + controls row */}
@@ -1227,12 +899,12 @@ export default function Gallery() {
               style={{
                 fontSize: "clamp(2rem, 4vw, 3rem)",
                 fontWeight: 900,
-                color: "#FFFFFF",
+                color: "var(--text-primary)",
                 lineHeight: 1.15,
                 letterSpacing: "-0.5px",
               }}
             >
-              A Glimpse of <span style={{ color: "#780FF0" }}>Our Works</span>
+              A Glimpse of <span style={{ color: "var(--accent)" }}>Our Works</span>
             </motion.h2>
           </div>
 
@@ -1258,7 +930,7 @@ export default function Gallery() {
                   borderRadius: "999px",
                   border: "none",
                   background: "transparent",
-                  color: active === tab ? "#780FF0" : "#6B6B6B",
+                  color: active === tab ? "var(--accent)" : "var(--text-secondary)",
                   fontSize: "13px",
                   fontWeight: 600,
                   cursor: "pointer",

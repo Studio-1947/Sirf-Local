@@ -39,6 +39,13 @@ interface CardData {
   thumbnail: string;
 }
 
+// Named palette entries — map card colour variations to design tokens
+const PALETTE = {
+  primary:   { accent: 'var(--accent)',           thumbFrom: 'var(--bg-primary)', thumbTo: 'var(--bg-deep)', dotColor: 'var(--accent-glow)' },
+  secondary: { accent: 'var(--accent-secondary)',  thumbFrom: 'var(--bg-secondary)', thumbTo: 'var(--bg-primary)', dotColor: 'var(--accent-glow)' },
+  light:     { accent: 'var(--accent-light)',      thumbFrom: 'var(--bg-primary)', thumbTo: 'var(--bg-secondary)', dotColor: 'var(--accent-glow)' },
+} as const;
+
 const cards: CardData[] = [
   {
     title: "Monthly Reels",
@@ -47,10 +54,7 @@ const cards: CardData[] = [
     body: "Short, engaging videos to trend locally",
     label: "4 ready-to-use reels created from your photos and clips",
     icon: Video,
-    accent: "#780FF0",
-    thumbFrom: "#3E0085",
-    thumbTo: "#1A003A",
-    dotColor: "rgba(120,15,240,0.12)",
+    ...PALETTE.primary,
     thumbnail: "/images/pricing/Image-1.png",
   },
   {
@@ -60,10 +64,7 @@ const cards: CardData[] = [
     body: "For owners too busy to worry about posting",
     label: "8 ready-to-use posts per month — greetings, offers & highlights",
     icon: LayoutGrid,
-    accent: "#A463EE",
-    thumbFrom: "#5103AA",
-    thumbTo: "#200050",
-    dotColor: "rgba(164,99,238,0.12)",
+    ...PALETTE.secondary,
     thumbnail: "/images/pricing/Image-2.png",
   },
   {
@@ -73,10 +74,7 @@ const cards: CardData[] = [
     body: 'Give your "Old" Shop a modern facelift',
     label: "New colors, a fresh logo, and updated social media banners",
     icon: Sparkles,
-    accent: "#780FF0",
-    thumbFrom: "#3E0085",
-    thumbTo: "#1A003A",
-    dotColor: "rgba(120,15,240,0.12)",
+    ...PALETTE.primary,
     thumbnail: "/images/pricing/Image-3.png",
   },
   {
@@ -84,13 +82,9 @@ const cards: CardData[] = [
     price: "₹3,500",
     period: "one-time",
     body: "Perfect for local bakers, candle makers, or crafters",
-    label:
-      "A professional label or box design that makes your products look premium",
+    label: "A professional label or box design that makes your products look premium",
     icon: Package,
-    accent: "#B98AEF",
-    thumbFrom: "#6509CE",
-    thumbTo: "#2D0060",
-    dotColor: "rgba(185,138,239,0.12)",
+    ...PALETTE.light,
     thumbnail: "/images/pricing/Image-4.png",
   },
   {
@@ -98,13 +92,9 @@ const cards: CardData[] = [
     price: "₹5,000",
     period: "one-time",
     body: "A simple, clean page that tells people who you are",
-    label:
-      'Mobile-friendly with a big "Call/WhatsApp us" button and map directions',
+    label: 'Mobile-friendly with a big "Call/WhatsApp us" button and map directions',
     icon: Globe,
-    accent: "#780FF0",
-    thumbFrom: "#3E0085",
-    thumbTo: "#1A003A",
-    dotColor: "rgba(120,15,240,0.12)",
+    ...PALETTE.primary,
     thumbnail: "/images/pricing/Image-5.png",
   },
   {
@@ -112,13 +102,9 @@ const cards: CardData[] = [
     price: "₹800",
     period: "one-time",
     body: "Beautiful designs to bring customers through your door",
-    label:
-      'High-quality graphics for "Buy 1 Get 1" deals, flash sales & grand openings',
+    label: 'High-quality graphics for "Buy 1 Get 1" deals, flash sales & grand openings',
     icon: Megaphone,
-    accent: "#A463EE",
-    thumbFrom: "#5103AA",
-    thumbTo: "#200050",
-    dotColor: "rgba(164,99,238,0.12)",
+    ...PALETTE.secondary,
     thumbnail: "/images/pricing/Image-6.png",
   },
   {
@@ -126,13 +112,9 @@ const cards: CardData[] = [
     price: "₹3,000",
     period: "one-time",
     body: "People love shopping on WhatsApp — let's make it easy for them",
-    label:
-      "Product catalogue with photos & prices, plus auto-replies for instant answers",
+    label: "Product catalogue with photos & prices, plus auto-replies for instant answers",
     icon: MessageCircle,
-    accent: "#780FF0",
-    thumbFrom: "#3E0085",
-    thumbTo: "#1A003A",
-    dotColor: "rgba(120,15,240,0.12)",
+    ...PALETTE.primary,
     thumbnail: "/images/pricing/Image-7.png",
   },
   {
@@ -140,13 +122,9 @@ const cards: CardData[] = [
     price: "₹5,000",
     period: "one-time",
     body: 'Move from a "Small Shop" to a "Big Brand" look',
-    label:
-      "A unique logo designed just for you, plus a matching business card design",
+    label: "A unique logo designed just for you, plus a matching business card design",
     icon: Award,
-    accent: "#B98AEF",
-    thumbFrom: "#6509CE",
-    thumbTo: "#2D0060",
-    dotColor: "rgba(185,138,239,0.12)",
+    ...PALETTE.light,
     thumbnail: "/images/pricing/Image-8.png",
   },
   {
@@ -154,13 +132,9 @@ const cards: CardData[] = [
     price: "₹2,000",
     period: "one-time",
     body: "If people can't find you on their phones, they can't visit you!",
-    label:
-      "Listed on Google Maps & search, verified, with accurate hours & location",
+    label: "Listed on Google Maps & search, verified, with accurate hours & location",
     icon: MapPin,
-    accent: "#A463EE",
-    thumbFrom: "#5103AA",
-    thumbTo: "#200050",
-    dotColor: "rgba(164,99,238,0.12)",
+    ...PALETTE.secondary,
     thumbnail: "/images/pricing/Image-9.png",
   },
 ];
@@ -202,8 +176,8 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
         display: "flex",
         flexDirection: "column",
         borderRadius: "20px",
-        border: `1px solid ${inCart ? card.accent + "70" : hovered ? card.accent + "55" : "#525252"}`,
-        background: inCart ? "#1F1E1F" : hovered ? "#383838" : "#1F1E1F",
+        border: `1px solid ${inCart ? card.accent + "70" : hovered ? card.accent + "55" : "var(--border)"}`,
+        background: inCart ? "var(--bg-primary)" : hovered ? "var(--bg-secondary)" : "var(--bg-primary)",
         overflow: "hidden",
         transition: "border-color 0.3s, background 0.3s, box-shadow 0.3s",
         boxShadow: hovered
@@ -273,7 +247,7 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
 
         <h3
           style={{
-            color: hovered ? card.accent : "#FFFFFF",
+            color: hovered ? card.accent : "var(--text-primary)",
             fontWeight: 800,
             fontSize: "16px",
             lineHeight: 1.3,
@@ -285,7 +259,7 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
         </h3>
         <p
           style={{
-            color: "#858585",
+            color: "var(--text-secondary)",
             fontSize: "13.5px",
             lineHeight: 1.6,
             margin: 0,
@@ -293,7 +267,7 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
         >
           {card.body}
           {card.period === 'one-time' && card.title.toLowerCase().includes('website') && (
-            <span style={{ display: 'block', fontSize: '11px', color: '#555', marginTop: '4px', fontStyle: 'italic' }}>
+            <span style={{ display: 'block', fontSize: '11px', color: 'var(--text-muted)', marginTop: '4px', fontStyle: 'italic' }}>
               *Costs may increase with added features and pages
             </span>
           )}
@@ -304,7 +278,7 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
           style={{
             marginTop: "auto",
             paddingTop: "14px",
-            borderTop: "1px solid #525252",
+            borderTop: "1px solid var(--border)",
             display: "flex",
             gap: "8px",
             alignItems: "flex-start",
@@ -349,10 +323,10 @@ function PricingCard({ card, index }: { card: CardData; index: number }) {
             fontSize: "13px",
             fontWeight: 700,
             cursor: "pointer",
-            border: `1.5px solid ${inCart ? "#4CAF7D" : hovered ? card.accent : card.accent + "50"}`,
-            color: inCart ? "#1F1E1F" : hovered ? "#FFFFFF" : card.accent,
+            border: `1.5px solid ${inCart ? "var(--state-success)" : hovered ? card.accent : card.accent + "50"}`,
+            color: inCart ? "var(--bg-primary)" : hovered ? "var(--text-primary)" : card.accent,
             background: inCart
-              ? "#4CAF7D"
+              ? "var(--state-success)"
               : hovered
                 ? card.accent
                 : "transparent",
@@ -379,12 +353,7 @@ export default function Pricing() {
   return (
     <section
       id="pricing"
-      style={{
-        background: "#1F1E1F",
-        paddingTop: "112px",
-        paddingBottom: "112px",
-        borderTop: "1px solid #383838",
-      }}
+      className="bg-bg-primary border-t border-bg-secondary py-28"
     >
       <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
         {/* Header */}
@@ -404,7 +373,7 @@ export default function Pricing() {
             style={{
               fontSize: "clamp(2rem, 5vw, 3rem)",
               fontWeight: 900,
-              color: "#FFFFFF",
+              color: "var(--text-primary)",
               lineHeight: 1.15,
               marginBottom: "14px",
               letterSpacing: "-0.5px",
@@ -412,14 +381,14 @@ export default function Pricing() {
           >
             Your Business Needs,
             <br />
-            <span style={{ color: "#780FF0" }}>Pick What Fits</span>
+            <span style={{ color: "var(--accent)" }}>Pick What Fits</span>
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={inView ? { opacity: 1, y: 0 } : {}}
             transition={{ delay: 0.25 }}
             style={{
-              color: "#858585",
+              color: "var(--text-secondary)",
               fontSize: "16px",
               maxWidth: "400px",
               margin: "0 auto",
@@ -453,8 +422,8 @@ export default function Pricing() {
           transition={{ delay: 0.2 }}
           style={{
             marginTop: "40px",
-            background: "linear-gradient(135deg, #1A003A 0%, #1F1E1F 60%)",
-            border: "1px solid #3E0085",
+            background: "linear-gradient(135deg, var(--accent-deep, #1A003A) 0%, var(--bg-primary) 60%)",
+            border: "1px solid rgba(120,15,240,0.4)",
             borderRadius: "20px",
             padding: "48px 40px",
             textAlign: "center",
@@ -480,7 +449,7 @@ export default function Pricing() {
             style={{
               fontSize: "22px",
               fontWeight: 900,
-              color: "#FFFFFF",
+              color: "var(--text-primary)",
               marginBottom: "8px",
               position: "relative",
             }}
@@ -489,7 +458,7 @@ export default function Pricing() {
           </p>
           <p
             style={{
-              color: "#858585",
+              color: "var(--text-secondary)",
               marginBottom: "28px",
               maxWidth: "420px",
               margin: "0 auto 28px",
@@ -502,26 +471,7 @@ export default function Pricing() {
           </p>
           <a
             href="#contact"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "13px 32px",
-              background: "#780FF0",
-              color: "#FFFFFF",
-              fontWeight: 800,
-              fontSize: "14px",
-              borderRadius: "999px",
-              textDecoration: "none",
-              position: "relative",
-              letterSpacing: "0.3px",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#8E3AEE";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#780FF0";
-            }}
+            className="inline-flex items-center gap-2 px-8 py-3.5 bg-accent text-white font-extrabold text-sm rounded-full no-underline tracking-[0.3px] hover:bg-accent-hover transition-colors"
           >
             Get a Custom Quote →
           </a>
