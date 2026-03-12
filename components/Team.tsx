@@ -6,13 +6,14 @@ import Image from 'next/image';
 
 const team = [
   { name: 'Anjali Chettri',     role: 'Co-Founder',          img: '/images/team/anjali.png',      color: 'var(--accent-secondary)' },
-  { name: 'Nikhil Raj Subba',   role: 'Marketing',           img: '/images/team/nikhil.png',      color: 'var(--accent)' },
-  { name: 'Anushiya Thapa',     role: 'Content Manager',     img: '/images/team/anushiya.png',    color: 'var(--text-secondary)' },
-  { name: 'Zahid Ansari',       role: 'Storytelling',        img: '/images/team/zahid.png',       color: 'var(--accent-secondary)' },
-  { name: 'Rahul Chetrii',      role: 'Data & Tech',         img: '/images/team/rahul.png',       color: 'var(--accent)' },
   { name: 'Ankita Chettri',     role: 'Sales',               img: '/images/team/ankita.png',      color: 'var(--text-secondary)' },
-  { name: 'Sankhadipta Bose',   role: 'Data & Tech',         img: '/images/team/sankhadipta.png', color: 'var(--accent-secondary)' },
+  { name: 'Anushiya Thapa',     role: 'Content Manager',     img: '/images/team/anushiya.png',    color: 'var(--text-secondary)' },
   { name: 'Astha Chettri',      role: 'Multimedia Designer', img: '/images/team/astha.png',       color: 'var(--accent)' },
+  { name: 'Nikhil Raj Subba',   role: 'Marketing',           img: '/images/team/nikhil.png',      color: 'var(--accent)' },
+  { name: 'Rahul Chetrii',      role: 'Data & Tech',         img: '/images/team/rahul.png',       color: 'var(--accent)' },
+  { name: 'Sankhadipta Bose',   role: 'Data & Tech',         img: '/images/team/sankhadipta.png', color: 'var(--accent-secondary)' },
+  { name: 'Subhendu Kundu',     role: 'Co-Founder',          img: '/images/team/Subhendu.png',    color: 'var(--accent)' },
+  { name: 'Zahid Ansari',       role: 'Storytelling',        img: '/images/team/zahid.png',       color: 'var(--accent-secondary)' },
 ];
 
 function TeamCard({ member, index }: { member: typeof team[0]; index: number }) {
@@ -111,7 +112,7 @@ export default function Team() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           {team.map((member, i) => (
             <TeamCard key={member.name} member={member} index={i} />
           ))}
