@@ -15,6 +15,12 @@ const themes: Theme[] = [
   { name: 'Emerald', bg: '#0B3D2E', accent: '#FFFFFF' },
   { name: 'Ochre', bg: '#5A4A00', accent: '#FFFFFF' },
   { name: 'Rust', bg: '#7B3501', accent: '#FFFFFF' },
+  { name: 'Teal', bg: '#106163', accent: '#FFFFFF' },
+  { name: 'Purple', bg: '#531162', accent: '#FFFFFF' },
+  { name: 'Coffee', bg: '#805B2F', accent: '#FFFFFF' },
+  { name: 'MossGreen', bg: '#4F5815', accent: '#FFFFFF' },
+  { name: 'Orange', bg: '#920000', accent: '#FFFFFF' },
+  { name: 'Blue', bg: '#112971', accent: '#FFFFFF' },
 ];
 
 interface ThemeContextType {
@@ -27,28 +33,34 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [currentTheme, setCurrentTheme] = useState<Theme>(themes[0]);
 
   useEffect(() => {
-    // Pick a random theme on mount
-    const randomIndex = Math.floor(Math.random() * themes.length);
-    const selectedTheme = themes[randomIndex];
+    // Sequential theme selection
+    const lastIndex = localStorage.getItem('lastThemeIndex');
+    let nextIndex = 0;
+    if (lastIndex !== null) {
+      nextIndex = (parseInt(lastIndex, 10) + 1) % themes.length;
+    }
+    localStorage.setItem('lastThemeIndex', nextIndex.toString());
+    
+    const selectedTheme = themes[nextIndex];
     setCurrentTheme(selectedTheme);
 
     // Update CSS variables
     const root = document.documentElement;
     root.style.setProperty('--bg-primary', selectedTheme.bg);
     root.style.setProperty('--accent', selectedTheme.accent);
-    
+
     // Convert hex to RGB for components that need opacity
     const r = parseInt(selectedTheme.bg.slice(1, 3), 16);
     const g = parseInt(selectedTheme.bg.slice(3, 5), 16);
     const b = parseInt(selectedTheme.bg.slice(5, 7), 16);
     root.style.setProperty('--bg-rgb', `${r}, ${g}, ${b}`);
-    
+
     // Accent RGB
     const ar = parseInt(selectedTheme.accent.slice(1, 3), 16);
     const ag = parseInt(selectedTheme.accent.slice(3, 5), 16);
     const ab = parseInt(selectedTheme.accent.slice(5, 7), 16);
     root.style.setProperty('--accent-rgb', `${ar}, ${ag}, ${ab}`);
-    
+
     // Text Colors as per User Requirement
     root.style.setProperty('--text-primary', '#FFFFFF');
     root.style.setProperty('--text-secondary', 'rgba(255, 255, 255, 0.6)');
@@ -65,7 +77,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     root.style.setProperty('--white-20', 'rgba(255, 255, 255, 0.2)');
     root.style.setProperty('--white-10', 'rgba(255, 255, 255, 0.1)');
     root.style.setProperty('--white-05', 'rgba(255, 255, 255, 0.05)');
-    
+
     // Button Colors (Solid Button: White-ish with Theme Color text)
     root.style.setProperty('--btn-solid-bg', '#E5E7EB'); // Light gray/white-ish
     root.style.setProperty('--btn-solid-text', selectedTheme.bg);
