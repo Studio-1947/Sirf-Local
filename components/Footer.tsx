@@ -70,7 +70,7 @@ export default function Footer() {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="group flex items-center gap-3 px-8 py-5 bg-[var(--btn-solid-bg)] text-[var(--btn-solid-text)] font-bold rounded-full hover:opacity-90 transition-all shadow-[0_0_30px_rgba(255,255,255,0.1)]"
+              className="btn-primary shadow-[0_0_30px_rgba(255,255,255,0.1)] !px-8 !py-5"
             >
               Start Your Project
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />

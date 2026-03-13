@@ -84,10 +84,7 @@ export default function Hero() {
               transition={{ delay: 0.65 }}
               className="flex flex-wrap gap-4 mb-12"
             >
-              <a
-                href="#contact"
-                className="group flex items-center gap-2 px-9 py-4 bg-[var(--btn-solid-bg)] text-[var(--btn-solid-text)] font-bold rounded-full hover:opacity-90 transition-all hover:gap-3"
-              >
+              <a href="#contact" className="btn-primary">
                 Start Your Journey
                 <ArrowRight
                   size={16}

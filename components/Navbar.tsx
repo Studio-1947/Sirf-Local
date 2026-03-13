@@ -118,7 +118,7 @@ export default function Navbar() {
               href="https://wa.me/919093277919"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-6 py-2.5 bg-[var(--btn-solid-bg)] text-[var(--btn-solid-text)] text-sm font-bold rounded-full hover:opacity-90 transition-colors inline-flex items-center gap-2"
+              className="btn-primary !px-6 !py-2.5 !text-sm"
             >
               <SVGLIcon name="whatsapp" size={16} />
               Connect Now
@@ -167,7 +167,7 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                className="mt-2 px-5 py-3 bg-white text-bg-primary text-sm font-bold rounded-full text-center hover:opacity-90 transition-colors inline-flex items-center justify-center gap-2"
+                className="btn-primary !w-full !justify-center !mt-2"
               >
                 <SVGLIcon name="whatsapp" size={16} />
                 Connect Now

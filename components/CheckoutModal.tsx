@@ -313,7 +313,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                         </div>
                                         <button
                                             onClick={() => setScreen('form')}
-                                            className="w-full py-3.5 rounded-full bg-white text-bg-primary font-extrabold text-sm border-none cursor-pointer tracking-[0.3px] hover:opacity-90 transition-colors"
+                                            className="btn-primary !w-full !justify-center !py-3.5 !text-sm tracking-[0.3px]"
                                         >
                                             Try again
                                         </button>
@@ -434,18 +434,9 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                         <button
                                             onClick={handlePay}
                                             disabled={!acceptedTerms}
-                                            style={{
-                                                width: '100%', padding: '14px 0', borderRadius: '999px',
-                                                background: acceptedTerms ? '#FFFFFF' : '#1A1A1A',
-                                                color: acceptedTerms ? 'var(--bg-primary)' : '#444',
-                                                fontWeight: 800, fontSize: '15px',
-                                                border: 'none', cursor: acceptedTerms ? 'pointer' : 'not-allowed', letterSpacing: '0.3px',
-                                                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-                                                transition: 'all 0.2s',
-                                                opacity: acceptedTerms ? 1 : 0.6
-                                            }}
-                                            onMouseEnter={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.9)'; }}
-                                            onMouseLeave={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#FFFFFF'; }}
+                                            className={`btn-primary !w-full !justify-center !py-3.5 !text-sm tracking-[0.3px] ${!acceptedTerms ? '!bg-[#1A1A1A] !text-[#444] !cursor-not-allowed !opacity-60 !border-none' : ''}`}
+                                            onMouseEnter={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#FFFFFF'; }}
+                                            onMouseLeave={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = ''; }}
                                         >
                                             Pay {formatPrice(tokenAmount)} now <ArrowRight size={16} />
                                         </button>

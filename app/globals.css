@@ -44,6 +44,9 @@
     /* Semantic states */
     --color-state-success:  #4CAF7D;
     --color-state-error:    #E05353;
+
+    /* Buttons */
+    --btn-primary-gradient: linear-gradient(289.85deg, rgba(217, 217, 217, 0.43) 4.7%, rgba(255, 255, 255, 0.2) 87.92%);
 }
 
 /* ─── CSS variables (for use in dynamic/inline styles that can't use Tailwind) */
@@ -86,6 +89,9 @@
     /* Semantic states */
     --state-success: #4CAF7D;
     --state-error:   #E05353;
+
+    /* Buttons */
+    --btn-primary-gradient: linear-gradient(289.85deg, rgba(217, 217, 217, 0.43) 4.7%, rgba(255, 255, 255, 0.2) 87.92%);
 }
 
 * {
@@ -219,4 +225,61 @@ body {
 .no-scrollbar {
     -ms-overflow-style: none !important;  /* IE and Edge */
     scrollbar-width: none !important;  /* Firefox */
+}
+
+@layer utilities {
+    .btn-primary {
+        background: var(--btn-primary-gradient);
+        color: var(--text-primary);
+        font-weight: 700;
+        padding: 1rem 2.25rem;
+        border-radius: 9999px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+        z-index: 1;
+    }
+
+    .btn-primary::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: #FFFFFF;
+        transform: translateX(-101%);
+        transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        z-index: -1;
+    }
+
+    .btn-primary:hover {
+        color: var(--bg-primary);
+        gap: 0.75rem;
+        border-color: #FFFFFF;
+        transform: translateY(-1px);
+        box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn-primary:hover::before {
+        transform: translateX(0);
+    }
+
+    /* Disable hover effects for disabled state */
+    .btn-primary:disabled::before,
+    .btn-primary[disabled]::before {
+        display: none;
+    }
+
+    .btn-primary:active {
+        transform: translateY(1px);
+    }
+
+    /* Ensure icons inside transition with the text */
+    .btn-primary svg {
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
 }
