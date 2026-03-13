@@ -166,7 +166,7 @@ export default function Footer() {
         {/* Bottom Section: Legal & Credits */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pt-8">
           <p className="text-text-muted text-[10px] font-mono-display uppercase tracking-[0.2em]">
-            © 2025 Studio 1947 Initiative. All Rights Reserved.
+            © Studio 1947 Initiative . 2026 . All Rights Reserved.
           </p>
           <div className="flex items-center gap-2 text-[10px] font-mono-display uppercase tracking-[0.2em] text-text-muted">
             Crafted with 

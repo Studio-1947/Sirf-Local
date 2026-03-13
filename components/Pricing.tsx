@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import {
   Video,
   Grid,
@@ -17,24 +17,33 @@ import {
   ArrowRight,
 } from "lucide-react";
 import { useCart, parsePrice } from "@/context/CartContext";
+import {
+  PRICING_CARDS,
+  PRICING_COPY,
+  PRICING_TABS,
+  type PricingCardData,
+  type PricingMode,
+} from "@/components/pricing-data";
 
-const services = [
-  { id: '01', title: "Monthly Reels", price: "₹3,500", period: "monthly", body: "High-impact short-form video content designed for local virality.", size: 'hero', icon: <Video size={18} strokeWidth={1.5} /> },
-  { id: '02', title: "Monthly Content", price: "₹3,500", period: "monthly", body: "8 professional monthly posts for owners too busy to worry about posting.", size: 'hero', icon: <Grid size={18} strokeWidth={1.5} /> },
-  { id: '03', title: "One-Page Website", price: "₹5,000", period: "one-time", body: "A high-performance portal with WhatsApp sync & local maps.", size: 'small', icon: <Globe size={18} strokeWidth={1.5} /> },
-  { id: '04', title: "Brand Makeover", price: "₹5,000", period: "one-time", body: "Complete logo & color architecture.", size: 'small', icon: <Zap size={18} strokeWidth={1.5} /> },
-  { id: '05', title: "Premium Packaging", price: "₹3,500", period: "one-time", body: "Professional SKU label systems.", size: 'small', icon: <Box size={18} strokeWidth={1.5} /> },
-  { id: '06', title: "WhatsApp Shop", price: "₹3,000", period: "one-time", body: "Full catalogue & auto-replies.", size: 'small', icon: <MessageCircle size={18} strokeWidth={1.5} /> },
-  { id: '07', title: "Professional Look", price: "₹5,000", period: "one-time", body: "Logo + matching business cards.", size: 'small', icon: <Award size={18} strokeWidth={1.5} /> },
-  { id: '08', title: "Google Maps Audit", price: "₹2,000", period: "one-time", body: "Verified local search optimization.", size: 'small', icon: <MapPin size={18} strokeWidth={1.5} /> },
-  { id: '09', title: "Promo Graphics", price: "₹800", period: "one-time", body: "High-quality flash sale designs.", size: 'small', icon: <Bell size={18} strokeWidth={1.5} /> },
-];
+const iconMap = {
+  video: <Video size={18} strokeWidth={1.5} />,
+  grid: <Grid size={18} strokeWidth={1.5} />,
+  globe: <Globe size={18} strokeWidth={1.5} />,
+  zap: <Zap size={18} strokeWidth={1.5} />,
+  box: <Box size={18} strokeWidth={1.5} />,
+  message: <MessageCircle size={18} strokeWidth={1.5} />,
+  award: <Award size={18} strokeWidth={1.5} />,
+  map: <MapPin size={18} strokeWidth={1.5} />,
+  bell: <Bell size={18} strokeWidth={1.5} />,
+} as const;
 
-function BentoCard({ svc, index }: { svc: any; index: number }) {
+function BentoCard({ svc, index }: { svc: PricingCardData; index: number }) {
   const { isInCart, toggleItem, openDrawer } = useCart();
+  const isAdvance = svc.period === "advance";
   const inCart = isInCart(svc.title);
 
   function handleCartClick() {
+    if (isAdvance || !svc.price) return;
     toggleItem({ id: svc.title, title: svc.title, price: parsePrice(svc.price), period: svc.period, accent: 'var(--accent)' });
     if (!inCart) openDrawer();
   }
@@ -60,7 +69,7 @@ function BentoCard({ svc, index }: { svc: any; index: number }) {
               ? 'bg-accent/20 border-accent/40 text-accent' 
               : 'bg-white/5 border-white/10 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]'
           }`}>
-            {svc.icon}
+            {iconMap[svc.icon]}
           </div>
           <span className={`font-mono-display text-[9px] uppercase tracking-[0.2em] font-bold ${svc.period === 'monthly' ? 'text-accent' : 'text-text-muted'}`}>
             {svc.period}
@@ -75,20 +84,34 @@ function BentoCard({ svc, index }: { svc: any; index: number }) {
         </p>
       </div>
 
-      <div className="relative z-10 mt-8 flex items-end justify-between">
-        <div className="flex flex-col">
-          <span className="text-2xl font-black text-white tracking-tighter transition-colors duration-500 group-hover:text-accent">{svc.price}</span>
-          <span className="text-[10px] font-mono-display text-text-muted uppercase tracking-widest">Fixed Rate</span>
-        </div>
+      <div className="relative z-10 mt-8 flex items-end justify-between gap-4">
+        {isAdvance ? (
+          <div className="w-full flex items-center justify-end">
+            <a
+              href="#contact"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/5 text-white text-xs font-mono-display uppercase tracking-[0.14em] hover:border-accent hover:bg-accent hover:text-bg-primary transition-all duration-300"
+            >
+              Contact Us
+              <ArrowRight size={14} />
+            </a>
+          </div>
+        ) : (
+          <>
+            <div className="flex flex-col">
+              <span className="text-2xl font-black text-white tracking-tighter transition-colors duration-500 group-hover:text-accent">{svc.price}</span>
+              <span className="text-[10px] font-mono-display text-text-muted uppercase tracking-widest">Fixed Rate</span>
+            </div>
 
-        <button
-          onClick={handleCartClick}
-          className={`group/btn flex items-center justify-center gap-2 w-10 h-10 rounded-full border transition-all duration-500 ${
-            inCart ? "bg-state-success border-state-success text-bg-primary" : "bg-white/5 border-white/10 text-white hover:border-accent hover:bg-accent"
-          }`}
-        >
-          {inCart ? <CheckCircle2 size={16} strokeWidth={2.5} /> : <ShoppingCart size={16} strokeWidth={2} />}
-        </button>
+            <button
+              onClick={handleCartClick}
+              className={`group/btn flex items-center justify-center gap-2 w-10 h-10 rounded-full border transition-all duration-500 ${
+                inCart ? "bg-state-success border-state-success text-bg-primary" : "bg-white/5 border-white/10 text-white hover:border-accent hover:bg-accent"
+              }`}
+            >
+              {inCart ? <CheckCircle2 size={16} strokeWidth={2.5} /> : <ShoppingCart size={16} strokeWidth={2} />}
+            </button>
+          </>
+        )}
       </div>
 
       <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
@@ -101,35 +124,51 @@ function BentoCard({ svc, index }: { svc: any; index: number }) {
 
 export default function Pricing() {
   const containerRef = useRef(null);
+  const [activeMode, setActiveMode] = useState<PricingMode>("monthly");
   const inView = useInView(containerRef, { once: true, margin: "-100px" });
+  const activeServices = PRICING_CARDS[activeMode];
 
   return (
     <section id="pricing" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={containerRef} className="mb-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
           <div className="max-w-2xl">
-            <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">Service Modules</motion.span>
+            <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">{PRICING_COPY.sectionTag}</motion.span>
             <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
-              Transparent <br />
-              <span className="text-accent">Studio Rates.</span>
+              {PRICING_COPY.titleLineOne} <br />
+              <span className="text-accent">{PRICING_COPY.titleLineTwo}</span>
             </motion.h2>
           </div>
           <div className="text-right hidden md:block">
              <p className="text-text-secondary text-lg font-mono-display uppercase tracking-widest max-w-[240px] border-r-2 border-accent pr-6 leading-relaxed">
-                Pick technical modules to scale your brand.
+                {PRICING_COPY.sideNote}
              </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          {services.filter(s => s.period === 'monthly').map((svc, i) => (
-            <BentoCard key={svc.title} svc={svc} index={i} />
-          ))}
+        <div className="mb-10 flex flex-wrap items-center gap-3 md:gap-4">
+          {PRICING_TABS.map((tab) => {
+            const isActive = activeMode === tab.key;
+            return (
+              <button
+                key={tab.key}
+                type="button"
+                onClick={() => setActiveMode(tab.key)}
+                className={`px-6 py-2.5 rounded-full text-xs md:text-sm font-mono-display uppercase tracking-[0.15em] border transition-all duration-300 ${
+                  isActive
+                    ? "bg-accent text-bg-primary border-accent"
+                    : "bg-white/5 text-white/70 border-white/10 hover:border-white/30"
+                }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.filter(s => s.period === 'one-time').map((svc, i) => (
-            <BentoCard key={svc.title} svc={svc} index={i + 2} />
+          {activeServices.map((svc, i) => (
+            <BentoCard key={svc.title} svc={svc} index={i} />
           ))}
         </div>
 
@@ -137,11 +176,11 @@ export default function Pricing() {
           <div className="bg-bg-primary rounded-[2.4rem] p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 border border-white/5 relative overflow-hidden">
              <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[80px] rounded-full" />
              <div className="text-left relative z-10">
-                <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">Complex Requirement?</h3>
-                <p className="text-white/60 text-lg max-w-md opacity-80">We architect custom end-to-end solutions for businesses with multi-layered digital needs.</p>
+               <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">{PRICING_COPY.ctaTitle}</h3>
+               <p className="text-white/60 text-lg max-w-md opacity-80">{PRICING_COPY.ctaBody}</p>
              </div>
              <a href="#contact" className="group relative z-10 flex items-center gap-4 px-10 py-4 bg-white text-bg-primary font-bold text-sm rounded-full transition-all duration-300 hover:opacity-90 hover:scale-[1.02] shadow-2xl">
-                Request Custom Blueprint
+               {PRICING_COPY.ctaLabel}
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
              </a>
           </div>
