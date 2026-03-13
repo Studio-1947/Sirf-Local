@@ -47,7 +47,6 @@ export default function Footer() {
     <footer className="relative bg-bg-primary pt-24 pb-12 overflow-hidden border-t border-white/5">
       {/* Subtle Background Elements */}
       <div className="absolute top-0 left-1/4 w-[50%] h-[50%] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
-      
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
         {/* Top Section: High Impact CTA */}
@@ -84,7 +83,27 @@ export default function Footer() {
           
           {/* Brand Info */}
           <div className="space-y-8">
-            <Image src="/Logo.svg" alt="Sirf Local" width={140} height={40} className="h-10 w-auto object-contain" />
+            <div className="space-y-8">
+              <Image src="/Logo.svg" alt="Sirf Local" width={140} height={40} className="h-10 w-auto object-contain" />
+              
+              {/* Screenshot-Inspired Floral Integration */}
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="w-full max-w-[240px]"
+              >
+                <Image 
+                  src="/sdfghjkl 1 1.svg" 
+                  alt="" 
+                  width={240} 
+                  height={240} 
+                  className="w-full h-auto object-contain"
+                />
+              </motion.div>
+            </div>
+
             <p className="text-text-secondary text-base leading-relaxed opacity-80">
               A digital design studio building high-performance architectures for regional brands. From Mirik to the world.
             </p>
