@@ -215,7 +215,6 @@ export default function CartDrawer() {
                     >
                       Need a custom blueprint instead?
                     </a>
-                  </div>
 
                   {hasOneTime && (
                     <div className="flex items-start gap-2 opacity-60">

@@ -275,9 +275,8 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                         }}>
                                             <p style={{ color: '#780FF0', fontWeight: 700, fontSize: '13px', margin: '0 0 4px' }}>Remaining balance</p>
                                             <p style={{ color: '#8A8178', fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
-                                                <span style={{ color: '#F0EBE0', fontWeight: 700 }}>{formatPrice(successData?.remaining ?? 0)}</span> is due after we confirm the
                                                 final scope with you — no surprises.
-                                            </div>
+                                            </p>
                                         </div>
 
                                         <a
