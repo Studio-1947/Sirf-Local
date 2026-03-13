@@ -6,7 +6,17 @@ export type PricingCardData = {
   price?: string;
   period: string;
   body: string;
-  icon: "video" | "grid" | "globe" | "zap" | "box" | "message" | "award" | "map" | "bell";
+  image?: string;
+  icon:
+    | "video"
+    | "grid"
+    | "globe"
+    | "zap"
+    | "box"
+    | "message"
+    | "award"
+    | "map"
+    | "bell";
 };
 
 export const PRICING_TABS: Array<{ key: PricingMode; label: string }> = [

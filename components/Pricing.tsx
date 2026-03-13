@@ -2,20 +2,8 @@
 
 import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
-import {
-  Video,
-  Grid,
-  Zap,
-  Box,
-  Globe,
-  Bell,
-  MessageCircle,
-  Award,
-  MapPin,
-  ShoppingCart,
-  CheckCircle2,
-  ArrowRight,
-} from "lucide-react";
+import Image from "next/image";
+import { ArrowRight } from "lucide-react";
 import { useCart, parsePrice } from "@/context/CartContext";
 import {
   PRICING_CARDS,
@@ -25,26 +13,25 @@ import {
   type PricingMode,
 } from "@/components/pricing-data";
 
-const iconMap = {
-  video: <Video size={18} strokeWidth={1.5} />,
-  grid: <Grid size={18} strokeWidth={1.5} />,
-  globe: <Globe size={18} strokeWidth={1.5} />,
-  zap: <Zap size={18} strokeWidth={1.5} />,
-  box: <Box size={18} strokeWidth={1.5} />,
-  message: <MessageCircle size={18} strokeWidth={1.5} />,
-  award: <Award size={18} strokeWidth={1.5} />,
-  map: <MapPin size={18} strokeWidth={1.5} />,
-  bell: <Bell size={18} strokeWidth={1.5} />,
-} as const;
-
 function BentoCard({ svc, index }: { svc: PricingCardData; index: number }) {
   const { isInCart, toggleItem, openDrawer } = useCart();
   const isAdvance = svc.period === "advance";
   const inCart = isInCart(svc.title);
+  const displayPrice = isAdvance ? "Custom Quote" : svc.price;
+  const cardSurface = {
+    background:
+      "linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%), linear-gradient(180deg, rgba(var(--bg-rgb, 31, 42, 68), 0.14) 0%, rgba(var(--bg-rgb, 31, 42, 68), 0.2) 100%)",
+  };
 
   function handleCartClick() {
     if (isAdvance || !svc.price) return;
-    toggleItem({ id: svc.title, title: svc.title, price: parsePrice(svc.price), period: svc.period, accent: 'var(--accent)' });
+    toggleItem({
+      id: svc.title,
+      title: svc.title,
+      price: parsePrice(svc.price),
+      period: svc.period,
+      accent: "var(--accent)",
+    });
     if (!inCart) openDrawer();
   }
 
@@ -54,69 +41,86 @@ function BentoCard({ svc, index }: { svc: PricingCardData; index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
-      className={`group relative flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] border transition-all duration-700 overflow-hidden backdrop-blur-2xl bg-white/[0.02] ${
-        inCart ? "border-accent shadow-[0_0_30px_rgba(255,255,255,0.15)]" : "border-white/5 hover:border-white/10"
-      }`}
+      className="group relative h-full"
     >
-      <div className="absolute -top-4 -right-2 font-mono-display text-[100px] font-black text-white/[0.02] select-none leading-none pointer-events-none group-hover:text-white/[0.04] group-hover:scale-110 transition-all duration-700">
-        {svc.id}
-      </div>
-
-      <div className="relative z-10">
-        <div className="flex items-center justify-between mb-6">
-          <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-500 ${
-            inCart 
-              ? 'bg-accent/20 border-accent/40 text-accent' 
-              : 'bg-white/5 border-white/10 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]'
-          }`}>
-            {iconMap[svc.icon]}
-          </div>
-          <span className={`font-mono-display text-[9px] uppercase tracking-[0.2em] font-bold ${svc.period === 'monthly' ? 'text-accent' : 'text-text-muted'}`}>
-            {svc.period}
-          </span>
+      <div
+        className={`relative flex h-full flex-col overflow-hidden rounded-4xl border transition-all duration-700 ${
+          inCart
+            ? "border-accent shadow-[0_0_30px_rgba(255,255,255,0.15)]"
+            : "border-white/10 hover:border-white/25"
+        }`}
+      >
+        <div className="relative h-32 md:h-36 w-full overflow-hidden">
+          {svc.period === "one-time" && (
+            <div className="pointer-events-none absolute right-3 top-3 z-20 rounded-full border border-white/25 bg-black/25 px-3 py-1 font-mono-display text-[9px] font-bold uppercase tracking-[0.16em] text-white/90 backdrop-blur-xl">
+              One-time
+            </div>
+          )}
+          {svc.image ? (
+            <Image
+              src={svc.image}
+              alt={svc.title}
+              fill
+              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            />
+          ) : (
+            <div className="h-full w-full bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.18),rgba(255,255,255,0.04)_42%,transparent_70%)]" />
+          )}
+          <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-black/15" />
         </div>
 
-        <h3 className="text-xl font-bold text-white mb-2 transition-colors duration-500">
-          {svc.title}
-        </h3>
-        <p className="text-text-secondary text-sm leading-relaxed opacity-70 group-hover:opacity-100 transition-opacity duration-500 max-w-[240px]">
-          {svc.body}
-        </p>
-      </div>
-
-      <div className="relative z-10 mt-8 flex items-end justify-between gap-4">
-        {isAdvance ? (
-          <div className="w-full flex items-center justify-end">
-            <a
-              href="#contact"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-white/15 bg-white/5 text-white text-xs font-mono-display uppercase tracking-[0.14em] hover:border-accent hover:bg-accent hover:text-bg-primary transition-all duration-300"
-            >
-              Contact Us
-              <ArrowRight size={14} />
-            </a>
+        <div
+          className="relative flex flex-1 flex-col border-t border-white/15 p-5 backdrop-blur-md md:p-6"
+          style={cardSurface}
+        >
+          <div className="pointer-events-none absolute bottom-3 right-4 font-mono-display text-4xl leading-none font-black text-white/12 transition-all duration-700 group-hover:text-white/20">
+            *
           </div>
-        ) : (
-          <>
-            <div className="flex flex-col">
-              <span className="text-2xl font-black text-white tracking-tighter transition-colors duration-500 group-hover:text-accent">{svc.price}</span>
-              <span className="text-[10px] font-mono-display text-text-muted uppercase tracking-widest">Fixed Rate</span>
+
+          <div className="relative z-10 flex flex-1 flex-col">
+            <div className="min-h-20">
+              <h3 className="text-lg font-bold text-white mb-1.5 leading-tight transition-colors duration-500">
+                {svc.title}
+              </h3>
+              <p className="text-text-secondary text-sm leading-relaxed opacity-80 group-hover:opacity-100 transition-opacity duration-500 max-w-56">
+                {svc.body}
+              </p>
             </div>
 
-            <button
-              onClick={handleCartClick}
-              className={`group/btn flex items-center justify-center gap-2 w-10 h-10 rounded-full border transition-all duration-500 ${
-                inCart ? "bg-state-success border-state-success text-bg-primary" : "bg-white/5 border-white/10 text-white hover:border-accent hover:bg-accent"
-              }`}
-            >
-              {inCart ? <CheckCircle2 size={16} strokeWidth={2.5} /> : <ShoppingCart size={16} strokeWidth={2} />}
-            </button>
-          </>
-        )}
-      </div>
+            <div className="mt-auto flex items-end justify-between gap-4 border-t border-white/10 pt-3.5">
+              <div className="flex min-h-11 flex-col justify-end">
+                <span className="text-xl md:text-2xl font-black text-white tracking-tighter transition-colors duration-500 group-hover:text-accent">
+                  {displayPrice}
+                </span>
+              </div>
 
-      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+              {isAdvance ? (
+                <a
+                  href="#contact"
+                  className="inline-flex h-10 items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 text-[10px] font-mono-display uppercase tracking-[0.14em] text-white transition-all duration-300 hover:border-accent hover:bg-accent hover:text-bg-primary"
+                >
+                  Contact Us
+                  <ArrowRight size={14} />
+                </a>
+              ) : (
+                <button
+                  onClick={handleCartClick}
+                  className={`inline-flex h-10 cursor-pointer items-center justify-center rounded-full border-2 px-4 text-[10px] font-bold uppercase tracking-[0.14em] transition-all ${
+                    inCart
+                      ? "border-white bg-white text-bg-primary"
+                      : "border-white text-white hover:bg-white hover:text-bg-primary"
+                  }`}
+                >
+                  {inCart ? "Added" : "Add to Cart"}
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="absolute inset-x-0 bottom-0 z-0 h-px bg-linear-to-r from-transparent via-white/40 to-transparent" />
+          <div className="absolute inset-x-0 top-0 z-0 h-px bg-linear-to-r from-transparent via-white/30 to-transparent" />
+        </div>
       </div>
     </motion.div>
   );
@@ -129,20 +133,37 @@ export default function Pricing() {
   const activeServices = PRICING_CARDS[activeMode];
 
   return (
-    <section id="pricing" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
+    <section
+      id="pricing"
+      className="bg-bg-primary py-32 border-t border-border overflow-hidden"
+    >
       <div className="max-w-7xl mx-auto px-6">
-        <div ref={containerRef} className="mb-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
+        <div
+          ref={containerRef}
+          className="mb-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-8"
+        >
           <div className="max-w-2xl">
-            <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">{PRICING_COPY.sectionTag}</motion.span>
-            <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
+            <motion.span
+              initial={{ opacity: 0 }}
+              animate={inView ? { opacity: 1 } : {}}
+              className="section-tag block mb-4"
+            >
+              {PRICING_COPY.sectionTag}
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 30 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ delay: 0.2, duration: 0.7 }}
+              className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter"
+            >
               {PRICING_COPY.titleLineOne} <br />
               <span className="text-accent">{PRICING_COPY.titleLineTwo}</span>
             </motion.h2>
           </div>
           <div className="text-right hidden md:block">
-             <p className="text-text-secondary text-lg font-mono-display uppercase tracking-widest max-w-[240px] border-r-2 border-accent pr-6 leading-relaxed">
-                {PRICING_COPY.sideNote}
-             </p>
+            <p className="text-text-secondary text-lg font-mono-display uppercase tracking-widest max-w-60 border-r-2 border-accent pr-6 leading-relaxed">
+              {PRICING_COPY.sideNote}
+            </p>
           </div>
         </div>
 
@@ -166,23 +187,38 @@ export default function Pricing() {
           })}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="mx-auto grid max-w-290 grid-cols-1 gap-5 md:grid-cols-2 lg:grid-cols-3">
           {activeServices.map((svc, i) => (
             <BentoCard key={svc.title} svc={svc} index={i} />
           ))}
         </div>
 
-        <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="mt-20 p-1 bg-white/10 rounded-[2.5rem] overflow-hidden">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.98 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="mt-20 p-1 bg-white/10 rounded-[2.5rem] overflow-hidden"
+        >
           <div className="bg-bg-primary rounded-[2.4rem] p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 border border-white/5 relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[80px] rounded-full" />
-             <div className="text-left relative z-10">
-               <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">{PRICING_COPY.ctaTitle}</h3>
-               <p className="text-white/60 text-lg max-w-md opacity-80">{PRICING_COPY.ctaBody}</p>
-             </div>
-             <a href="#contact" className="group relative z-10 flex items-center gap-4 px-10 py-4 bg-white text-bg-primary font-bold text-sm rounded-full transition-all duration-300 hover:opacity-90 hover:scale-[1.02] shadow-2xl">
-               {PRICING_COPY.ctaLabel}
-                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
-             </a>
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[80px] rounded-full" />
+            <div className="text-left relative z-10">
+              <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">
+                {PRICING_COPY.ctaTitle}
+              </h3>
+              <p className="text-white/60 text-lg max-w-md opacity-80">
+                {PRICING_COPY.ctaBody}
+              </p>
+            </div>
+            <a
+              href="#contact"
+              className="group relative z-10 flex items-center gap-4 px-10 py-4 bg-white text-bg-primary font-bold text-sm rounded-full transition-all duration-300 hover:opacity-90 hover:scale-[1.02] shadow-2xl"
+            >
+              {PRICING_COPY.ctaLabel}
+              <ArrowRight
+                size={18}
+                className="group-hover:translate-x-1 transition-transform"
+              />
+            </a>
           </div>
         </motion.div>
       </div>
