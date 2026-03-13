@@ -46,7 +46,7 @@ function BentoCard({ svc, index }: { svc: any; index: number }) {
       viewport={{ once: true }}
       transition={{ duration: 0.5, delay: index * 0.05 }}
       className={`group relative flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] border transition-all duration-700 overflow-hidden backdrop-blur-2xl bg-white/[0.02] ${
-        inCart ? "border-accent shadow-[0_0_30px_rgba(120,15,240,0.15)]" : "border-white/5 hover:border-white/10"
+        inCart ? "border-accent shadow-[0_0_30px_rgba(255,255,255,0.15)]" : "border-white/5 hover:border-white/10"
       }`}
     >
       <div className="absolute -top-4 -right-2 font-mono-display text-[100px] font-black text-white/[0.02] select-none leading-none pointer-events-none group-hover:text-white/[0.04] group-hover:scale-110 transition-all duration-700">
@@ -58,7 +58,7 @@ function BentoCard({ svc, index }: { svc: any; index: number }) {
           <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-500 ${
             inCart 
               ? 'bg-accent/20 border-accent/40 text-accent' 
-              : 'bg-white/5 border-white/10 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(120,15,240,0.3)]'
+              : 'bg-white/5 border-white/10 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]'
           }`}>
             {svc.icon}
           </div>
@@ -133,14 +133,14 @@ export default function Pricing() {
           ))}
         </div>
 
-        <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="mt-20 p-1 bg-white/[0.05] rounded-[2.5rem] overflow-hidden">
+        <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="mt-20 p-1 bg-white/10 rounded-[2.5rem] overflow-hidden">
           <div className="bg-bg-primary rounded-[2.4rem] p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 border border-white/5 relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[80px] rounded-full" />
+             <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 blur-[80px] rounded-full" />
              <div className="text-left relative z-10">
                 <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">Complex Requirement?</h3>
-                <p className="text-text-secondary text-lg max-w-md opacity-80">We architect custom end-to-end solutions for businesses with multi-layered digital needs.</p>
+                <p className="text-white/60 text-lg max-w-md opacity-80">We architect custom end-to-end solutions for businesses with multi-layered digital needs.</p>
              </div>
-             <a href="#contact" className="group relative z-10 flex items-center gap-4 px-10 py-4 bg-white text-bg-primary font-bold text-sm rounded-full transition-all duration-300 hover:bg-accent hover:text-white hover:scale-[1.02] shadow-2xl">
+             <a href="#contact" className="group relative z-10 flex items-center gap-4 px-10 py-4 bg-white text-bg-primary font-bold text-sm rounded-full transition-all duration-300 hover:opacity-90 hover:scale-[1.02] shadow-2xl">
                 Request Custom Blueprint
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
              </a>

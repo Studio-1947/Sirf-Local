@@ -37,7 +37,7 @@ export default function Process() {
   const inView = useInView(containerRef, { once: true, margin: '-100px' });
 
   return (
-    <section id="process" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
+    <section id="process" className="bg-bg-primary py-32 border-t border-white/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={containerRef} className="flex flex-col md:flex-row items-end justify-between mb-24 gap-8">
           <div className="max-w-2xl">
@@ -55,10 +55,10 @@ export default function Process() {
               {/* Icon & Phase */}
               <div className="relative z-10 flex items-center justify-between mb-16">
                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-500 ${
-                   step.featured 
-                    ? 'bg-accent border-accent text-white shadow-[0_0_30px_rgba(120,15,240,0.3)]' 
-                    : 'bg-white/5 border-white/10 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(120,15,240,0.3)]'
-                 }`}>
+                    step.featured 
+                     ? 'bg-white text-bg-primary shadow-[0_0_30px_rgba(255,255,255,0.3)]' 
+                     : 'bg-white/5 border-white/10 text-white/40 group-hover:bg-white group-hover:border-white/40 group-hover:text-bg-primary group-hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]'
+                  }`}>
                    {step.icon}
                  </div>
                  <span className="font-mono-display text-[10px] text-text-muted uppercase tracking-[0.3em] group-hover:text-accent transition-colors duration-300">{step.phase}</span>

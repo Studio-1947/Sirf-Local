@@ -37,11 +37,11 @@ export default function Navbar() {
         <motion.div
           animate={{
             backgroundColor: scrolled
-              ? "rgba(31,30,31,0.80)"
-              : "rgba(31,30,31,0.45)",
+              ? "rgba(var(--bg-rgb, 31, 30, 31), 0.80)"
+              : "rgba(var(--bg-rgb, 31, 30, 31), 0.45)",
             borderColor: scrolled
-              ? "rgba(120,15,240,0.25)"
-              : "rgba(255,255,255,0.08)",
+              ? "rgba(255, 255, 255, 0.25)"
+              : "rgba(255, 255, 255, 0.08)",
           }}
           transition={{ duration: 0.3 }}
           className="w-full max-w-5xl rounded-full px-5 py-3 flex items-center justify-between backdrop-blur-md border shadow-2xl"
@@ -76,10 +76,10 @@ export default function Navbar() {
             {/* Cart button */}
             <button
               onClick={openDrawer}
-              className={`relative flex items-center justify-center w-9 h-9 rounded-full border transition-all duration-200 hover:border-[rgba(120,15,240,0.5)] hover:shadow-[0_0_12px_rgba(120,15,240,0.25)] ${
+              className={`relative flex items-center justify-center w-9 h-9 rounded-full border transition-all duration-200 hover:border-white/50 hover:shadow-[0_0_12px_rgba(255,255,255,0.25)] ${
                 totalCount > 0
-                  ? "border-[rgba(120,15,240,0.4)] bg-[rgba(120,15,240,0.12)]"
-                  : "border-[rgba(255,255,255,0.12)] bg-[rgba(255,255,255,0.04)]"
+                  ? "border-white/40 bg-white/12"
+                  : "border-white/12 bg-white/04"
               }`}
               title="View cart"
             >
@@ -118,9 +118,9 @@ export default function Navbar() {
               href="https://wa.me/919093277919"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2.5 bg-accent text-text-primary text-sm font-bold rounded-full hover:bg-accent-hover transition-colors inline-flex items-center gap-2"
+              className="px-6 py-2.5 bg-[var(--btn-solid-bg)] text-[var(--btn-solid-text)] text-sm font-bold rounded-full hover:opacity-90 transition-colors inline-flex items-center gap-2"
             >
-              <SVGLIcon name="whatsapp" size={16} className="brightness-0 invert" />
+              <SVGLIcon name="whatsapp" size={16} />
               Connect Now
             </a>
           </div>
@@ -128,7 +128,7 @@ export default function Navbar() {
           <div className="md:hidden flex items-center gap-3">
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="text-[#FFFFFF] p-1"
+              className="text-white p-1"
             >
               {mobileOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
@@ -146,9 +146,9 @@ export default function Navbar() {
             transition={{ duration: 0.2 }}
             className="fixed top-[80px] left-4 right-4 z-40 rounded-2xl px-6 py-6 md:hidden backdrop-blur-md"
             style={{
-              background: "rgba(31,30,31,0.80)",
-              border: "1px solid rgba(120,15,240,0.25)",
-              boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
+              background: "rgba(var(--bg-rgb, 31, 30, 31), 0.85)",
+              border: "1px solid rgba(255, 255, 255, 0.15)",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.5)",
             }}
           >
             <div className="flex flex-col gap-5">
@@ -157,7 +157,7 @@ export default function Navbar() {
                   key={link.label}
                   href={link.href}
                   onClick={() => setMobileOpen(false)}
-                  className="text-[#FFFFFF] text-lg font-medium hover:text-[#780FF0] transition-colors"
+                  className="text-white text-lg font-medium hover:text-white/70 transition-colors"
                 >
                   {link.label}
                 </a>
@@ -167,9 +167,9 @@ export default function Navbar() {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={() => setMobileOpen(false)}
-                className="mt-2 px-5 py-3 bg-[#780FF0] text-white text-sm font-bold rounded-full text-center hover:bg-[#8E3AEE] transition-colors inline-flex items-center justify-center gap-2"
+                className="mt-2 px-5 py-3 bg-white text-bg-primary text-sm font-bold rounded-full text-center hover:opacity-90 transition-colors inline-flex items-center justify-center gap-2"
               >
-                <SVGLIcon name="whatsapp" size={16} className="brightness-0 invert" />
+                <SVGLIcon name="whatsapp" size={16} />
                 Connect Now
               </a>
             </div>

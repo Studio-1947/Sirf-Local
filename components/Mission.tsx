@@ -44,7 +44,7 @@ function PillarCard({ pillar, index }: { pillar: any; index: number }) {
         {watermarkId}
       </div>
       <div className="relative z-10">
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10 transition-all duration-500 group-hover:bg-accent group-hover:border-accent/40 shadow-[0_0_25px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_35px_rgba(120,15,240,0.3)]">
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10 transition-all duration-500 group-hover:bg-accent group-hover:border-accent/40 shadow-[0_0_25px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_35px_rgba(255,255,255,0.3)]">
           <div className="flex items-center justify-center text-white/40 group-hover:text-white transition-colors duration-500">
             {pillar.icon}
           </div>
@@ -69,7 +69,7 @@ export default function Mission() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="bg-bg-primary py-28 border-t border-border">
+    <section className="bg-bg-primary py-28 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="text-center mb-16">
           <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">Our Mission</motion.span>
@@ -81,7 +81,7 @@ export default function Mission() {
           ))}
         </div>
         <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }} className="mt-32 relative py-20 overflow-hidden">
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-accent/10 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-white/5 blur-[120px] rounded-full pointer-events-none" />
           <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none" style={{ WebkitTextStroke: "2px white", color: "transparent" }}><span className="text-[300px] font-black leading-none">98%</span></div>
           <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
             <div className="flex-1 text-left">
@@ -96,7 +96,7 @@ export default function Mission() {
               <div className="flex items-baseline gap-2"><span className="text-[120px] font-black text-white leading-none tracking-tighter"><CountUp value={98} /></span><span className="text-4xl font-bold text-accent">%</span></div>
               <div className="flex flex-col items-center md:items-end">
                 <p className="text-white font-bold text-sm uppercase tracking-widest">Project Completion</p>
-                <p className="text-text-muted text-[10px] font-mono-display uppercase tracking-widest mt-1">Verified · 2025-26</p>
+                <p className="text-white/30 text-[10px] font-mono-display uppercase tracking-widest mt-1">Verified · 2025-26</p>
               </div>
             </div>
           </div>

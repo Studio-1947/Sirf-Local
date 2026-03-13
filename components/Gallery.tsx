@@ -48,7 +48,7 @@ const items: GalleryItem[] = [
   { id: 'l6', category: 'Logo', label: 'Custom Letterform', sublabel: 'Typography', src: '/images/gallery/logo/6.png' },
   // Packaging
   { id: 'pk1', category: 'Packaging', label: 'SKU System', sublabel: 'Print Design', src: '/images/gallery/packaging/1.png' },
-  { id: 'pk2', category: 'Packaging', label: 'Craft Box', sublabel: 'Structure', src: '/images/gallery/packaging/2.png' },
+  { id: 'pk2', category: 'Packaging', label: 'Structure', sublabel: 'Design', src: '/images/gallery/packaging/2.png' },
   { id: 'pk3', category: 'Packaging', label: 'Product Label', sublabel: 'Packaging', src: '/images/gallery/packaging/3.png' },
   { id: 'pk4', category: 'Packaging', label: 'Custom Wrap', sublabel: 'Print', src: '/images/gallery/packaging/4.png' },
   { id: 'pk5', category: 'Packaging', label: 'Retail System', sublabel: 'Commerce', src: '/images/gallery/packaging/5.png' },
@@ -141,7 +141,7 @@ export default function Gallery() {
   });
 
   return (
-    <section id="gallery" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
+    <section id="gallery" className="bg-bg-primary py-32 border-t border-white/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header row */}
@@ -158,7 +158,7 @@ export default function Gallery() {
             <button
               onClick={prev}
               disabled={currentIndex === 0}
-              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-white hover:border-accent hover:text-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-white/40 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               aria-label="Previous artifacts"
             >
               <ArrowLeft size={18} />
@@ -166,7 +166,7 @@ export default function Gallery() {
             <button
               onClick={next}
               disabled={currentIndex >= maxIndex}
-              className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-white hover:border-accent hover:text-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all"
+              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-white/40 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all"
               aria-label="Next artifacts"
             >
               <ArrowRight size={18} />
@@ -184,7 +184,7 @@ export default function Gallery() {
                  scrollTo(0); // Reset carousel on tab change
                }}
                className={`px-6 py-2.5 rounded-full text-xs font-bold font-mono-display uppercase tracking-widest transition-all duration-300 border shrink-0 ${
-                 activeTab === tab ? 'bg-accent border-accent text-white shadow-[0_0_20px_rgba(120,15,240,0.3)]' : 'bg-white/5 border-white/10 text-text-muted hover:border-white/20'
+                 activeTab === tab ? 'bg-white border-white text-bg-primary shadow-[0_0_20px_rgba(255,255,255,0.3)]' : 'bg-white/5 border-white/10 text-white/30 hover:border-white/20'
                }`}
              >
                {tab}

@@ -109,7 +109,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                 name: 'Sirf Local',
                 description: `${selectedPercent}% booking token + 18% GST — ${description}`,
                 order_id: orderData.id,
-                theme: { color: '#780FF0' },
+                theme: { color: '#FFFFFF' },
                 modal: { ondismiss: () => setScreen('form') },
                 handler: async (response: { razorpay_payment_id: string; razorpay_order_id: string; razorpay_signature: string }) => {
                     try {
@@ -228,7 +228,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                 {screen !== 'loading' && (
                                     <button
                                         onClick={handleClose}
-                                        className="bg-[#1A1A1A] border border-[#252525] rounded-lg text-[#888] cursor-pointer p-1.5 flex items-center justify-center hover:border-accent hover:text-accent transition-colors"
+                                        className="bg-white/5 border border-white/10 rounded-lg text-white/40 cursor-pointer p-1.5 flex items-center justify-center hover:border-white/40 hover:text-white transition-colors"
                                     >
                                         <X size={16} />
                                     </button>
@@ -252,9 +252,9 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             <p className="text-text-cream font-extrabold text-lg" style={{ margin: '0 0 6px' }}>
                                                 Booking token paid!
                                             </p>
-                                            <p style={{ color: '#8A8178', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
-                                                We've received your <span style={{ color: '#780FF0', fontWeight: 700 }}>{formatPrice(successData?.paidAmount ?? 0)}</span> payment ({successData?.percent ?? selectedPercent}% + GST).
-                                                Our team will reach out within <strong style={{ color: '#F0EBE0' }}>24 hours</strong> to kick things off.
+                                            <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
+                                                We've received your <span style={{ color: '#FFFFFF', fontWeight: 700 }}>{formatPrice(successData?.paidAmount ?? 0)}</span> payment ({successData?.percent ?? selectedPercent}% + GST).
+                                                Our team will reach out within <strong style={{ color: '#FFFFFF' }}>24 hours</strong> to kick things off.
                                             </p>
                                         </div>
 
@@ -273,7 +273,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             background: 'rgba(212,168,83,0.07)', border: '1px solid rgba(212,168,83,0.2)',
                                             borderRadius: '12px', padding: '14px 18px', width: '100%', textAlign: 'left',
                                         }}>
-                                            <p style={{ color: '#780FF0', fontWeight: 700, fontSize: '13px', margin: '0 0 4px' }}>Remaining balance</p>
+                                            <p style={{ color: '#FFFFFF', fontWeight: 700, fontSize: '13px', margin: '0 0 4px' }}>Remaining balance</p>
                                             <p style={{ color: '#8A8178', fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
                                                 final scope with you — no surprises.
                                             </p>
@@ -313,7 +313,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                         </div>
                                         <button
                                             onClick={() => setScreen('form')}
-                                            className="w-full py-3.5 rounded-full bg-accent text-[#0C0C0C] font-extrabold text-sm border-none cursor-pointer tracking-[0.3px] hover:bg-accent-hover transition-colors"
+                                            className="w-full py-3.5 rounded-full bg-white text-bg-primary font-extrabold text-sm border-none cursor-pointer tracking-[0.3px] hover:opacity-90 transition-colors"
                                         >
                                             Try again
                                         </button>
@@ -323,7 +323,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                 {/* ── LOADING SCREEN ── */}
                                 {screen === 'loading' && (
                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '40px 0', textAlign: 'center' }}>
-                                        <Loader2 size={40} className="text-accent" style={{ animation: 'spin 1s linear infinite' }} />
+                                        <Loader2 size={40} className="text-white" style={{ animation: 'spin 1s linear infinite' }} />
                                         <p style={{ color: 'var(--text-earth)', fontSize: '14px', margin: 0 }}>Opening payment window…</p>
                                         <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
                                     </div>
@@ -382,14 +382,14 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                                     paddingTop: '8px', borderTop: '1px solid var(--border-card)', marginTop: '2px',
                                                 }}>
                                                     <span className="text-text-cream font-extrabold text-sm">Grand Total</span>
-                                                    <span className="text-accent font-black text-base">{formatPrice(grandTotal)}</span>
+                                                    <span className="text-white font-black text-base">{formatPrice(grandTotal)}</span>
                                                 </div>
                                             </div>
                                         </div>
 
                                         {/* Dynamic token callout */}
                                         <div style={{
-                                            background: 'rgba(120,15,240,0.05)', border: '1px solid rgba(120,15,240,0.2)',
+                                            background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.2)',
                                             borderRadius: '14px', padding: '16px 18px',
                                             display: 'flex', flexDirection: 'column', gap: '8px',
                                         }}>
@@ -403,10 +403,10 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             </div>
                                             <div style={{
                                                 display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-                                                marginTop: '4px', paddingTop: '8px', borderTop: '1px solid rgba(120,15,240,0.1)'
+                                                marginTop: '4px', paddingTop: '8px', borderTop: '1px solid rgba(255,255,255,0.1)'
                                             }}>
-                                                <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '14px' }}>Due Today</span>
-                                                <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '20px', letterSpacing: '-0.5px' }}>{formatPrice(tokenAmount)}</span>
+                                                <span style={{ color: '#FFFFFF', fontWeight: 800, fontSize: '14px' }}>Due Today</span>
+                                                <span style={{ color: '#FFFFFF', fontWeight: 900, fontSize: '20px', letterSpacing: '-0.5px' }}>{formatPrice(tokenAmount)}</span>
                                             </div>
                                             <p style={{ color: '#555', fontSize: '12px', margin: '4px 0 0', lineHeight: 1.55 }}>
                                                 You pay {selectedPercent}% now plus GST. Remaining <span style={{ color: '#A89F8C', fontWeight: 600 }}>{formatPrice(remaining)}</span> is settled after final confirmation.
@@ -418,15 +418,15 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             <div
                                                 onClick={() => setAcceptedTerms(!acceptedTerms)}
                                                 style={{
-                                                    width: '18px', height: '18px', borderRadius: '4px', border: `1.5px solid ${acceptedTerms ? '#780FF0' : '#333'}`,
-                                                    background: acceptedTerms ? '#780FF0' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                    width: '18px', height: '18px', borderRadius: '4px', border: `1.5px solid ${acceptedTerms ? '#FFFFFF' : '#333'}`,
+                                                    background: acceptedTerms ? '#FFFFFF' : 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center',
                                                     cursor: 'pointer', flexShrink: 0, marginTop: '2px', transition: 'all 0.2s'
                                                 }}
                                             >
                                                 {acceptedTerms && <CheckCircle2 size={12} color="#000" strokeWidth={3} />}
                                             </div>
                                             <label style={{ color: '#8A8178', fontSize: '12px', lineHeight: 1.5, cursor: 'pointer', userSelect: 'none' }} onClick={() => setAcceptedTerms(!acceptedTerms)}>
-                                                I agree to the <Link href="/terms-and-conditions" target="_blank" onClick={(e) => e.stopPropagation()} style={{ color: '#780FF0', fontWeight: 600, textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'} onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}>Terms & Conditions</Link> and understand that this booking token is non-refundable.
+                                                I agree to the <Link href="/terms-and-conditions" target="_blank" onClick={(e) => e.stopPropagation()} style={{ color: '#FFFFFF', fontWeight: 600, textDecoration: 'none' }} onMouseEnter={(e) => e.currentTarget.style.textDecoration = 'underline'} onMouseLeave={(e) => e.currentTarget.style.textDecoration = 'none'}>Terms & Conditions</Link> and understand that this booking token is non-refundable.
                                             </label>
                                         </div>
 
@@ -436,16 +436,16 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             disabled={!acceptedTerms}
                                             style={{
                                                 width: '100%', padding: '14px 0', borderRadius: '999px',
-                                                background: acceptedTerms ? '#780FF0' : '#1A1A1A',
-                                                color: acceptedTerms ? '#0C0C0C' : '#444',
+                                                background: acceptedTerms ? '#FFFFFF' : '#1A1A1A',
+                                                color: acceptedTerms ? 'var(--bg-primary)' : '#444',
                                                 fontWeight: 800, fontSize: '15px',
                                                 border: 'none', cursor: acceptedTerms ? 'pointer' : 'not-allowed', letterSpacing: '0.3px',
                                                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                                                 transition: 'all 0.2s',
                                                 opacity: acceptedTerms ? 1 : 0.6
                                             }}
-                                            onMouseEnter={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#E5BA6A'; }}
-                                            onMouseLeave={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#780FF0'; }}
+                                            onMouseEnter={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.9)'; }}
+                                            onMouseLeave={e => { if (acceptedTerms) (e.currentTarget as HTMLElement).style.background = '#FFFFFF'; }}
                                         >
                                             Pay {formatPrice(tokenAmount)} now <ArrowRight size={16} />
                                         </button>

@@ -46,7 +46,7 @@ function InfoCard({ card, index }: { card: ContactCard; index: number }) {
     >
        <div className="relative z-10">
           <span className="font-mono-display text-[10px] text-text-muted uppercase tracking-[0.2em] group-hover:text-accent transition-colors">COMM-{index + 1}</span>
-          <div className="mt-4 w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(120,15,240,0.3)]">
+          <div className="mt-4 w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center transition-all duration-500 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(255,255,255,0.3)]">
              <SVGLIcon name={card.brand} size={20} />
           </div>
        </div>
@@ -133,7 +133,7 @@ export default function Contact() {
   ];
 
   return (
-    <section id="contact" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
+    <section id="contact" className="bg-bg-primary py-32 border-t border-white/10 overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
         
         {/* Header */}
@@ -144,7 +144,7 @@ export default function Contact() {
               Let&apos;s Build <br />
               <span className="text-accent italic">Together.</span>
             </motion.h2>
-            <p className="text-text-secondary text-lg leading-relaxed max-w-[320px] border-l border-accent/40 pl-6 mb-2">
+            <p className="text-white/60 text-lg leading-relaxed max-w-[320px] border-l border-white/20 pl-6 mb-2">
               Based in Mirik, built for the world. Reach out to start your digital journey.
             </p>
           </div>
@@ -176,7 +176,7 @@ export default function Contact() {
                       key={i} 
                       className={`w-2 h-2 rounded-full transition-all duration-500 ${
                         filled 
-                          ? 'bg-accent shadow-[0_0_10px_rgba(120,15,240,0.8)]' 
+                          ? 'bg-accent shadow-[0_0_10px_rgba(255,255,255,0.8)]' 
                           : 'bg-white/10'
                       }`} 
                     />

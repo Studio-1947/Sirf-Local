@@ -90,7 +90,7 @@ function ServiceCard({ svc }: { svc: Service }) {
       
       {/* Top: Icon Container */}
       <div className="relative z-10">
-        <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10 transition-all duration-500 group-hover:bg-accent group-hover:border-accent/40 shadow-[0_0_25px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_35px_rgba(120,15,240,0.3)]">
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10 transition-all duration-500 group-hover:bg-accent group-hover:border-accent/40 shadow-[0_0_25px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_35px_rgba(255,255,255,0.3)]">
           <div className="text-white/40 group-hover:text-white transition-colors duration-500">
             {svc.icon}
           </div>
@@ -117,7 +117,7 @@ export default function Services() {
   const { trackRef, currentIndex, maxIndex, itemsPerView, scrollTo, prev, next, onScroll } = useCarousel({ itemCount: services.length, gap: GAP });
 
   return (
-    <section id="services" className="bg-bg-primary py-28 border-t border-border">
+    <section id="services" className="bg-bg-primary py-28 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={sectionRef} className="flex items-end justify-between mb-12 gap-6">
           <div>
@@ -125,8 +125,8 @@ export default function Services() {
             <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} className="text-4xl md:text-6xl font-black text-text-primary leading-tight max-w-2xl">Everything You Need to <span className="text-accent">Grow Online</span></motion.h2>
           </div>
           <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }} className="flex items-center gap-2 shrink-0">
-            <button onClick={prev} disabled={currentIndex === 0} className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-white hover:border-accent hover:text-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all" aria-label="Previous services"><ArrowLeft size={16} /></button>
-            <button onClick={next} disabled={currentIndex >= maxIndex} className="w-10 h-10 rounded-full border border-border flex items-center justify-center text-white hover:border-accent hover:text-accent disabled:opacity-30 disabled:cursor-not-allowed transition-all" aria-label="Next services"><ArrowRight size={16} /></button>
+            <button onClick={prev} disabled={currentIndex === 0} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-white/40 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all" aria-label="Previous services"><ArrowLeft size={16} /></button>
+            <button onClick={next} disabled={currentIndex >= maxIndex} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-white/40 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all" aria-label="Next services"><ArrowRight size={16} /></button>
           </motion.div>
         </div>
         <motion.div initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.35, duration: 0.6 }}>
@@ -140,7 +140,7 @@ export default function Services() {
           {Array.from({ length: Math.ceil(services.length / itemsPerView) }).map((_, i) => {
             const pageStart = i * itemsPerView;
             const isActive = currentIndex >= pageStart && currentIndex < pageStart + itemsPerView;
-            return <button key={i} onClick={() => scrollTo(pageStart)} aria-label={`Go to page ${i + 1}`} className={`transition-all rounded-full h-2 ${isActive ? "w-6 bg-accent" : "w-2 bg-text-muted"}`} />;
+            return <button key={i} onClick={() => scrollTo(pageStart)} aria-label={`Go to page ${i + 1}`} className={`transition-all rounded-full h-2 ${isActive ? "w-6 bg-white" : "w-2 bg-white/20"}`} />;
           })}
         </motion.div>
       </div>

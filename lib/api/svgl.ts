@@ -8,18 +8,34 @@ export interface SVGLLogo {
 
 const BASE_URL = "https://api.svgl.app/";
 
+// Simple in-memory cache to avoid redundant calls and 429s
+const logoCache = new Map<string, SVGLLogo[]>();
+const svgCache = new Map<string, string>();
+
 /**
  * Search for logos on SVGL
  * @param query The title of the logo to search for
  * @returns A promise that resolves to an array of SVGLLogo objects
  */
 export async function searchLogos(query: string): Promise<SVGLLogo[]> {
+  if (logoCache.has(query)) return logoCache.get(query)!;
+
   try {
     const response = await fetch(`${BASE_URL}?search=${encodeURIComponent(query)}`);
+    
+    // Gracefully handle rate limiting (429)
+    if (response.status === 429) {
+      console.warn("SVGL API rate limited (429). Returning empty results.");
+      return [];
+    }
+
     if (!response.ok) {
       throw new Error(`SVGL API error: ${response.status} ${response.statusText || 'Unknown error'}`);
     }
-    return await response.json();
+    
+    const data = await response.json();
+    logoCache.set(query, data);
+    return data;
   } catch (error) {
     console.error("Failed to fetch logos from SVGL:", error);
     return [];
@@ -46,13 +62,25 @@ export function getLogoUrl(logo: SVGLLogo, theme: 'light' | 'dark' = 'dark'): st
  * @returns A promise that resolves to the SVG source code
  */
 export async function fetchSvgSource(filename: string, optimize: boolean = true): Promise<string> {
+  const cacheKey = `${filename}-${optimize}`;
+  if (svgCache.has(cacheKey)) return svgCache.get(cacheKey)!;
+
   const url = `${BASE_URL}/svg/${filename}${!optimize ? '?no-optimize' : ''}`;
   try {
     const response = await fetch(url);
+    
+    if (response.status === 429) {
+      console.warn("SVGL API rate limited (429). Returning empty SVG source.");
+      return "";
+    }
+
     if (!response.ok) {
       throw new Error(`SVGL API error: ${response.status} ${response.statusText || 'Unknown error'}`);
     }
-    return await response.text();
+    
+    const text = await response.text();
+    svgCache.set(cacheKey, text);
+    return text;
   } catch (error) {
     console.error("Failed to fetch SVG source from SVGL:", error);
     return "";

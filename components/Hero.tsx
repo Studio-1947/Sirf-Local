@@ -35,7 +35,7 @@ export default function Hero() {
   return (
     <section
       ref={ref}
-      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-[#1F1E1F]"
+      className="relative min-h-screen flex flex-col justify-center overflow-hidden bg-bg-primary"
     >
       <TopographicBg />
 
@@ -49,7 +49,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-[#9E9E9E] text-base mb-4 font-medium"
+              className="text-white/40 text-base mb-4 font-medium"
             >
               Welcome to Sirf Local
             </motion.p>
@@ -60,19 +60,19 @@ export default function Hero() {
               transition={{ delay: 0.4, duration: 0.7 }}
               className="text-5xl md:text-7xl lg:text-6xl xl:text-7xl font-black leading-[0.95] tracking-tight mb-6"
             >
-              <span className="text-[#FFFFFF]">World-Class</span>
+              <span className="text-white/70">World-Class</span>
               <br />
-              <span className="text-[#FFFFFF]">Design </span>
-              <span className="text-[#780FF0]">for Your</span>
+              <span className="text-white/70">Design </span>
+              <span className="text-white underline decoration-white/20 underline-offset-8">for Your</span>
               <br />
-              <span className="text-[#FFFFFF]">Local Business</span>
+              <span className="text-white/70">Local Business</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.55 }}
-              className="max-w-xl text-[#9E9E9E] text-lg leading-relaxed mb-10"
+              className="max-w-xl text-text-secondary text-lg leading-relaxed mb-10"
             >
               Homestays, shops, and local crafts — get the agency quality you
               deserve at a price that makes meaningful impact.
@@ -86,7 +86,7 @@ export default function Hero() {
             >
               <a
                 href="#contact"
-                className="group flex items-center gap-2 px-7 py-4 bg-[#780FF0] text-white font-bold rounded-full hover:bg-[#8E3AEE] transition-all hover:gap-3"
+                className="group flex items-center gap-2 px-9 py-4 bg-[var(--btn-solid-bg)] text-[var(--btn-solid-text)] font-bold rounded-full hover:opacity-90 transition-all hover:gap-3"
               >
                 Start Your Journey
                 <ArrowRight
@@ -96,20 +96,21 @@ export default function Hero() {
               </a>
               <a
                 href="#services"
-                className="px-7 py-4 border border-[#525252] text-[#FFFFFF] font-medium rounded-full hover:border-[#780FF0] hover:text-[#780FF0] transition-all"
+                className="px-9 py-4 border-2 border-white text-white font-bold rounded-full hover:bg-white hover:text-bg-primary transition-all flex items-center gap-2"
               >
                 Explore Services
+                <ArrowRight size={16} />
               </a>
             </motion.div>
           </div>
 
           <div className="relative hidden lg:block">
-            <div className="absolute top-0 left-6 -translate-y-1/2 z-20 flex items-center gap-2 px-3 py-2 rounded-full bg-[#383838] border border-[#525252] text-sm font-semibold text-white shadow-lg whitespace-nowrap">
+            <div className="absolute top-0 left-6 -translate-y-1/2 z-20 flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-white shadow-lg whitespace-nowrap">
               <div className="flex items-center">
                 {[1, 2, 3, 4].map((n, i) => (
                   <div
                     key={n}
-                    className="relative w-7 h-7 rounded-full border-2 border-[#383838] overflow-hidden"
+                    className="relative w-7 h-7 rounded-full border-2 border-white/10 overflow-hidden"
                     style={{ marginLeft: i === 0 ? 0 : "-8px", zIndex: 4 - i }}
                   >
                     <Image
@@ -124,9 +125,9 @@ export default function Hero() {
               10+ Trusted Clients
             </div>
 
-            <div className="relative h-[520px] rounded-2xl overflow-hidden border border-[#525252]">
-              <div className="absolute left-0 inset-y-0 w-16 bg-gradient-to-r from-[#1F1E1F] to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 inset-y-0 w-16 bg-gradient-to-l from-[#1F1E1F] to-transparent z-10 pointer-events-none" />
+            <div className="relative h-[520px] rounded-2xl overflow-hidden border border-white/10">
+              <div className="absolute left-0 inset-y-0 w-16 bg-gradient-to-r from-bg-primary to-transparent z-10 pointer-events-none" />
+              <div className="absolute right-0 inset-y-0 w-16 bg-gradient-to-l from-bg-primary to-transparent z-10 pointer-events-none" />
               <div className="flex flex-row h-full w-max gap-3 animate-marquee-horizontal">
                 {[...heroPhotos, ...heroPhotos].map((photo, i) => (
                   <Image
@@ -141,7 +142,7 @@ export default function Hero() {
               </div>
             </div>
 
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 flex items-center gap-2 px-4 py-2 rounded-full bg-[#383838] border border-[#525252] text-sm font-semibold text-white shadow-lg whitespace-nowrap">
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-white shadow-lg whitespace-nowrap">
               <Star size={16} className="text-yellow-400 fill-yellow-400" />
               5.0 on Google
             </div>
@@ -149,8 +150,8 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      <div className="relative z-10 border-t border-[#525252] overflow-hidden py-5 bg-[#1F1E1F]/80 backdrop-blur-sm">
-        <p className="text-center text-xs text-[#6B6B6B] font-mono-display tracking-widest uppercase mb-4">
+      <div className="relative z-10 border-t border-white/10 overflow-hidden py-5 bg-bg-primary/80 backdrop-blur-sm">
+        <p className="text-center text-xs text-white/40 font-mono-display tracking-widest uppercase mb-4">
           Trusted by local businesses across India
         </p>
         <div className="flex animate-marquee whitespace-nowrap gap-[50px]">

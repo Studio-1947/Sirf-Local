@@ -48,8 +48,8 @@ export default function CartDrawer() {
               {/* Header */}
               <div className="flex items-center justify-between p-6 border-b border-white/5">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
-                    <ShoppingBag size={20} className="text-accent" />
+                  <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center">
+                    <ShoppingBag size={20} className="text-white" />
                   </div>
                   <div>
                     <h2 className="text-white font-bold text-lg leading-none">Studio Cart</h2>
@@ -58,7 +58,7 @@ export default function CartDrawer() {
                 </div>
                 <button
                   onClick={closeDrawer}
-                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-accent hover:text-accent transition-all"
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-white/50 hover:text-white transition-all"
                 >
                   <X size={18} />
                 </button>
@@ -82,11 +82,11 @@ export default function CartDrawer() {
                       key={item.id}
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
-                      className="group relative p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-accent/30 transition-all"
+                      className="group relative p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-white/20 transition-all"
                     >
                       <div className="flex justify-between items-start mb-4">
                         <div>
-                          <h3 className="text-white font-bold text-base group-hover:text-accent transition-colors">{item.title}</h3>
+                          <h3 className="text-white font-bold text-base group-hover:text-white/80 transition-colors">{item.title}</h3>
                           <p className="text-text-muted text-[10px] uppercase tracking-widest mt-1">{item.period} service</p>
                         </div>
                         <button
@@ -141,7 +141,7 @@ export default function CartDrawer() {
                     )}
                     <div className="pt-3 border-t border-white/5 flex justify-between items-baseline">
                       <span className="text-white font-black uppercase text-xs tracking-widest">Total Investment</span>
-                      <span className="text-accent font-black text-2xl tracking-tighter">{formatPrice(grandTotal)}</span>
+                      <span className="text-white font-black text-2xl tracking-tighter">{formatPrice(grandTotal)}</span>
                     </div>
                   </div>
 
@@ -160,9 +160,9 @@ export default function CartDrawer() {
                             onClick={() => setSelectedPercent(pct)}
                             style={{
                               flex: 1, padding: '10px 0', borderRadius: '10px',
-                              background: selectedPercent === pct ? '#780FF01A' : 'transparent',
-                              border: `1px solid ${selectedPercent === pct ? '#780FF0' : '#222'}`,
-                              color: selectedPercent === pct ? '#780FF0' : '#888',
+                              background: selectedPercent === pct ? 'rgba(255, 255, 255, 0.1)' : 'transparent',
+                              border: `1px solid ${selectedPercent === pct ? '#FFFFFF' : '#222'}`,
+                              color: selectedPercent === pct ? '#FFFFFF' : '#888',
                               fontWeight: 700, fontSize: '13px', cursor: 'pointer',
                               transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
                             }}
@@ -176,9 +176,9 @@ export default function CartDrawer() {
                     {/* Breakdown */}
                     <div style={{
                       display: 'flex', flexDirection: 'column', gap: '8px',
-                      background: 'rgba(120,15,240,0.05)', borderRadius: '16px',
+                      background: 'rgba(255, 255, 255, 0.05)', borderRadius: '16px',
                       padding: '16px', marginTop: '4px',
-                      border: '1px solid rgba(120,15,240,0.12)',
+                      border: '1px solid rgba(255, 255, 255, 0.12)',
                     }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <span style={{ color: '#A89F8C', fontSize: '13px' }}>Selected ({selectedPercent}%)</span>
@@ -190,10 +190,10 @@ export default function CartDrawer() {
                       </div>
                       <div style={{
                         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                        paddingTop: '10px', borderTop: '1px solid rgba(120,15,240,0.15)', marginTop: '2px',
+                        paddingTop: '10px', borderTop: '1px solid rgba(255, 255, 255, 0.15)', marginTop: '2px',
                       }}>
                         <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '14px' }}>Due Today</span>
-                        <span style={{ color: '#780FF0', fontWeight: 900, fontVariantNumeric: 'tabular-nums', fontSize: '20px', letterSpacing: '-0.5px' }}>
+                        <span style={{ color: '#FFFFFF', fontWeight: 900, fontVariantNumeric: 'tabular-nums', fontSize: '20px', letterSpacing: '-0.5px' }}>
                           {formatPrice(tokenAmount)}
                         </span>
                       </div>
@@ -202,7 +202,7 @@ export default function CartDrawer() {
                     {/* Checkout CTA */}
                     <button
                       onClick={() => { closeDrawer(); setCheckoutOpen(true); }}
-                      className="w-full py-3.5 rounded-full bg-accent text-white font-extrabold text-sm border-none cursor-pointer flex items-center justify-center gap-2 tracking-[0.3px] hover:bg-accent-hover transition-colors"
+                      className="w-full py-3.5 rounded-full bg-white text-bg-primary font-extrabold text-sm border-none cursor-pointer flex items-center justify-center gap-2 tracking-[0.3px] hover:opacity-90 transition-colors"
                     >
                       Proceed to Checkout <ArrowRight size={15} />
                     </button>
