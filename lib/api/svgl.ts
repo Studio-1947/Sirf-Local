@@ -6,7 +6,7 @@ export interface SVGLLogo {
   category: string;
 }
 
-const BASE_URL = "https://api.svgl.app";
+const BASE_URL = "https://api.svgl.app/";
 
 /**
  * Search for logos on SVGL
@@ -17,7 +17,7 @@ export async function searchLogos(query: string): Promise<SVGLLogo[]> {
   try {
     const response = await fetch(`${BASE_URL}?search=${encodeURIComponent(query)}`);
     if (!response.ok) {
-      throw new Error(`SVGL API error: ${response.statusText}`);
+      throw new Error(`SVGL API error: ${response.status} ${response.statusText || 'Unknown error'}`);
     }
     return await response.json();
   } catch (error) {
@@ -50,7 +50,7 @@ export async function fetchSvgSource(filename: string, optimize: boolean = true)
   try {
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`SVGL API error: ${response.statusText}`);
+      throw new Error(`SVGL API error: ${response.status} ${response.statusText || 'Unknown error'}`);
     }
     return await response.text();
   } catch (error) {
