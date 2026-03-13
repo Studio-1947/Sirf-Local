@@ -1,151 +1,36 @@
 "use client";
 
-import { motion, useInView, useAnimationFrame } from "framer-motion";
-import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
 import type { ReactNode } from "react";
 import CountUp from "./CountUp";
-import { Mountains, Planet, Eye } from "@phosphor-icons/react";
-
-/* ── Traveling border beam component ─────────────────────────── */
-function BorderBeam({
-  rx = 16,
-  duration = 7000,
-}: {
-  rx?: number;
-  duration?: number;
-}) {
-  const svgRef = useRef<SVGSVGElement>(null);
-  const rectRef = useRef<SVGRectElement>(null);
-  const rectGlowRef = useRef<SVGRectElement>(null);
-  const [perimeter, setPerimeter] = useState(0);
-  const offsetRef = useRef(0);
-
-  // Measure perimeter once mounted
-  useEffect(() => {
-    if (!rectRef.current) return;
-    const p = rectRef.current.getTotalLength();
-    setPerimeter(p);
-    offsetRef.current = p;
-  }, []);
-
-  // Animate offset every frame — pure linear travel
-  useAnimationFrame((_, delta) => {
-    if (!perimeter || !rectRef.current || !rectGlowRef.current) return;
-    offsetRef.current -= (perimeter / duration) * delta;
-    if (offsetRef.current <= 0) offsetRef.current = perimeter;
-    const o = String(offsetRef.current);
-    rectRef.current.setAttribute("stroke-dashoffset", o);
-    rectGlowRef.current.setAttribute("stroke-dashoffset", o);
-  });
-
-  const pillLength = perimeter * 0.03;
-
-  return (
-    <svg
-      ref={svgRef}
-      className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ overflow: "visible" }}
-    >
-      <defs>
-        <filter id="beam-glow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="4" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
-      </defs>
-
-      {/* Dim base border */}
-      <rect
-        x="1"
-        y="1"
-        width="calc(100% - 2px)"
-        height="calc(100% - 2px)"
-        rx={rx}
-        ry={rx}
-        fill="none"
-        stroke="#525252"
-        strokeWidth="1"
-      />
-
-      {/* Glow layer */}
-      <rect
-        ref={rectGlowRef}
-        x="1"
-        y="1"
-        width="calc(100% - 2px)"
-        height="calc(100% - 2px)"
-        rx={rx}
-        ry={rx}
-        fill="none"
-        stroke="#780FF0"
-        strokeWidth="6"
-        strokeLinecap="round"
-        strokeDasharray={`${pillLength} ${perimeter - pillLength}`}
-        strokeDashoffset={perimeter}
-        filter="url(#beam-glow)"
-        style={{ opacity: 0.6 }}
-      />
-
-      {/* Sharp bright pill layer */}
-      <rect
-        ref={rectRef}
-        x="1"
-        y="1"
-        width="calc(100% - 2px)"
-        height="calc(100% - 2px)"
-        rx={rx}
-        ry={rx}
-        fill="none"
-        stroke="#8E3AEE"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeDasharray={`${pillLength} ${perimeter - pillLength}`}
-        strokeDashoffset={perimeter}
-      />
-    </svg>
-  );
-}
+import { Mountain, Globe, Zap } from "lucide-react";
 
 const pillars = [
   {
     title: "Local Roots",
-    description:
-      "We start by understanding the heartbeat of your business. Your story, our craft, and your local community are the foundation of our strategy.",
-    icon: <Mountains size={36} weight="fill" color="#FFFFFF" />,
-    color: "#A463EE",
+    description: "We start by understanding the heartbeat of your business. Your story and your community are the foundation of our strategy.",
+    icon: <Mountain size={36} strokeWidth={1.5} />,
+    color: "var(--accent-secondary)",
   },
   {
     title: "Digital Bridge",
-    description:
-      "We build the infrastructure from websites, social media to SEO that acts as the bridge connecting your physical store to the digital highway.",
-    icon: <Planet size={36} weight="fill" color="#FFFFFF" />,
-    color: "#780FF0",
+    description: "We build the infrastructure from websites to SEO that acts as the bridge connecting your physical store to the digital highway.",
+    icon: <Zap size={36} strokeWidth={1.5} />,
+    color: "var(--accent)",
   },
   {
     title: "Global Bridge",
-    description:
-      "Unlock new markets. From a customer down the street to a collector across the ocean, we ensure your business is visible everywhere.",
-    icon: <Eye size={36} weight="fill" color="#FFFFFF" />,
-    color: "#9E9E9E",
+    description: "Unlock new markets. From a customer down the street to a collector across the ocean, we ensure your business is visible.",
+    icon: <Globe size={36} strokeWidth={1.5} />,
+    color: "var(--text-secondary)",
   },
 ];
 
-function PillarCard({
-  pillar,
-  index,
-}: {
-  pillar: {
-    title: string;
-    description: string;
-    icon: ReactNode;
-    color: string;
-  };
-  index: number;
-}) {
+function PillarCard({ pillar, index }: { pillar: any; index: number }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-80px" });
+  const watermarkId = String(index + 1).padStart(2, "0");
 
   return (
     <motion.div
@@ -153,24 +38,28 @@ function PillarCard({
       initial={{ opacity: 0, y: 40 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.15 }}
-      className="group relative bg-[#1F1E1F] border border-[#525252] rounded-2xl p-8 hover:border-[#780FF0]/40 transition-all card-glow overflow-hidden"
+      className="group relative flex flex-col justify-between gap-8 border border-white/5 rounded-3xl p-8 bg-white/[0.02] backdrop-blur-xl transition-all duration-500 hover:bg-white/[0.04] hover:border-white/10 overflow-hidden h-full"
     >
-      {/* Corner accent */}
-      <div
-        className="absolute top-0 right-0 w-32 h-32 rounded-bl-full opacity-5"
-        style={{ backgroundColor: pillar.color }}
-      />
-
-      <div className="mb-5 block">{pillar.icon}</div>
-      <h3
-        className="text-xl font-black mb-3 group-hover:text-[#780FF0] transition-colors"
-        style={{ color: "#FFFFFF" }}
-      >
-        {pillar.title}
-      </h3>
-      <p className="text-[#9E9E9E] text-base leading-relaxed">
-        {pillar.description}
-      </p>
+      <div className="absolute -top-4 -right-2 font-mono-display text-[120px] font-black text-white/[0.02] select-none leading-none pointer-events-none group-hover:text-white/[0.04] group-hover:scale-110 transition-all duration-700">
+        {watermarkId}
+      </div>
+      <div className="relative z-10">
+        <div className="w-14 h-14 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10 transition-all duration-500 group-hover:bg-accent group-hover:border-accent/40 shadow-[0_0_25px_rgba(255,255,255,0.05)] group-hover:shadow-[0_0_35px_rgba(120,15,240,0.3)]">
+          <div className="flex items-center justify-center text-white/40 group-hover:text-white transition-colors duration-500">
+            {pillar.icon}
+          </div>
+        </div>
+      </div>
+      <div className="relative z-10 flex flex-col gap-3">
+        <span className="font-mono-display text-text-secondary text-[10px] uppercase tracking-[0.2em] font-bold">Pillar {watermarkId}</span>
+        <h3 className="text-xl font-bold text-text-primary transition-colors duration-500 leading-tight">{pillar.title}</h3>
+        <p className="text-text-secondary leading-relaxed text-sm opacity-70 group-hover:opacity-100 transition-opacity duration-500 max-w-[90%]">{pillar.description}</p>
+      </div>
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+      </div>
+      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/10 rounded-tl-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
     </motion.div>
   );
 }
@@ -180,92 +69,38 @@ export default function Mission() {
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
-    <section className="bg-[#1F1E1F] py-28 border-t border-[#525252]">
+    <section className="bg-bg-primary py-28 border-t border-border">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={ref} className="text-center mb-16">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            className="section-tag block mb-4"
-          >
-            Our Mission
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight"
-          >
-            Bridging Tradition{" "}
-            <span className="text-[#780FF0]">&amp; Technology</span>
-          </motion.h2>
+          <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">Our Mission</motion.span>
+          <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} className="text-4xl md:text-6xl font-black text-text-primary leading-tight">Bridging Tradition <span className="text-accent">&amp; Technology</span></motion.h2>
         </div>
-
         <div className="grid md:grid-cols-3 gap-6">
           {pillars.map((pillar, i) => (
             <PillarCard key={pillar.title} pillar={pillar} index={i} />
           ))}
         </div>
-
-        {/* Success rate banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.3 }}
-          className="mt-12 relative rounded-2xl"
-        >
-          <BorderBeam />
-          <div className="relative m-[1px] rounded-2xl bg-[#383838] p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div>
-              <p className="text-[#9E9E9E] text-sm font-mono-display tracking-widest uppercase mb-1">
-                Success Rate · Last 12 months
-              </p>
-              <p className="text-7xl font-black text-[#FFFFFF]">
-                <CountUp value={98} suffix="%" />
-              </p>
+        <motion.div initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 1 }} className="mt-32 relative py-20 overflow-hidden">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-accent/10 blur-[120px] rounded-full pointer-events-none" />
+          <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] select-none pointer-events-none" style={{ WebkitTextStroke: "2px white", color: "transparent" }}><span className="text-[300px] font-black leading-none">98%</span></div>
+          <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-12">
+            <div className="flex-1 text-left">
+              <div className="flex items-center gap-4 mb-6">
+                <div className="h-px w-12 bg-accent" />
+                <span className="font-mono-display text-accent text-xs uppercase tracking-[0.3em] font-bold">The Studio Standard</span>
+              </div>
+              <h2 className="text-5xl md:text-7xl font-black text-white leading-[0.9] mb-8 tracking-tighter">Unmatched <br /><span className="text-white/40">Success Rate.</span></h2>
+              <p className="text-text-secondary text-lg leading-relaxed max-w-md opacity-80">Our commitment to growth is absolute. We measure success by the tangible impact we deliver to our partners.</p>
             </div>
-            <div className="max-w-sm">
-              <p className="text-[#FFFFFF] text-lg font-semibold mb-2">
-                We measure what matters
-              </p>
-              <p className="text-[#9E9E9E] text-sm leading-relaxed">
-                Our success is defined by your growth — every project we take
-                on, we finish. Every business we work with, grows.
-              </p>
-            </div>
-            <div className="hidden md:block">
-              <div className="relative w-32 h-32">
-                <svg viewBox="0 0 120 120" className="w-full h-full -rotate-90">
-                  <circle
-                    cx="60"
-                    cy="60"
-                    r="50"
-                    fill="none"
-                    stroke="#525252"
-                    strokeWidth="8"
-                  />
-                  <motion.circle
-                    cx="60"
-                    cy="60"
-                    r="50"
-                    fill="none"
-                    stroke="#780FF0"
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeDasharray={`${2 * Math.PI * 50}`}
-                    initial={{ strokeDashoffset: 2 * Math.PI * 50 }}
-                    whileInView={{ strokeDashoffset: 2 * Math.PI * 50 * 0.02 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1.5, delay: 0.5, ease: "easeOut" }}
-                  />
-                </svg>
-                <span className="absolute inset-0 flex items-center justify-center text-2xl font-black text-[#FFFFFF]">
-                  <CountUp value={98} suffix="%" />
-                </span>
+            <div className="flex-shrink-0 flex flex-col items-center md:items-end gap-2">
+              <div className="flex items-baseline gap-2"><span className="text-[120px] font-black text-white leading-none tracking-tighter"><CountUp value={98} /></span><span className="text-4xl font-bold text-accent">%</span></div>
+              <div className="flex flex-col items-center md:items-end">
+                <p className="text-white font-bold text-sm uppercase tracking-widest">Project Completion</p>
+                <p className="text-text-muted text-[10px] font-mono-display uppercase tracking-widest mt-1">Verified · 2025-26</p>
               </div>
             </div>
           </div>
+          <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
         </motion.div>
       </div>
     </section>

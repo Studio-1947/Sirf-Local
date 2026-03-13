@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import axios, { AxiosError, InternalAxiosRequestConfig, AxiosResponse } from "axios";
 import { ApiError } from "../../types/api.types";
 
 const API_BASE_URL = (
@@ -14,18 +14,18 @@ const apiClient = axios.create({
 
 // Request Interceptor
 apiClient.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     // You can add auth tokens here in the future
     return config;
   },
-  (error) => {
+  (error: AxiosError) => {
     return Promise.reject(error);
   },
 );
 
 // Response Interceptor
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response: AxiosResponse) => response,
   (error: AxiosError<ApiError>) => {
     const errorMessage =
       error.response?.data?.message || "An unexpected error occurred";

@@ -1,8 +1,23 @@
 import type { Metadata } from "next";
+import { Inter, Fragment_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import ClientProviders from "@/components/ClientProviders";
 import CartDrawer from "@/components/CartDrawer";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  weight: ["300", "400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
+const fragmentMono = Fragment_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  weight: "400",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "Sirf Local",
@@ -20,14 +35,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${inter.variable} ${fragmentMono.variable}`}>
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Fragment+Mono&family=Inter:wght@300;400;500;600;700;800&display=swap"
-          rel="stylesheet"
-        />
         <Script
           id="razorpay-checkout-js"
           src="https://checkout.razorpay.com/v1/checkout.js"

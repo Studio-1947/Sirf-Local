@@ -1,530 +1,150 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import Image from "next/image";
+import { useRef } from "react";
 import {
   Video,
-  LayoutGrid,
-  Sparkles,
-  Package,
+  Grid,
+  Zap,
+  Box,
   Globe,
-  Megaphone,
+  Bell,
   MessageCircle,
   Award,
   MapPin,
   ShoppingCart,
-  Check,
+  CheckCircle2,
+  ArrowRight,
 } from "lucide-react";
-import type { ComponentType } from "react";
 import { useCart, parsePrice } from "@/context/CartContext";
 
-type IconComp = ComponentType<{
-  size?: number;
-  color?: string;
-  strokeWidth?: number;
-}>;
-
-interface CardData {
-  title: string;
-  price: string;
-  period: string;
-  body: string;
-  label: string;
-  icon: IconComp;
-  accent: string;
-  thumbFrom: string;
-  thumbTo: string;
-  dotColor: string;
-  thumbnail: string;
-}
-
-const cards: CardData[] = [
-  {
-    title: "Monthly Reels",
-    price: "₹3,500",
-    period: "monthly",
-    body: "Short, engaging videos to trend locally",
-    label: "4 ready-to-use reels created from your photos and clips",
-    icon: Video,
-    accent: "#780FF0",
-    thumbFrom: "#3E0085",
-    thumbTo: "#1A003A",
-    dotColor: "rgba(120,15,240,0.12)",
-    thumbnail: "/images/pricing/Image-1.png",
-  },
-  {
-    title: "Monthly Content Posts",
-    price: "₹3,500",
-    period: "monthly",
-    body: "For owners too busy to worry about posting",
-    label: "8 ready-to-use posts per month — greetings, offers & highlights",
-    icon: LayoutGrid,
-    accent: "#A463EE",
-    thumbFrom: "#5103AA",
-    thumbTo: "#200050",
-    dotColor: "rgba(164,99,238,0.12)",
-    thumbnail: "/images/pricing/Image-2.png",
-  },
-  {
-    title: "The Brand Makeover",
-    price: "₹5,000",
-    period: "one-time",
-    body: 'Give your "Old" Shop a modern facelift',
-    label: "New colors, a fresh logo, and updated social media banners",
-    icon: Sparkles,
-    accent: "#780FF0",
-    thumbFrom: "#3E0085",
-    thumbTo: "#1A003A",
-    dotColor: "rgba(120,15,240,0.12)",
-    thumbnail: "/images/pricing/Image-3.png",
-  },
-  {
-    title: "Premium Product Packaging",
-    price: "₹3,500",
-    period: "one-time",
-    body: "Perfect for local bakers, candle makers, or crafters",
-    label:
-      "A professional label or box design that makes your products look premium",
-    icon: Package,
-    accent: "#B98AEF",
-    thumbFrom: "#6509CE",
-    thumbTo: "#2D0060",
-    dotColor: "rgba(185,138,239,0.12)",
-    thumbnail: "/images/pricing/Image-4.png",
-  },
-  {
-    title: "Your One-Page Website",
-    price: "₹5,000",
-    period: "one-time",
-    body: "A simple, clean page that tells people who you are",
-    label:
-      'Mobile-friendly with a big "Call/WhatsApp us" button and map directions',
-    icon: Globe,
-    accent: "#780FF0",
-    thumbFrom: "#3E0085",
-    thumbTo: "#1A003A",
-    dotColor: "rgba(120,15,240,0.12)",
-    thumbnail: "/images/pricing/Image-5.png",
-  },
-  {
-    title: "Catchy Social Media Posts",
-    price: "₹800",
-    period: "one-time",
-    body: "Beautiful designs to bring customers through your door",
-    label:
-      'High-quality graphics for "Buy 1 Get 1" deals, flash sales & grand openings',
-    icon: Megaphone,
-    accent: "#A463EE",
-    thumbFrom: "#5103AA",
-    thumbTo: "#200050",
-    dotColor: "rgba(164,99,238,0.12)",
-    thumbnail: "/images/pricing/Image-6.png",
-  },
-  {
-    title: "Your WhatsApp Shop",
-    price: "₹3,000",
-    period: "one-time",
-    body: "People love shopping on WhatsApp — let's make it easy for them",
-    label:
-      "Product catalogue with photos & prices, plus auto-replies for instant answers",
-    icon: MessageCircle,
-    accent: "#780FF0",
-    thumbFrom: "#3E0085",
-    thumbTo: "#1A003A",
-    dotColor: "rgba(120,15,240,0.12)",
-    thumbnail: "/images/pricing/Image-7.png",
-  },
-  {
-    title: "The Professional Look",
-    price: "₹5,000",
-    period: "one-time",
-    body: 'Move from a "Small Shop" to a "Big Brand" look',
-    label:
-      "A unique logo designed just for you, plus a matching business card design",
-    icon: Award,
-    accent: "#B98AEF",
-    thumbFrom: "#6509CE",
-    thumbTo: "#2D0060",
-    dotColor: "rgba(185,138,239,0.12)",
-    thumbnail: "/images/pricing/Image-8.png",
-  },
-  {
-    title: "Get Found on Google Maps",
-    price: "₹2,000",
-    period: "one-time",
-    body: "If people can't find you on their phones, they can't visit you!",
-    label:
-      "Listed on Google Maps & search, verified, with accurate hours & location",
-    icon: MapPin,
-    accent: "#A463EE",
-    thumbFrom: "#5103AA",
-    thumbTo: "#200050",
-    dotColor: "rgba(164,99,238,0.12)",
-    thumbnail: "/images/pricing/Image-9.png",
-  },
+const services = [
+  { id: '01', title: "Monthly Reels", price: "₹3,500", period: "monthly", body: "High-impact short-form video content designed for local virality.", size: 'hero', icon: <Video size={18} strokeWidth={1.5} /> },
+  { id: '02', title: "Monthly Content", price: "₹3,500", period: "monthly", body: "8 professional monthly posts for owners too busy to worry about posting.", size: 'hero', icon: <Grid size={18} strokeWidth={1.5} /> },
+  { id: '03', title: "One-Page Website", price: "₹5,000", period: "one-time", body: "A high-performance portal with WhatsApp sync & local maps.", size: 'small', icon: <Globe size={18} strokeWidth={1.5} /> },
+  { id: '04', title: "Brand Makeover", price: "₹5,000", period: "one-time", body: "Complete logo & color architecture.", size: 'small', icon: <Zap size={18} strokeWidth={1.5} /> },
+  { id: '05', title: "Premium Packaging", price: "₹3,500", period: "one-time", body: "Professional SKU label systems.", size: 'small', icon: <Box size={18} strokeWidth={1.5} /> },
+  { id: '06', title: "WhatsApp Shop", price: "₹3,000", period: "one-time", body: "Full catalogue & auto-replies.", size: 'small', icon: <MessageCircle size={18} strokeWidth={1.5} /> },
+  { id: '07', title: "Professional Look", price: "₹5,000", period: "one-time", body: "Logo + matching business cards.", size: 'small', icon: <Award size={18} strokeWidth={1.5} /> },
+  { id: '08', title: "Google Maps Audit", price: "₹2,000", period: "one-time", body: "Verified local search optimization.", size: 'small', icon: <MapPin size={18} strokeWidth={1.5} /> },
+  { id: '09', title: "Promo Graphics", price: "₹800", period: "one-time", body: "High-quality flash sale designs.", size: 'small', icon: <Bell size={18} strokeWidth={1.5} /> },
 ];
 
-function PricingCard({ card, index }: { card: CardData; index: number }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [hovered, setHovered] = useState(false);
+function BentoCard({ svc, index }: { svc: any; index: number }) {
   const { isInCart, toggleItem, openDrawer } = useCart();
-  const inCart = isInCart(card.title);
-
-  const row = Math.floor(index / 3);
-  const col = index % 3;
+  const inCart = isInCart(svc.title);
 
   function handleCartClick() {
-    toggleItem({
-      id: card.title,
-      title: card.title,
-      price: parsePrice(card.price),
-      period: card.period,
-      accent: card.accent,
-    });
+    toggleItem({ id: svc.title, title: svc.title, price: parsePrice(svc.price), period: svc.period, accent: 'var(--accent)' });
     if (!inCart) openDrawer();
   }
 
   return (
     <motion.div
-      ref={ref}
-      initial={{ opacity: 0, y: 50 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{
-        duration: 0.5,
-        delay: row * 0.15 + col * 0.07,
-        ease: [0.25, 0.1, 0.25, 1],
-      }}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        borderRadius: "20px",
-        border: `1px solid ${inCart ? card.accent + "70" : hovered ? card.accent + "55" : "#525252"}`,
-        background: inCart ? "#1F1E1F" : hovered ? "#383838" : "#1F1E1F",
-        overflow: "hidden",
-        transition: "border-color 0.3s, background 0.3s, box-shadow 0.3s",
-        boxShadow: hovered
-          ? `0 8px 40px ${card.accent}18`
-          : "0 2px 16px rgba(0,0,0,0.4)",
-      }}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.05 }}
+      className={`group relative flex flex-col justify-between p-8 md:p-10 rounded-[2.5rem] border transition-all duration-700 overflow-hidden backdrop-blur-2xl bg-white/[0.02] ${
+        inCart ? "border-accent shadow-[0_0_30px_rgba(120,15,240,0.15)]" : "border-white/5 hover:border-white/10"
+      }`}
     >
-      {/* Thumbnail */}
-      <div
-        style={{
-          height: "152px",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        <Image
-          src={card.thumbnail}
-          alt={card.title}
-          fill
-          style={{
-            objectFit: "cover",
-            transition: "transform 0.4s ease",
-            transform: hovered ? "scale(1.05)" : "scale(1)",
-          }}
-          sizes="(max-width: 768px) 100vw, 33vw"
-          priority={index < 3}
-        />
+      <div className="absolute -top-4 -right-2 font-mono-display text-[100px] font-black text-white/[0.02] select-none leading-none pointer-events-none group-hover:text-white/[0.04] group-hover:scale-110 transition-all duration-700">
+        {svc.id}
       </div>
 
-      {/* Content body */}
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "10px",
-          padding: "20px 22px",
-          flex: 1,
-        }}
-      >
-        {/* Price — above title */}
-        <div
-          style={{
-            display: "inline-flex",
-            alignItems: "baseline",
-            gap: "5px",
-            padding: "4px 12px",
-            borderRadius: "999px",
-            background: `${card.accent}15`,
-            border: `1px solid ${card.accent}30`,
-            alignSelf: "flex-start",
-          }}
-        >
-          <span
-            style={{
-              color: card.accent,
-              fontWeight: 800,
-              fontSize: "14px",
-              letterSpacing: "-0.3px",
-            }}
-          >
-            {card.price}
-          </span>
-          <span style={{ color: card.accent, opacity: 0.55, fontSize: "11px" }}>
-            / {card.period}
+      <div className="relative z-10">
+        <div className="flex items-center justify-between mb-6">
+          <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all duration-500 ${
+            inCart 
+              ? 'bg-accent/20 border-accent/40 text-accent' 
+              : 'bg-white/5 border-white/10 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(120,15,240,0.3)]'
+          }`}>
+            {svc.icon}
+          </div>
+          <span className={`font-mono-display text-[9px] uppercase tracking-[0.2em] font-bold ${svc.period === 'monthly' ? 'text-accent' : 'text-text-muted'}`}>
+            {svc.period}
           </span>
         </div>
 
-        <h3
-          style={{
-            color: hovered ? card.accent : "#FFFFFF",
-            fontWeight: 800,
-            fontSize: "16px",
-            lineHeight: 1.3,
-            transition: "color 0.3s",
-            margin: 0,
-          }}
-        >
-          {card.title}
+        <h3 className="text-xl font-bold text-white mb-2 transition-colors duration-500">
+          {svc.title}
         </h3>
-        <p
-          style={{
-            color: "#858585",
-            fontSize: "13.5px",
-            lineHeight: 1.6,
-            margin: 0,
-          }}
-        >
-          {card.body}
-          {card.period === 'one-time' && card.title.toLowerCase().includes('website') && (
-            <span style={{ display: 'block', fontSize: '11px', color: '#555', marginTop: '4px', fontStyle: 'italic' }}>
-              *Costs may increase with added features and pages
-            </span>
-          )}
+        <p className="text-text-secondary text-sm leading-relaxed opacity-70 group-hover:opacity-100 transition-opacity duration-500 max-w-[240px]">
+          {svc.body}
         </p>
-
-        {/* Divider + label */}
-        <div
-          style={{
-            marginTop: "auto",
-            paddingTop: "14px",
-            borderTop: "1px solid #525252",
-            display: "flex",
-            gap: "8px",
-            alignItems: "flex-start",
-          }}
-        >
-          <span
-            style={{
-              width: "6px",
-              height: "6px",
-              borderRadius: "50%",
-              background: card.accent,
-              flexShrink: 0,
-              marginTop: "5px",
-            }}
-          />
-          <p
-            style={{
-              color: card.accent,
-              fontSize: "12px",
-              lineHeight: 1.55,
-              margin: 0,
-              opacity: 0.85,
-            }}
-          >
-            {card.label}
-          </p>
-        </div>
       </div>
 
-      {/* CTA */}
-      <div style={{ padding: "0 22px 22px" }}>
+      <div className="relative z-10 mt-8 flex items-end justify-between">
+        <div className="flex flex-col">
+          <span className="text-2xl font-black text-white tracking-tighter transition-colors duration-500 group-hover:text-accent">{svc.price}</span>
+          <span className="text-[10px] font-mono-display text-text-muted uppercase tracking-widest">Fixed Rate</span>
+        </div>
+
         <button
           onClick={handleCartClick}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: "7px",
-            width: "100%",
-            padding: "10px 0",
-            borderRadius: "999px",
-            fontSize: "13px",
-            fontWeight: 700,
-            cursor: "pointer",
-            border: `1.5px solid ${inCart ? "#4CAF7D" : hovered ? card.accent : card.accent + "50"}`,
-            color: inCart ? "#1F1E1F" : hovered ? "#FFFFFF" : card.accent,
-            background: inCart
-              ? "#4CAF7D"
-              : hovered
-                ? card.accent
-                : "transparent",
-            transition: "background 0.25s, color 0.25s, border-color 0.25s",
-            letterSpacing: "0.3px",
-          }}
+          className={`group/btn flex items-center justify-center gap-2 w-10 h-10 rounded-full border transition-all duration-500 ${
+            inCart ? "bg-state-success border-state-success text-bg-primary" : "bg-white/5 border-white/10 text-white hover:border-accent hover:bg-accent"
+          }`}
         >
-          {inCart ? (
-            <Check size={14} strokeWidth={2.5} />
-          ) : (
-            <ShoppingCart size={13} strokeWidth={2} />
-          )}
-          {inCart ? "Added to Cart" : "Add to Cart"}
+          {inCart ? <CheckCircle2 size={16} strokeWidth={2.5} /> : <ShoppingCart size={16} strokeWidth={2} />}
         </button>
+      </div>
+
+      <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
+        <div className="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
+        <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent" />
       </div>
     </motion.div>
   );
 }
 
 export default function Pricing() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const containerRef = useRef(null);
+  const inView = useInView(containerRef, { once: true, margin: "-100px" });
 
   return (
-    <section
-      id="pricing"
-      style={{
-        background: "#1F1E1F",
-        paddingTop: "112px",
-        paddingBottom: "112px",
-        borderTop: "1px solid #383838",
-      }}
-    >
-      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "0 24px" }}>
-        {/* Header */}
-        <div ref={ref} style={{ textAlign: "center", marginBottom: "64px" }}>
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            className="section-tag"
-            style={{ display: "inline-block", marginBottom: "16px" }}
-          >
-            Pricing
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.15, duration: 0.65 }}
-            style={{
-              fontSize: "clamp(2rem, 5vw, 3rem)",
-              fontWeight: 900,
-              color: "#FFFFFF",
-              lineHeight: 1.15,
-              marginBottom: "14px",
-              letterSpacing: "-0.5px",
-            }}
-          >
-            Your Business Needs,
-            <br />
-            <span style={{ color: "#780FF0" }}>Pick What Fits</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.25 }}
-            style={{
-              color: "#858585",
-              fontSize: "16px",
-              maxWidth: "400px",
-              margin: "0 auto",
-              lineHeight: 1.6,
-            }}
-          >
-            Start small, grow big. Every service is built for Indian local
-            businesses.
-          </motion.p>
+    <section id="pricing" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6">
+        <div ref={containerRef} className="mb-20 flex flex-col md:flex-row items-start md:items-end justify-between gap-8">
+          <div className="max-w-2xl">
+            <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">Service Modules</motion.span>
+            <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter">
+              Transparent <br />
+              <span className="text-accent">Studio Rates.</span>
+            </motion.h2>
+          </div>
+          <div className="text-right hidden md:block">
+             <p className="text-text-secondary text-lg font-mono-display uppercase tracking-widest max-w-[240px] border-r-2 border-accent pr-6 leading-relaxed">
+                Pick technical modules to scale your brand.
+             </p>
+          </div>
         </div>
 
-        {/* 3×3 grid — inline CSS to guarantee columns */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(3, 1fr)",
-            gridTemplateRows: "auto auto auto",
-            gap: "20px",
-          }}
-        >
-          {cards.map((card, i) => (
-            <PricingCard key={card.title} card={card} index={i} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {services.filter(s => s.period === 'monthly').map((svc, i) => (
+            <BentoCard key={svc.title} svc={svc} index={i} />
           ))}
         </div>
 
-        {/* Custom Pricing CTA Banner */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          style={{
-            marginTop: "40px",
-            background: "linear-gradient(135deg, #1A003A 0%, #1F1E1F 60%)",
-            border: "1px solid #3E0085",
-            borderRadius: "20px",
-            padding: "48px 40px",
-            textAlign: "center",
-            position: "relative",
-            overflow: "hidden",
-          }}
-        >
-          {/* Subtle glow */}
-          <div
-            style={{
-              position: "absolute",
-              top: "-60px",
-              left: "50%",
-              transform: "translateX(-50%)",
-              width: "300px",
-              height: "200px",
-              background:
-                "radial-gradient(ellipse, rgba(120,15,240,0.12) 0%, transparent 70%)",
-              pointerEvents: "none",
-            }}
-          />
-          <p
-            style={{
-              fontSize: "22px",
-              fontWeight: 900,
-              color: "#FFFFFF",
-              marginBottom: "8px",
-              position: "relative",
-            }}
-          >
-            Need Something Custom?
-          </p>
-          <p
-            style={{
-              color: "#858585",
-              marginBottom: "28px",
-              maxWidth: "420px",
-              margin: "0 auto 28px",
-              lineHeight: 1.6,
-              position: "relative",
-            }}
-          >
-            We craft tailored packages for businesses with unique needs.
-            Let&apos;s build exactly what you require.
-          </p>
-          <a
-            href="#contact"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              padding: "13px 32px",
-              background: "#780FF0",
-              color: "#FFFFFF",
-              fontWeight: 800,
-              fontSize: "14px",
-              borderRadius: "999px",
-              textDecoration: "none",
-              position: "relative",
-              letterSpacing: "0.3px",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#8E3AEE";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLElement).style.background = "#780FF0";
-            }}
-          >
-            Get a Custom Quote →
-          </a>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {services.filter(s => s.period === 'one-time').map((svc, i) => (
+            <BentoCard key={svc.title} svc={svc} index={i + 2} />
+          ))}
+        </div>
+
+        <motion.div initial={{ opacity: 0, scale: 0.98 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} className="mt-20 p-1 bg-white/[0.05] rounded-[2.5rem] overflow-hidden">
+          <div className="bg-bg-primary rounded-[2.4rem] p-12 md:p-16 flex flex-col md:flex-row items-center justify-between gap-12 border border-white/5 relative overflow-hidden">
+             <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[80px] rounded-full" />
+             <div className="text-left relative z-10">
+                <h3 className="text-3xl font-black text-white mb-4 tracking-tighter">Complex Requirement?</h3>
+                <p className="text-text-secondary text-lg max-w-md opacity-80">We architect custom end-to-end solutions for businesses with multi-layered digital needs.</p>
+             </div>
+             <a href="#contact" className="group relative z-10 flex items-center gap-4 px-10 py-4 bg-white text-bg-primary font-bold text-sm rounded-full transition-all duration-300 hover:bg-accent hover:text-white hover:scale-[1.02] shadow-2xl">
+                Request Custom Blueprint
+                <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+             </a>
+          </div>
         </motion.div>
       </div>
     </section>

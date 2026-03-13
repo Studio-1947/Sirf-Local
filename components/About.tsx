@@ -1,132 +1,139 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useRef, useState } from "react";
 import CountUp from "./CountUp";
 
-const steps = [
-  { num: "01", text: "You give us the project" },
-  { num: "02", text: "We do your brand survey" },
-  { num: "03", text: "We hire a local youth in Himal Nagrik Fellowship" },
-  {
-    num: "04",
-    text: "We build solution with our experts and Himal Nagrik Fellow",
-  },
-  { num: "05", text: "Money flows within the community" },
-  { num: "06", text: "We all grow" },
+interface Step {
+  num: string;
+  title: string;
+  text: string;
+}
+
+const steps: Step[] = [
+  { num: "01", title: "Project Brief", text: "You provide the vision, we define the strategy." },
+  { num: "02", title: "Local Audit", text: "We survey the market to ensure regional relevance." },
+  { num: "03", title: "Fellowship", text: "We activate local talent via Himal Nagrik Fellows." },
+  { num: "04", title: "Studio Build", text: "Our experts engineer your digital infrastructure." },
+  { num: "05", title: "Revenue Flow", text: "Wealth stays and grows within the local community." },
+  { num: "06", title: "Shared Growth", text: "We grow together as a sustainable regional ecosystem." },
 ];
 
-function StepItem({ step, index }: { step: (typeof steps)[0]; index: number }) {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-80px" });
-
+function ProtocolTab({ step, active, onHover }: { step: Step; active: boolean; onHover: () => void }) {
   return (
-    <motion.div
-      ref={ref}
-      initial={{ opacity: 0, x: -30 }}
-      animate={inView ? { opacity: 1, x: 0 } : {}}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      className="flex items-start gap-6 py-6 border-b border-[#525252] group hover:border-[#780FF0]/40 transition-colors"
+    <div 
+      onMouseEnter={onHover}
+      className={`group relative py-6 border-b border-white/5 cursor-pointer transition-all duration-500 ${active ? 'pl-8' : 'pl-0'}`}
     >
-      <span className="font-mono-display text-[#FFFFFF] group-hover:text-[#780FF0] transition-colors text-sm pt-1 min-w-[32px]">
-        {step.num}
-      </span>
-      <p className="text-[#FFFFFF] text-lg font-medium group-hover:text-[#780FF0] transition-colors">
-        {step.text}
-      </p>
-    </motion.div>
+       <div className="flex items-center gap-6">
+          <span className={`font-mono-display text-xs transition-colors duration-500 ${active ? 'text-accent' : 'text-text-muted'}`}>
+            CODE-{step.num}
+          </span>
+          <h4 className={`text-xl font-bold transition-colors duration-500 ${active ? 'text-white' : 'text-text-secondary group-hover:text-white'}`}>
+            {step.title}
+          </h4>
+       </div>
+
+       <AnimatePresence>
+          {active && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.4, ease: "circOut" }}
+              className="overflow-hidden"
+            >
+               <p className="text-text-secondary text-sm leading-relaxed mt-4 max-w-sm opacity-80">
+                 {step.text}
+               </p>
+            </motion.div>
+          )}
+       </AnimatePresence>
+
+       {/* Interactive Vertical Beam */}
+       <div className={`absolute left-0 top-0 bottom-0 w-1 bg-accent transition-all duration-500 transform origin-top ${active ? 'scale-y-100' : 'scale-y-0'}`} />
+    </div>
   );
 }
 
 export default function About() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: "-100px" });
+  const containerRef = useRef(null);
+  const inView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id="about" className="bg-[#1F1E1F] py-28">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="grid md:grid-cols-2 gap-16 items-start">
-          {/* Left */}
-          <div ref={ref}>
-            <motion.span
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.1 }}
-              className="section-tag block mb-5"
+    <section id="about" className="bg-bg-primary py-40 border-t border-border relative overflow-hidden">
+      <div className="max-w-7xl mx-auto px-6 relative z-10">
+        
+        <div className="grid lg:grid-cols-2 gap-24 items-start">
+          
+          {/* Left: The Manifesto */}
+          <div ref={containerRef}>
+            <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-8">Initiative by Studio 1947</motion.span>
+            
+            <motion.h2 
+              initial={{ opacity: 0, y: 30 }} 
+              animate={inView ? { opacity: 1, y: 0 } : {}} 
+              transition={{ delay: 0.2 }}
+              className="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-12"
             >
-              An Initiative by Studio1947
-            </motion.span>
-
-            <motion.h2
-              initial={{ opacity: 0, y: 30 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.2, duration: 0.7 }}
-              className="text-4xl md:text-5xl font-black text-[#FFFFFF] leading-tight mb-6"
-            >
-              Accessible, <span className="text-[#780FF0]">Affordable,</span>{" "}
-              &amp; Inclusive for Local Businesses
+              Inclusive. <br />
+              <span className="text-accent italic">Affordable.</span> <br />
+              Global.
             </motion.h2>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.35 }}
-              className="text-[#9E9E9E] text-base leading-relaxed mb-8"
+            <motion.p 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={inView ? { opacity: 1, y: 0 } : {}} 
+              transition={{ delay: 0.4 }}
+              className="text-text-secondary text-lg leading-relaxed max-w-lg opacity-80"
             >
-              Sirf Local is an initiative by Studio 1947 for empowering local
-              businesses through data, design, technology, communication &amp;
-              research based solutions. We are based in Mirik, Darjeeling:
-              rooted in local wisdom, designed for global impact.
+              Sirf Local is a Himalayan design studio empowering regional brands through world-class data, design, and technology. Rooted in Mirik, built for impact.
             </motion.p>
 
-            {/* Stats row */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{ delay: 0.45 }}
-              className="flex gap-8"
+            {/* Stats Row (Bolder & More Prominent) */}
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }} 
+              animate={inView ? { opacity: 1, y: 0 } : {}} 
+              transition={{ delay: 0.5 }}
+              className="flex flex-wrap items-center gap-16 mt-16 pt-12 border-t border-white/5"
             >
-              <div>
-                <p className="text-4xl font-black text-[#FFFFFF]">
-                  <CountUp value={10} suffix="+" />
-                </p>
-                <p className="text-sm text-[#9E9E9E] mt-1">
-                  Clients Across India
-                </p>
-              </div>
-              <div className="w-px bg-[#525252]" />
-              <div>
-                <p className="text-4xl font-black text-[#FFFFFF]">
-                  <CountUp value={98} suffix="%" />
-                </p>
-                <p className="text-sm text-[#9E9E9E] mt-1">Success Rate</p>
-              </div>
-              <div className="w-px bg-[#525252]" />
-              <div>
-                <p className="text-4xl font-black text-[#FFFFFF]">
-                  <CountUp value={2} suffix="+" />
-                </p>
-                <p className="text-sm text-[#9E9E9E] mt-1">Monthly Building</p>
-              </div>
+               {[
+                 { val: 10, suffix: "+", label: "Partners" },
+                 { val: 98, suffix: "%", label: "Success" },
+                 { val: 2, suffix: "+", label: "Months" }
+               ].map((stat) => (
+                 <div key={stat.label} className="relative last:after:hidden after:content-[''] after:absolute after:-right-8 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-10 after:bg-white/10">
+                    <p className="text-white font-black text-5xl tracking-tighter leading-none"><CountUp value={stat.val} suffix={stat.suffix} /></p>
+                    <p className="text-[10px] font-mono-display text-accent font-bold uppercase tracking-[0.3em] mt-3">{stat.label}</p>
+                 </div>
+               ))}
             </motion.div>
           </div>
 
-          {/* Right — How It Works */}
-          <div>
-            <motion.p
-              initial={{ opacity: 0 }}
-              animate={inView ? { opacity: 1 } : {}}
-              transition={{ delay: 0.2 }}
-              className="text-[#9E9E9E] text-sm uppercase tracking-widest mb-6 font-mono-display"
-            >
-              How It Works
-            </motion.p>
-            {steps.map((step, i) => (
-              <StepItem key={step.num} step={step} index={i} />
-            ))}
+          {/* Right: Interactive Protocol Tabs */}
+          <div className="relative pt-12">
+             <div className="flex items-center gap-4 mb-12">
+                <span className="font-mono-display text-[10px] text-text-muted uppercase tracking-[0.3em]">Operational Protocol</span>
+                <div className="h-px flex-1 bg-white/5" />
+             </div>
+
+             <div className="flex flex-col">
+                {steps.map((step, i) => (
+                  <ProtocolTab 
+                    key={step.num} 
+                    step={step} 
+                    active={activeIndex === i} 
+                    onHover={() => setActiveIndex(i)} 
+                  />
+                ))}
+             </div>
           </div>
+
         </div>
+
+        {/* End of section spacing */}
+        <div className="mt-20" />
       </div>
     </section>
   );

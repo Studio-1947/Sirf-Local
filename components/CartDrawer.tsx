@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Minus, Plus, Trash2, ShoppingBag, ArrowRight, Info } from 'lucide-react';
+import { X, Minus, Plus, Trash2, ShoppingBag, Info, ArrowRight } from 'lucide-react';
 import { useState } from 'react';
 import { useCart, formatPrice } from '@/context/CartContext';
 import CheckoutModal from './CheckoutModal';
@@ -33,12 +33,7 @@ export default function CartDrawer() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.25 }}
               onClick={closeDrawer}
-              style={{
-                position: 'fixed', inset: 0,
-                background: 'rgba(0,0,0,0.65)',
-                zIndex: 100,
-                backdropFilter: 'blur(2px)',
-              }}
+              className="fixed inset-0 bg-black/65 backdrop-blur-sm z-[100]"
             />
 
             {/* Drawer panel */}
@@ -47,233 +42,108 @@ export default function CartDrawer() {
               initial={{ x: '100%' }}
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
-              transition={{ type: 'spring', stiffness: 340, damping: 36 }}
-              style={{
-                position: 'fixed', top: 0, right: 0, bottom: 0,
-                width: '420px', maxWidth: '100vw',
-                background: '#0E0E0E',
-                borderLeft: '1px solid #1E1E1E',
-                zIndex: 101,
-                display: 'flex', flexDirection: 'column',
-              }}
+              transition={{ type: 'spring', stiffness: 340, damping: 32 }}
+              className="fixed top-0 right-0 bottom-0 w-full max-w-[440px] bg-bg-deep border-l border-white/5 z-[101] shadow-2xl flex flex-col"
             >
               {/* Header */}
-              <div style={{
-                display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                padding: '20px 24px', borderBottom: '1px solid #1C1C1C',
-              }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <ShoppingBag size={20} color="#780FF0" strokeWidth={1.8} />
-                  <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '16px' }}>Your Cart</span>
-                  {totalCount > 0 && (
-                    <span style={{
-                      background: '#780FF0', color: '#FFFFFF',
-                      fontWeight: 800, fontSize: '11px', borderRadius: '999px', padding: '2px 8px',
-                    }}>
-                      {totalCount} {totalCount === 1 ? 'item' : 'items'}
-                    </span>
-                  )}
+              <div className="flex items-center justify-between p-6 border-b border-white/5">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center">
+                    <ShoppingBag size={20} className="text-accent" />
+                  </div>
+                  <div>
+                    <h2 className="text-white font-bold text-lg leading-none">Studio Cart</h2>
+                    <p className="text-text-muted text-[10px] uppercase tracking-widest mt-1.5 font-mono-display">Ref: Selection_{totalCount}</p>
+                  </div>
                 </div>
                 <button
                   onClick={closeDrawer}
-                  style={{
-                    background: '#1A1A1A', border: '1px solid #252525', borderRadius: '8px',
-                    color: '#888', cursor: 'pointer', padding: '6px',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#252525'; (e.currentTarget as HTMLElement).style.color = '#888'; }}
+                  className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white hover:border-accent hover:text-accent transition-all"
                 >
-                  <X size={16} />
+                  <X size={18} />
                 </button>
               </div>
 
-              {/* Items list */}
-              <div style={{ flex: 1, overflowY: 'auto', padding: '16px 24px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {/* Items List */}
+              <div className="flex-1 overflow-y-auto p-6 space-y-6 scrollbar-thin scrollbar-thumb-white/10">
                 {items.length === 0 ? (
-                  <div style={{
-                    flex: 1, display: 'flex', flexDirection: 'column',
-                    alignItems: 'center', justifyContent: 'center',
-                    gap: '14px', padding: '60px 0', textAlign: 'center',
-                  }}>
-                    <div style={{
-                      width: '72px', height: '72px', borderRadius: '20px',
-                      background: '#161616', border: '1px solid #222',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
-                      <ShoppingBag size={30} color="#333" strokeWidth={1.5} />
+                  <div className="h-full flex flex-col items-center justify-center text-center opacity-40">
+                    <div className="w-16 h-16 rounded-full border-2 border-dashed border-white/20 flex items-center justify-center mb-4">
+                      <ShoppingBag size={24} />
                     </div>
-                    <p style={{ color: '#555', fontSize: '14px', maxWidth: '200px', lineHeight: 1.5 }}>
-                      Your cart is empty. Pick services that fit your business.
+                    <p className="text-text-secondary text-sm max-w-[200px]">
+                      Your studio cart is currently empty. Let&apos;s architect your digital growth.
                     </p>
                   </div>
                 ) : (
-                  items.map(item => {
-                    const isMonthly = item.period === 'monthly';
-                    return (
-                      <motion.div
-                        key={item.id}
-                        initial={{ opacity: 0, x: 20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{ opacity: 0, x: 20 }}
-                        layout
-                        style={{
-                          background: '#131313', border: '1px solid #383838',
-                          borderRadius: '14px', padding: '14px 16px',
-                        }}
-                      >
-                        {/* Item top row */}
-                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '12px' }}>
-                          <div style={{ flex: 1 }}>
-                            <p style={{ color: '#F0EBE0', fontWeight: 700, fontSize: '14px', margin: '0 0 4px' }}>
-                              {item.title}
-                            </p>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                              <span style={{ color: item.accent, fontWeight: 800, fontSize: '13px' }}>
-                                {formatPrice(item.price)}
-                              </span>
-                              <span style={{
-                                color: item.accent, opacity: 0.55, fontSize: '11px',
-                                background: `${item.accent}12`, padding: '1px 7px',
-                                borderRadius: '999px', border: `1px solid ${item.accent}25`,
-                              }}>
-                                / {isMonthly ? 'month' : 'one-time'}
-                              </span>
-                            </div>
-                          </div>
+                  items.map((item) => (
+                    <motion.div
+                      layout
+                      key={item.id}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="group relative p-5 rounded-2xl bg-white/[0.02] border border-white/5 hover:border-accent/30 transition-all"
+                    >
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h3 className="text-white font-bold text-base group-hover:text-accent transition-colors">{item.title}</h3>
+                          <p className="text-text-muted text-[10px] uppercase tracking-widest mt-1">{item.period} service</p>
+                        </div>
+                        <button
+                          onClick={() => removeItem(item.id)}
+                          className="text-text-muted hover:text-state-error transition-colors p-1"
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
 
-                          {/* Remove */}
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 bg-white/5 rounded-lg p-1 border border-white/5">
                           <button
-                            onClick={() => removeItem(item.id)}
-                            style={{
-                              background: 'transparent', border: 'none', color: '#444',
-                              cursor: 'pointer', padding: '4px', borderRadius: '6px',
-                              display: 'flex', flexShrink: 0,
-                            }}
-                            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = '#E05353'; }}
-                            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#444'; }}
-                            title="Remove service"
+                            onClick={() => updateQty(item.id, -1)}
+                            className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-white/10 text-white transition-colors"
                           >
-                            <Trash2 size={15} />
+                            <Minus size={14} />
+                          </button>
+                          <span className="w-8 text-center text-white font-mono-display text-sm">{item.qty}</span>
+                          <button
+                            onClick={() => updateQty(item.id, 1)}
+                            className="w-7 h-7 flex items-center justify-center rounded-md hover:bg-white/10 text-white transition-colors"
+                          >
+                            <Plus size={14} />
                           </button>
                         </div>
-
-                        {/* Month qty + subtotal — ONLY for monthly services */}
-                        {isMonthly ? (
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                            {/* Months stepper */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                              <span style={{ color: '#555', fontSize: '12px' }}>Months:</span>
-                              <div style={{
-                                display: 'flex', alignItems: 'center',
-                                border: '1px solid #252525', borderRadius: '8px', overflow: 'hidden',
-                              }}>
-                                <button
-                                  onClick={() => updateQty(item.id, -1)}
-                                  disabled={item.qty <= 1}
-                                  style={{
-                                    background: 'transparent', border: 'none',
-                                    color: item.qty <= 1 ? '#333' : '#888',
-                                    cursor: item.qty <= 1 ? 'not-allowed' : 'pointer',
-                                    padding: '5px 10px', display: 'flex', alignItems: 'center',
-                                  }}
-                                >
-                                  <Minus size={12} />
-                                </button>
-                                <span style={{
-                                  color: '#F0EBE0', fontWeight: 700, fontSize: '13px',
-                                  minWidth: '28px', textAlign: 'center',
-                                  borderLeft: '1px solid #252525', borderRight: '1px solid #252525',
-                                  padding: '5px 4px',
-                                }}>
-                                  {item.qty}
-                                </span>
-                                <button
-                                  onClick={() => updateQty(item.id, 1)}
-                                  style={{
-                                    background: 'transparent', border: 'none',
-                                    color: '#888', cursor: 'pointer',
-                                    padding: '5px 10px', display: 'flex', alignItems: 'center',
-                                  }}
-                                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = item.accent; }}
-                                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = '#888'; }}
-                                >
-                                  <Plus size={12} />
-                                </button>
-                              </div>
-                            </div>
-
-                            {/* Subtotal */}
-                            <span style={{ color: '#A89F8C', fontSize: '13px', fontWeight: 600 }}>
-                              {formatPrice(item.price * item.qty)}
-                              <span style={{ opacity: 0.5, fontSize: '11px', marginLeft: '3px' }}> total</span>
-                            </span>
-                          </div>
-                        ) : (
-                          /* One-time disclaimer */
-                          <div style={{
-                            display: 'flex', gap: '7px', alignItems: 'flex-start',
-                            background: 'rgba(120,15,240,0.05)', borderRadius: '8px',
-                            padding: '8px 10px', border: '1px solid rgba(120,15,240,0.12)',
-                          }}>
-                            <Info size={13} color="#780FF0" style={{ flexShrink: 0, marginTop: '1px' }} strokeWidth={2} />
-                            <p style={{ color: '#7A7060', fontSize: '11.5px', lineHeight: 1.55, margin: 0 }}>
-                              Final price may vary with scope & features — we'll confirm before starting.
-                            </p>
-                          </div>
-                        )}
-                      </motion.div>
-                    );
-                  })
-                )}
-
-                {/* One-time disclaimer banner (only when cart has one-time items) */}
-                {hasOneTime && items.length > 0 && (
-                  <div style={{
-                    background: '#111', border: '1px dashed #2A2A2A',
-                    borderRadius: '12px', padding: '12px 14px',
-                    display: 'flex', gap: '10px', alignItems: 'flex-start',
-                  }}>
-                    <Info size={14} color="#555" style={{ flexShrink: 0, marginTop: '1px' }} />
-                    <p style={{ color: '#555', fontSize: '12px', lineHeight: 1.6, margin: 0 }}>
-                      One-time service prices are <strong style={{ color: '#8E3AEE' }}>starting rates</strong>. Final cost is confirmed after a quick chat about your requirements — no hidden charges.
-                    </p>
-                  </div>
+                        <div className="text-right">
+                          <p className="text-white font-black text-base">{formatPrice(item.price * item.qty)}</p>
+                          {item.period === 'monthly' && <p className="text-[10px] text-text-muted">/ monthly</p>}
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))
                 )}
               </div>
 
-              {/* Footer — totals + checkout */}
+              {/* Summary Footer */}
               {items.length > 0 && (
-                <div style={{
-                  borderTop: '1px solid #1C1C1C', padding: '20px 24px',
-                  display: 'flex', flexDirection: 'column', gap: '12px',
-                  background: '#0A0A0A',
-                }}>
-                  {/* Breakdown */}
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                    {onetimeTotal > 0 && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ color: '#666', fontSize: '13px' }}>One-time services</span>
-                        <span style={{ color: '#A89F8C', fontWeight: 600, fontSize: '13px' }}>{formatPrice(onetimeTotal)}</span>
-                      </div>
-                    )}
+                <div className="p-6 bg-white/[0.01] border-t border-white/5 space-y-6">
+                  <div className="space-y-3">
                     {monthlyTotal > 0 && (
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <span style={{ color: '#666', fontSize: '13px' }}>Monthly services</span>
-                        <span style={{ color: '#A89F8C', fontWeight: 600, fontSize: '13px' }}>
-                          {formatPrice(monthlyTotal)}<span style={{ opacity: 0.5, fontSize: '11px' }}> total</span>
-                        </span>
+                      <div className="flex justify-between text-sm">
+                        <span className="text-text-secondary">Monthly Retainer</span>
+                        <span className="text-white font-bold">{formatPrice(monthlyTotal)}/mo</span>
                       </div>
                     )}
-                    <div style={{
-                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      paddingTop: '10px', borderTop: '1px solid #1E1E1E', marginTop: '4px',
-                    }}>
-                      <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '15px' }}>Total</span>
-                      <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '18px', letterSpacing: '-0.5px' }}>
-                        {formatPrice(grandTotal)}
-                      </span>
+                    {onetimeTotal > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-text-secondary">Setup Modules</span>
+                        <span className="text-white font-bold">{formatPrice(onetimeTotal)}</span>
+                      </div>
+                    )}
+                    <div className="pt-3 border-t border-white/5 flex justify-between items-baseline">
+                      <span className="text-white font-black uppercase text-xs tracking-widest">Total Investment</span>
+                      <span className="text-accent font-black text-2xl tracking-tighter">{formatPrice(grandTotal)}</span>
                     </div>
+                  </div>
 
                     {/* Payment selection checkboxes */}
                     <div style={{
@@ -328,42 +198,33 @@ export default function CartDrawer() {
                         </span>
                       </div>
                     </div>
+
+                    {/* Checkout CTA */}
+                    <button
+                      onClick={() => { closeDrawer(); setCheckoutOpen(true); }}
+                      className="w-full py-3.5 rounded-full bg-accent text-white font-extrabold text-sm border-none cursor-pointer flex items-center justify-center gap-2 tracking-[0.3px] hover:bg-accent-hover transition-colors"
+                    >
+                      Proceed to Checkout <ArrowRight size={15} />
+                    </button>
+
+                    {/* Contact fallback */}
+                    <a
+                      href="#contact"
+                      onClick={closeDrawer}
+                      className="block text-center text-text-muted text-[10px] uppercase tracking-widest hover:text-white transition-colors py-2"
+                    >
+                      Need a custom blueprint instead?
+                    </a>
                   </div>
 
-                  {/* Checkout CTA */}
-                  <button
-                    onClick={() => { closeDrawer(); setCheckoutOpen(true); }}
-                    style={{
-                      width: '100%', padding: '13px 0', borderRadius: '999px',
-                      background: '#780FF0', color: '#FFFFFF',
-                      fontWeight: 800, fontSize: '14px', border: 'none',
-                      cursor: 'pointer', opacity: 1,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      gap: '8px', letterSpacing: '0.3px',
-                      transition: 'background 0.2s',
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = '#8E3AEE'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = '#780FF0'; }}
-                  >
-                    Proceed to Checkout <ArrowRight size={15} />
-                  </button>
-
-                  {/* Contact fallback */}
-                  <a
-                    href="#contact"
-                    onClick={closeDrawer}
-                    style={{
-                      display: 'block', width: '100%', padding: '11px 0',
-                      borderRadius: '999px', border: '1.5px solid #2A2A2A',
-                      color: '#A89F8C', fontWeight: 700, fontSize: '13px',
-                      textAlign: 'center', textDecoration: 'none',
-                      transition: 'border-color 0.2s, color 0.2s',
-                    }}
-                    onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
-                    onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#2A2A2A'; (e.currentTarget as HTMLElement).style.color = '#A89F8C'; }}
-                  >
-                    Or enquire via Contact →
-                  </a>
+                  {hasOneTime && (
+                    <div className="flex items-start gap-2 opacity-60">
+                      <div className="w-1 h-1 rounded-full bg-accent mt-1.5 shrink-0" />
+                      <p className="text-[9px] text-text-muted leading-relaxed uppercase tracking-widest font-mono-display">
+                        Final price may vary with scope &amp; features — we&apos;ll confirm before starting.
+                      </p>
+                    </div>
+                  )}
                 </div>
               )}
             </motion.div>

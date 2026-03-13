@@ -207,8 +207,8 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                 width: '480px', maxWidth: '100%',
                                 maxHeight: '100%',
                                 overflowY: 'auto',
-                                background: '#0E0E0E',
-                                border: '1px solid #222',
+                                background: 'var(--bg-deep)',
+                                border: '1px solid var(--border-card)',
                                 borderRadius: '24px',
                                 display: 'flex',
                                 flexDirection: 'column',
@@ -219,22 +219,16 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                             {/* ── Header ── */}
                             <div style={{
                                 display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-                                padding: '20px 24px', borderBottom: '1px solid #1C1C1C',
-                                position: 'sticky', top: 0, background: '#0E0E0E', zIndex: 2,
+                                padding: '20px 24px', borderBottom: '1px solid var(--border-deep)',
+                                position: 'sticky', top: 0, background: 'var(--bg-deep)', zIndex: 2,
                             }}>
-                                <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '16px' }}>
+                                <span className="text-text-cream font-extrabold text-base">
                                     {screen === 'success' ? '🎉 You\'re all set!' : screen === 'failure' ? '⚠️ Payment issue' : 'Complete your booking'}
                                 </span>
                                 {screen !== 'loading' && (
                                     <button
                                         onClick={handleClose}
-                                        style={{
-                                            background: '#1A1A1A', border: '1px solid #252525', borderRadius: '8px',
-                                            color: '#888', cursor: 'pointer', padding: '6px', display: 'flex',
-                                            alignItems: 'center', justifyContent: 'center',
-                                        }}
-                                        onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = '#780FF0'; (e.currentTarget as HTMLElement).style.color = '#780FF0'; }}
-                                        onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = '#252525'; (e.currentTarget as HTMLElement).style.color = '#888'; }}
+                                        className="bg-[#1A1A1A] border border-[#252525] rounded-lg text-[#888] cursor-pointer p-1.5 flex items-center justify-center hover:border-accent hover:text-accent transition-colors"
                                     >
                                         <X size={16} />
                                     </button>
@@ -252,10 +246,10 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             background: 'rgba(76,175,125,0.12)', border: '1.5px solid rgba(76,175,125,0.4)',
                                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         }}>
-                                            <CheckCircle2 size={36} color="#4CAF7D" strokeWidth={1.6} />
+                                            <CheckCircle2 size={36} color="var(--state-success)" strokeWidth={1.6} />
                                         </div>
                                         <div>
-                                            <p style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '18px', margin: '0 0 6px' }}>
+                                            <p className="text-text-cream font-extrabold text-lg" style={{ margin: '0 0 6px' }}>
                                                 Booking token paid!
                                             </p>
                                             <p style={{ color: '#8A8178', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
@@ -266,11 +260,11 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
 
                                         {paymentId && (
                                             <div style={{
-                                                background: '#141414', border: '1px solid #1E1E1E', borderRadius: '10px',
+                                                background: 'var(--bg-card)', border: '1px solid var(--border-card)', borderRadius: '10px',
                                                 padding: '10px 16px', width: '100%', textAlign: 'left',
                                             }}>
-                                                <p style={{ color: '#555', fontSize: '11px', margin: '0 0 2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Payment ID</p>
-                                                <p style={{ color: '#A89F8C', fontSize: '13px', fontWeight: 600, margin: 0, wordBreak: 'break-all' }}>{paymentId}</p>
+                                                <p style={{ color: 'var(--text-dark-muted)', fontSize: '11px', margin: '0 0 2px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Payment ID</p>
+                                                <p style={{ color: 'var(--text-sand)', fontSize: '13px', fontWeight: 600, margin: 0, wordBreak: 'break-all' }}>{paymentId}</p>
                                             </div>
                                         )}
 
@@ -283,7 +277,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             <p style={{ color: '#8A8178', fontSize: '13px', margin: 0, lineHeight: 1.6 }}>
                                                 <span style={{ color: '#F0EBE0', fontWeight: 700 }}>{formatPrice(successData?.remaining ?? 0)}</span> is due after we confirm the
                                                 final scope with you — no surprises.
-                                            </p>
+                                            </div>
                                         </div>
 
                                         <a
@@ -293,7 +287,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             style={{
                                                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
                                                 width: '100%', padding: '13px 0', borderRadius: '999px',
-                                                background: '#25D366', color: '#fff', fontWeight: 800, fontSize: '14px',
+                                                background: 'var(--whatsapp)', color: 'var(--text-primary)', fontWeight: 800, fontSize: '14px',
                                                 textDecoration: 'none', letterSpacing: '0.2px',
                                             }}
                                         >
@@ -310,21 +304,17 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             background: 'rgba(224,83,83,0.10)', border: '1.5px solid rgba(224,83,83,0.35)',
                                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                                         }}>
-                                            <AlertCircle size={36} color="#E05353" strokeWidth={1.6} />
+                                            <AlertCircle size={36} color="var(--state-error)" strokeWidth={1.6} />
                                         </div>
                                         <div>
-                                            <p style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '18px', margin: '0 0 6px' }}>Payment didn't go through</p>
-                                            <p style={{ color: '#8A8178', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
+                                            <p style={{ color: 'var(--text-warm)', fontWeight: 800, fontSize: '18px', margin: '0 0 6px' }}>Payment didn&apos;t go through</p>
+                                            <p style={{ color: 'var(--text-sand)', fontSize: '13.5px', lineHeight: 1.6, margin: 0 }}>
                                                 No money was deducted. You can try again or reach us directly on WhatsApp.
                                             </p>
                                         </div>
                                         <button
                                             onClick={() => setScreen('form')}
-                                            style={{
-                                                width: '100%', padding: '13px 0', borderRadius: '999px',
-                                                background: '#780FF0', color: '#0C0C0C', fontWeight: 800, fontSize: '14px',
-                                                border: 'none', cursor: 'pointer', letterSpacing: '0.3px',
-                                            }}
+                                            className="w-full py-3.5 rounded-full bg-accent text-[#0C0C0C] font-extrabold text-sm border-none cursor-pointer tracking-[0.3px] hover:bg-accent-hover transition-colors"
                                         >
                                             Try again
                                         </button>
@@ -334,8 +324,8 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                 {/* ── LOADING SCREEN ── */}
                                 {screen === 'loading' && (
                                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px', padding: '40px 0', textAlign: 'center' }}>
-                                        <Loader2 size={40} color="#780FF0" style={{ animation: 'spin 1s linear infinite' }} />
-                                        <p style={{ color: '#8A8178', fontSize: '14px', margin: 0 }}>Opening payment window…</p>
+                                        <Loader2 size={40} className="text-accent" style={{ animation: 'spin 1s linear infinite' }} />
+                                        <p style={{ color: 'var(--text-earth)', fontSize: '14px', margin: 0 }}>Opening payment window…</p>
                                         <style>{`@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }`}</style>
                                     </div>
                                 )}
@@ -345,21 +335,21 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                     <>
                                         {/* Order summary */}
                                         <div style={{
-                                            background: '#131313', border: '1px solid #1E1E1E',
+                                            background: 'var(--bg-card)', border: '1px solid var(--border-card)',
                                             borderRadius: '14px', overflow: 'hidden',
                                         }}>
                                             <p style={{
-                                                color: '#666', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.8px',
-                                                fontWeight: 700, margin: 0, padding: '12px 16px', borderBottom: '1px solid #1C1C1C',
+                                                color: 'var(--text-dark-muted)', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.8px',
+                                                fontWeight: 700, margin: 0, padding: '12px 16px', borderBottom: '1px solid var(--border-deep)',
                                             }}>Your Services</p>
                                             {items.map(item => (
                                                 <div key={item.id} style={{
                                                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                                    padding: '10px 16px', borderBottom: '1px solid #191919',
+                                                    padding: '10px 16px', borderBottom: '1px solid var(--border-deep)',
                                                 }}>
                                                     <div>
-                                                        <p style={{ color: '#F0EBE0', fontSize: '13px', fontWeight: 700, margin: '0 0 2px' }}>{item.title}</p>
-                                                        <p style={{ color: '#555', fontSize: '11px', margin: 0 }}>
+                                                        <p style={{ color: 'var(--text-warm)', fontSize: '13px', fontWeight: 700, margin: '0 0 2px' }}>{item.title}</p>
+                                                        <p style={{ color: 'var(--text-dark-muted)', fontSize: '11px', margin: 0 }}>
                                                             {item.period === 'monthly'
                                                                 ? `${item.qty} month${item.qty > 1 ? 's' : ''}`
                                                                 : 'One-time service'}
@@ -378,22 +368,22 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             <div style={{ padding: '12px 16px', display: 'flex', flexDirection: 'column', gap: '7px' }}>
                                                 {onetimeTotal > 0 && (
                                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                        <span style={{ color: '#555', fontSize: '12px' }}>One-time total</span>
-                                                        <span style={{ color: '#A89F8C', fontSize: '12px', fontWeight: 600 }}>{formatPrice(onetimeTotal)}</span>
+                                                        <span style={{ color: 'var(--text-dark-muted)', fontSize: '12px' }}>One-time total</span>
+                                                        <span style={{ color: 'var(--text-sand)', fontSize: '12px', fontWeight: 600 }}>{formatPrice(onetimeTotal)}</span>
                                                     </div>
                                                 )}
                                                 {monthlyTotal > 0 && (
                                                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                                        <span style={{ color: '#555', fontSize: '12px' }}>Monthly total</span>
-                                                        <span style={{ color: '#A89F8C', fontSize: '12px', fontWeight: 600 }}>{formatPrice(monthlyTotal)}<span style={{ opacity: 0.5, fontSize: '10px' }}>/mo</span></span>
+                                                        <span style={{ color: 'var(--text-dark-muted)', fontSize: '12px' }}>Monthly total</span>
+                                                        <span style={{ color: 'var(--text-sand)', fontSize: '12px', fontWeight: 600 }}>{formatPrice(monthlyTotal)}<span style={{ opacity: 0.5, fontSize: '10px' }}>/mo</span></span>
                                                     </div>
                                                 )}
                                                 <div style={{
                                                     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                                                    paddingTop: '8px', borderTop: '1px solid #1E1E1E', marginTop: '2px',
+                                                    paddingTop: '8px', borderTop: '1px solid var(--border-card)', marginTop: '2px',
                                                 }}>
-                                                    <span style={{ color: '#F5F0E8', fontWeight: 800, fontSize: '14px' }}>Grand Total</span>
-                                                    <span style={{ color: '#780FF0', fontWeight: 900, fontSize: '16px' }}>{formatPrice(grandTotal)}</span>
+                                                    <span className="text-text-cream font-extrabold text-sm">Grand Total</span>
+                                                    <span className="text-accent font-black text-base">{formatPrice(grandTotal)}</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -461,7 +451,7 @@ export default function CheckoutModal({ open, onClose, selectedPercent }: Checko
                                             Pay {formatPrice(tokenAmount)} now <ArrowRight size={16} />
                                         </button>
 
-                                        <p style={{ color: '#444', fontSize: '11.5px', textAlign: 'center', margin: '-8px 0 0', lineHeight: 1.6 }}>
+                                        <p style={{ color: 'var(--text-muted)', fontSize: '11.5px', textAlign: 'center', margin: '-8px 0 0', lineHeight: 1.6 }}>
                                             🔒 Secured by Razorpay · UPI, Cards, Net Banking accepted
                                         </p>
                                     </>

@@ -1,175 +1,86 @@
 'use client';
 
-import { motion, useInView, useMotionValue, useMotionValueEvent, useAnimationFrame } from 'framer-motion';
-import { useRef, useEffect, useState } from 'react';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
+import { Lightbulb, Code, Rocket } from "lucide-react";
 
 const steps = [
   {
-    emoji: '😊',
-    phase: 'Phase 01',
-    title: 'We Learn & Design',
-    description: 'We understand your needs and create your logo and branding.',
-    gold: false,
+    id: '01',
+    icon: <Lightbulb size={32} strokeWidth={1.5} />,
+    phase: 'Discovery',
+    title: 'Brand DNA & Audit',
+    description: 'We audit your current brand presence and identify the core local strengths that will drive your global strategy.',
+    metrics: ['Market Analysis', 'Brand Voice', 'SWOT Report'],
   },
   {
-    emoji: '😎',
-    phase: 'Phase 02',
-    title: 'We Build',
-    description: 'We build your digital presence and accordingly we craft social media posts.',
-    gold: true,
+    id: '02',
+    icon: <Code size={32} strokeWidth={1.5} />,
+    phase: 'Production',
+    title: 'Custom Engineering',
+    description: 'Our studio builds a bespoke digital ecosystem. From high-performance code to conversion-focused design.',
+    metrics: ['React/Next.js', 'UI/UX Design', 'API Sync'],
+    featured: true,
   },
   {
-    emoji: '🤩',
-    phase: 'Phase 03',
-    title: 'You Grow',
-    description: 'Your business launches its new look, and customers start finding you.',
-    gold: false,
+    id: '03',
+    icon: <Rocket size={32} strokeWidth={1.5} />,
+    phase: 'Delivery',
+    title: 'Launch & Scale',
+    description: 'We deploy your platform and activate a data-driven growth strategy that scales your business globally.',
+    metrics: ['Cloud Hosting', 'SEO Setup', 'Growth Data'],
   },
 ];
 
-const DURATION = 3500;
-
 export default function Process() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, margin: '-100px' });
-
-  const lineRef = useRef<HTMLDivElement>(null);
-  const [lineWidth, setLineWidth] = useState(600);
-  const lineWidthRef = useRef(600);
-
-  const [activeCard, setActiveCard] = useState<number | null>(null);
-  const activeCardRef = useRef<number | null>(null);
-
-  useEffect(() => {
-    if (!lineRef.current) return;
-    const update = () => {
-      const w = lineRef.current!.offsetWidth;
-      setLineWidth(w);
-      lineWidthRef.current = w;
-    };
-    const ro = new ResizeObserver(update);
-    ro.observe(lineRef.current);
-    update();
-    return () => ro.disconnect();
-  }, []);
-
-  // Drive pill position via motion value for smooth sync
-  const pillX = useMotionValue(-80);
-
-  useAnimationFrame((_, delta) => {
-    const lw = lineWidthRef.current;
-    const next = pillX.get() + ((lw + 160) / DURATION) * delta;
-    pillX.set(next >= lw + 80 ? -80 : next);
-  });
-
-  // Detect which card the pill is currently behind
-  useMotionValueEvent(pillX, 'change', (x) => {
-    const lw = lineWidthRef.current;
-    const third = lw / 3;
-    const center = x + 40; // pill center (pill is 80px wide)
-    let next: number | null = null;
-    if (center >= 0 && center < third) next = 0;
-    else if (center >= third && center < third * 2) next = 1;
-    else if (center >= third * 2 && center <= lw) next = 2;
-
-    if (next !== activeCardRef.current) {
-      activeCardRef.current = next;
-      setActiveCard(next);
-    }
-  });
+  const containerRef = useRef(null);
+  const inView = useInView(containerRef, { once: true, margin: '-100px' });
 
   return (
-    <section id="process" className="bg-[#1F1E1F] py-28 border-t border-[#525252]">
+    <section id="process" className="bg-bg-primary py-32 border-t border-border overflow-hidden">
       <div className="max-w-7xl mx-auto px-6">
-        <div ref={ref} className="text-center mb-16">
-          <motion.span
-            initial={{ opacity: 0 }}
-            animate={inView ? { opacity: 1 } : {}}
-            className="section-tag block mb-4"
-          >
-            The Process
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.7 }}
-            className="text-4xl md:text-6xl font-black text-[#FFFFFF] leading-tight"
-          >
-            Your Journey{' '}
-            <span className="text-[#780FF0]">With Us</span>
-          </motion.h2>
+        <div ref={containerRef} className="flex flex-col md:flex-row items-end justify-between mb-24 gap-8">
+          <div className="max-w-2xl">
+            <motion.span initial={{ opacity: 0, x: -20 }} animate={inView ? { opacity: 1, x: 0 } : {}} className="section-tag block mb-4">The Studio Process</motion.span>
+            <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} className="text-5xl md:text-7xl font-black text-text-primary leading-tight tracking-tighter">From Blueprint <br /><span className="text-accent">To Breakthrough.</span></motion.h2>
+          </div>
+          <div className="hidden md:block">
+            <p className="text-text-secondary text-lg font-mono-display uppercase tracking-widest max-w-[240px] text-right border-r-2 border-accent pr-6 leading-relaxed">A 3-Phase technical journey.</p>
+          </div>
         </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-1 border border-white/5 rounded-[2.5rem] overflow-hidden bg-white/[0.01]">
+          {steps.map((step, i) => (
+            <motion.div key={step.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.6, delay: i * 0.1 }} className={`group relative flex flex-col p-10 md:p-12 transition-all duration-500 h-full ${i !== 2 ? 'border-b md:border-b-0 md:border-r border-white/5' : ''} hover:bg-white/[0.02]`}>
+              <div className="absolute inset-0 flex items-center justify-center font-mono-display text-[180px] font-black text-white/[0.02] select-none leading-none pointer-events-none group-hover:text-white/[0.04] group-hover:scale-105 transition-all duration-700">{step.id}</div>
+              {/* Icon & Phase */}
+              <div className="relative z-10 flex items-center justify-between mb-16">
+                 <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-all duration-500 ${
+                   step.featured 
+                    ? 'bg-accent border-accent text-white shadow-[0_0_30px_rgba(120,15,240,0.3)]' 
+                    : 'bg-white/5 border-white/10 text-white/40 group-hover:bg-accent group-hover:border-accent/40 group-hover:text-white group-hover:shadow-[0_0_30px_rgba(120,15,240,0.3)]'
+                 }`}>
+                   {step.icon}
+                 </div>
+                 <span className="font-mono-display text-[10px] text-text-muted uppercase tracking-[0.3em] group-hover:text-accent transition-colors duration-300">{step.phase}</span>
+              </div>
 
-        {/* Steps */}
-        <div className="relative overflow-visible" ref={lineRef}>
-
-          {/* Connector line */}
-          <div style={{
-            position: 'absolute', top: '50%', transform: 'translateY(-50%)',
-            left: 0, width: lineWidth, height: '20px',
-            zIndex: 0, pointerEvents: 'none', overflow: 'hidden',
-            display: 'flex', alignItems: 'center',
-          }}>
-            {/* Base line */}
-            <div style={{ position: 'absolute', top: '50%', transform: 'translateY(-50%)', left: 0, right: 0, height: '2px', background: 'linear-gradient(90deg, transparent, #780FF0 20%, #780FF0 80%, transparent)' }} />
-            {/* Traveling glow pill */}
-            <motion.div style={{
-              position: 'absolute', top: '50%', translateY: '-50%',
-              x: pillX, width: 80, height: 4, borderRadius: 9999,
-              background: 'linear-gradient(90deg, transparent, #780FF0, #8E3AEE, #780FF0, transparent)',
-              boxShadow: '0 0 14px 6px rgba(120,15,240,0.8)',
-              zIndex: 1,
-            }} />
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6 relative" style={{ zIndex: 1 }}>
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.title}
-                animate={{
-                  scale: activeCard === i ? 1.04 : 1,
-                  y: activeCard === i ? -10 : 0,
-                  boxShadow: activeCard === i
-                    ? '0 20px 40px rgba(120,15,240,0.2)'
-                    : '0 0px 0px rgba(0,0,0,0)',
-                }}
-                transition={{ type: 'spring', stiffness: 350, damping: 28 }}
-                className={`relative rounded-2xl p-8 border ${
-                  step.gold
-                    ? 'bg-[#780FF0] border-[#780FF0] text-white'
-                    : 'bg-[#383838] border-[#525252] text-[#FFFFFF]'
-                }`}
-              >
-                <div className={`absolute top-4 right-4 font-mono-display text-xs tracking-widest ${
-                  step.gold ? 'text-white/50' : 'text-[#9E9E9E]'
-                }`}>
-                  {step.phase}
-                </div>
-
-                <motion.span
-                  className="text-5xl mb-6 block"
-                  initial={{ scale: 0, rotate: -15 }}
-                  whileInView={{ scale: 1, rotate: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ type: 'spring', stiffness: 260, damping: 16, delay: i * 0.18 + 0.25 }}
-                >
-                  {step.emoji}
-                </motion.span>
-
-                <h3 className={`text-xl font-black mb-3 ${step.gold ? 'text-white' : 'text-[#FFFFFF]'}`}>
-                  {step.title}
-                </h3>
-                <p className={`text-sm leading-relaxed ${step.gold ? 'text-white/70' : 'text-[#9E9E9E]'}`}>
-                  {step.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
+              {/* Title & Description */}
+              <div className="relative z-10 mb-12">
+                <h3 className="text-2xl font-bold text-white mb-4 tracking-tight">{step.title}</h3>
+                <p className="text-text-secondary text-sm leading-relaxed opacity-70 group-hover:opacity-100 transition-opacity duration-500">{step.description}</p>
+              </div>
+              <div className="relative z-10 mt-auto pt-8 border-t border-white/5">
+                 <div className="flex flex-wrap gap-2">
+                   {step.metrics.map(metric => (
+                     <span key={metric} className="text-[9px] font-mono-display text-text-muted border border-white/5 rounded-full px-3 py-1 uppercase tracking-widest bg-white/[0.01] group-hover:text-accent group-hover:border-accent-pill-border group-hover:bg-accent-pill-bg transition-all duration-300">{metric}</span>
+                   ))}
+                 </div>
+              </div>
+              <div className="absolute bottom-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-accent/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+            </motion.div>
+          ))}
         </div>
       </div>
     </section>
   );
 }
-
-
-
