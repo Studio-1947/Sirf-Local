@@ -3,10 +3,10 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { 
-  ArrowUpRight, 
-  MapPin, 
-  Clock, 
+import {
+  ArrowUpRight,
+  MapPin,
+  Clock,
   Cpu,
   ArrowRight
 } from "lucide-react";
@@ -18,10 +18,10 @@ export default function Footer() {
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date();
-      setTime(now.toLocaleTimeString("en-US", { 
-        timeZone: "Asia/Kolkata", 
-        hour12: false, 
-        hour: '2-digit', 
+      setTime(now.toLocaleTimeString("en-US", {
+        timeZone: "Asia/Kolkata",
+        hour12: false,
+        hour: '2-digit',
         minute: '2-digit',
         second: '2-digit'
       }));
@@ -48,10 +48,10 @@ export default function Footer() {
       {/* Subtle Background Elements */}
       <div className="absolute top-0 left-1/4 w-[50%] h-[50%] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
       <div className="max-w-7xl mx-auto px-6 relative z-10">
-        
+
         {/* Top Section: High Impact CTA */}
         <div className="mb-24">
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -80,31 +80,40 @@ export default function Footer() {
 
         {/* Middle Section: Studio Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24 mb-24 py-12 border-y border-white/5">
-          
-          {/* Brand Info */}
-          <div className="space-y-8">
+
+          {/* Brand Info - Final Pixel-Perfect Alignment */}
+          <div className="flex flex-col gap-8 lg:gap-12">
             <div className="space-y-8">
-              <Image src="/Logo.svg" alt="Sirf Local" width={140} height={40} className="h-10 w-auto object-contain" />
-              
-              {/* Screenshot-Inspired Floral Integration */}
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8 }}
-                className="w-full max-w-[240px]"
-              >
-                <Image 
-                  src="/sdfghjkl 1 1.svg" 
-                  alt="" 
-                  width={240} 
-                  height={240} 
-                  className="w-full h-auto object-contain"
-                />
-              </motion.div>
+              {/* Header-aligned Logo */}
+              <div className="h-4 flex items-center">
+                <Image src="/Logo.svg" alt="Sirf Local" width={140} height={40} className="h-10 w-auto object-contain" />
+              </div>
+
+              {/* Symmetrical Floral Integration - Zero-Gap Base */}
+              <div className="flex flex-col justify-center items-center md:-mt-8 md:-mb-8">
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.98 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 1, ease: "circOut" }}
+                  className="w-full max-w-[280px]"
+                >
+                  <Image
+                    src="/sdfghjkl 1 1.svg"
+                    alt="Floral Signature"
+                    width={280}
+                    height={280}
+                    className="w-full h-auto object-contain "
+                  />
+                </motion.div>
+
+                {/* Visual Base Line for the Flower (Pixel-Perfect Foundation) */}
+                <div className="h-px w-full bg-white/10" />
+              </div>
             </div>
 
-            <p className="text-text-secondary text-base leading-relaxed opacity-80">
+            {/* Description Block */}
+            <p className="text-text-secondary text-sm leading-relaxed opacity-80 max-w-xs">
               A digital design studio building high-performance architectures for regional brands. From Mirik to the world.
             </p>
           </div>
@@ -144,7 +153,7 @@ export default function Footer() {
           {/* Studio Telemetry */}
           <div className="space-y-8">
             <span className="font-mono-display text-[9px] text-text-muted uppercase tracking-[0.3em] block mb-8">Studio: Telemetry</span>
-            
+
             <div className="space-y-6">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-accent">
@@ -188,14 +197,14 @@ export default function Footer() {
             © 2025 Studio 1947 Initiative. All Rights Reserved.
           </p>
           <div className="flex items-center gap-2 text-[10px] font-mono-display uppercase tracking-[0.2em] text-text-muted">
-            Crafted with 
-            <motion.span 
-              animate={{ scale: [1, 1.2, 1] }} 
+            Crafted with
+            <motion.span
+              animate={{ scale: [1, 1.2, 1] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
               className="text-accent"
             >
               ❤
-            </motion.span> 
+            </motion.span>
             by Sirf Local
           </div>
         </div>
