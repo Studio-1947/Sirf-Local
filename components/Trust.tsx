@@ -3,7 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import Image from 'next/image';
-import { MapPin, Users, Lightbulb, TreeDeciduous } from 'lucide-react';
+import { MapPin, Users, Lightbulb } from 'lucide-react';
 
 interface Value {
   icon: React.ReactNode;
@@ -15,7 +15,6 @@ const values: Value[] = [
   { icon: <MapPin size={18} strokeWidth={1.5} />, label: 'Based in Mirik, Darjeeling', code: 'LOC-01' },
   { icon: <Users size={18} strokeWidth={1.5} />, label: 'Community-First Approach', code: 'SOC-02' },
   { icon: <Lightbulb size={18} strokeWidth={1.5} />, label: 'Local Youth Empowerment', code: 'EDU-03' },
-  { icon: <TreeDeciduous size={18} strokeWidth={1.5} />, label: 'Himal Nagrik Fellowship', code: 'INIT-04' },
 ];
 
 const images = [

@@ -27,41 +27,34 @@ function TeamCard({ member, index }: { member: typeof team[0]; index: number }) 
       initial={{ opacity: 0, y: 30 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.5, delay: (index % 4) * 0.1 }}
-      className="group relative overflow-hidden rounded-3xl bg-white/[0.02] backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-500"
+      className="group relative overflow-hidden rounded-2xl bg-white/[0.02] backdrop-blur-xl border border-white/5 hover:border-white/10 transition-all duration-500"
     >
-      {/* Background ID Watermark (Technical/Studio Look) */}
-      <div className="absolute -top-4 -right-2 font-mono-display text-[120px] font-black text-white/[0.02] select-none leading-none pointer-events-none group-hover:text-white/[0.04] group-hover:scale-110 transition-all duration-700">
+      {/* Background ID Watermark */}
+      <div className="absolute -top-2 -right-1 font-mono-display text-[80px] font-black text-white/[0.02] select-none leading-none pointer-events-none group-hover:text-white/[0.04] group-hover:scale-110 transition-all duration-700">
         {watermarkId}
       </div>
 
       {/* Image Container */}
-      <div className="aspect-[4/5] overflow-hidden relative">
+      <div className="aspect-[2/3] overflow-hidden relative">
         <Image
           src={member.img}
           alt={member.name}
-          width={400}
-          height={500}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          width={300}
+          height={400}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
-        {/* Modern Studio Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/20 to-transparent opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-bg-primary via-bg-primary/10 to-transparent opacity-90" />
       </div>
 
       {/* Info Overlay */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
-        <div className="mb-2">
-          <span className="font-mono-display text-text-secondary text-[10px] uppercase tracking-[0.2em] font-bold">
-            Member {watermarkId}
-          </span>
-        </div>
-        
-        <p className="text-white font-bold text-lg leading-tight transition-colors duration-500">
+      <div className="absolute bottom-0 left-0 right-0 p-4 z-10">
+        <span className="font-mono-display text-text-secondary text-[9px] uppercase tracking-[0.2em] font-bold block mb-1">
+          {watermarkId}
+        </span>
+        <p className="text-white font-bold text-sm leading-tight">
           {member.name}
         </p>
-        
-        <p
-          className="text-[11px] font-mono-display tracking-[0.15em] uppercase mt-1 text-text-secondary opacity-70"
-        >
+        <p className="text-[10px] font-mono-display tracking-[0.12em] uppercase mt-0.5 text-text-secondary opacity-70">
           {member.role}
         </p>
       </div>
@@ -112,7 +105,7 @@ export default function Team() {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 max-w-3xl mx-auto">
           {team.map((member, i) => (
             <TeamCard key={member.name} member={member} index={i} />
           ))}
