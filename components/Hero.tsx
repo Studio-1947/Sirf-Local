@@ -24,6 +24,18 @@ const heroPhotos = [
   { file: "/images/hero/4.webp", alt: "" },
 ];
 
+const HERO_COPY = {
+  topLabel: "Welcome to Sirf Local",
+  heading: {
+    line1: "World-Class",
+    line2Prefix: "Design",
+    line2Emphasis: "for Your",
+    line3: "Local Business",
+  },
+  description:
+"Elevate your local business with premium agency standards. Professional services from ₹999."
+};
+
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -52,7 +64,7 @@ export default function Hero() {
               transition={{ delay: 0.3 }}
               className="text-white/40 text-base mb-4 font-medium"
             >
-              Welcome to Sirf Local
+              {HERO_COPY.topLabel}
             </motion.p>
 
             <motion.h1
@@ -61,12 +73,12 @@ export default function Hero() {
               transition={{ delay: 0.4, duration: 0.7 }}
               className="text-5xl md:text-7xl lg:text-6xl xl:text-7xl font-black leading-[0.95] tracking-tight mb-6"
             >
-              <span className="text-white/70">World-Class</span>
+              <span className="text-white/70">{HERO_COPY.heading.line1}</span>
               <br />
-              <span className="text-white/70">Design </span>
-              <span className="text-white underline decoration-white/20 underline-offset-8">for Your</span>
+              <span className="text-white/70">{HERO_COPY.heading.line2Prefix} </span>
+              <span className="text-white underline decoration-white/20 underline-offset-8">{HERO_COPY.heading.line2Emphasis}</span>
               <br />
-              <span className="text-white/70">Local Business</span>
+              <span className="text-white/70">{HERO_COPY.heading.line3}</span>
             </motion.h1>
 
             <motion.p
@@ -75,8 +87,7 @@ export default function Hero() {
               transition={{ delay: 0.55 }}
               className="max-w-xl text-text-secondary text-lg leading-relaxed mb-10"
             >
-              Homestays, shops, and local crafts — get the agency quality you
-              deserve at a price that makes meaningful impact.
+              {HERO_COPY.description}
             </motion.p>
 
             <motion.div

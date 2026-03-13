@@ -21,11 +21,11 @@ export default function Home() {
         <PaymentIntegrationDemo />
       </div> */}
       <About />
+      <Pricing />
       <Mission />
-      <Services />
+      {/* <Services /> */}
       <Process />
       <Team />
-      <Pricing />
       <Trust />
       <Gallery />
       <Contact />
