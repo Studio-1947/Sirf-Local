@@ -93,9 +93,6 @@ function BentoCard({ svc, index }: { svc: PricingCardData; index: number }) {
                 <span className="text-xl md:text-2xl font-black text-white tracking-tighter transition-colors duration-500 group-hover:text-accent">
                   {displayPrice}
                 </span>
-                <span className="text-[10px] font-mono-display text-text-muted uppercase tracking-widest">
-                  {isAdvance ? "Consultation" : "Fixed Rate"}
-                </span>
               </div>
 
               {isAdvance ? (
