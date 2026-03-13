@@ -5,6 +5,7 @@ import { useRef } from "react";
 import { Star, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import TopographicBg from "./TopographicBg";
+import { HeroFigure } from "./HeroFigure";
 
 const clientLogos = [
   { file: "/images/clients/bazmkaar.svg", alt: "Bazmkaar" },
@@ -102,47 +103,7 @@ export default function Hero() {
           </div>
 
           <div className="relative hidden lg:block">
-            <div className="absolute top-0 left-6 -translate-y-1/2 z-20 flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-white shadow-lg whitespace-nowrap">
-              <div className="flex items-center">
-                {[1, 2, 3, 4].map((n, i) => (
-                  <div
-                    key={n}
-                    className="relative w-7 h-7 rounded-full border-2 border-white/10 overflow-hidden"
-                    style={{ marginLeft: i === 0 ? 0 : "-8px", zIndex: 4 - i }}
-                  >
-                    <Image
-                      src={`/images/avatars/${n}.png`}
-                      alt={`Client ${n}`}
-                      fill
-                      className="object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-              10+ Trusted Clients
-            </div>
-
-            <div className="relative h-[520px] rounded-2xl overflow-hidden border border-white/10">
-              <div className="absolute left-0 inset-y-0 w-16 bg-gradient-to-r from-bg-primary to-transparent z-10 pointer-events-none" />
-              <div className="absolute right-0 inset-y-0 w-16 bg-gradient-to-l from-bg-primary to-transparent z-10 pointer-events-none" />
-              <div className="flex flex-row h-full w-max gap-3 animate-marquee-horizontal">
-                {[...heroPhotos, ...heroPhotos].map((photo, i) => (
-                  <Image
-                    key={i}
-                    src={photo.file}
-                    alt={photo.alt}
-                    width={800}
-                    height={520}
-                    className="h-full w-auto shrink-0 object-cover rounded-xl"
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-1/2 z-20 flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm font-semibold text-white shadow-lg whitespace-nowrap">
-              <Star size={16} className="text-yellow-400 fill-yellow-400" />
-              5.0 on Google
-            </div>
+            <HeroFigure images={heroPhotos.slice(0, 4).map(p => p.file)} />
           </div>
         </div>
       </motion.div>
