@@ -62,10 +62,10 @@ export default function About() {
   const [activeIndex, setActiveIndex] = useState(0);
 
   return (
-    <section id="about" className="bg-bg-primary py-40 border-t border-border relative overflow-hidden">
+    <section id="about" className="bg-bg-primary py-24 md:py-40 border-t border-border relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         
-        <div className="grid lg:grid-cols-2 gap-24 items-start">
+        <div className="grid lg:grid-cols-2 gap-16 lg:grid-cols-2 lg:gap-24 items-start">
           
           {/* Left: The Manifesto */}
           <div ref={containerRef}>
@@ -75,10 +75,10 @@ export default function About() {
               initial={{ opacity: 0, y: 30 }} 
               animate={inView ? { opacity: 1, y: 0 } : {}} 
               transition={{ delay: 0.2 }}
-              className="text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-12"
+              className="text-5xl sm:text-6xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter mb-12"
             >
-              Inclusive. <br />
-              <span className="text-accent italic">Affordable.</span> <br />
+              Inclusive. <br className="sm:hidden" />
+              <span className="text-accent italic">Affordable.</span> <br className="sm:hidden" />
               Global.
             </motion.h2>
 
@@ -96,14 +96,14 @@ export default function About() {
               initial={{ opacity: 0, y: 20 }} 
               animate={inView ? { opacity: 1, y: 0 } : {}} 
               transition={{ delay: 0.5 }}
-              className="flex flex-wrap items-center gap-16 mt-16 pt-12 border-t border-white/5"
+              className="flex flex-wrap items-center gap-10 md:gap-16 mt-12 md:mt-16 pt-10 md:pt-12 border-t border-white/5"
             >
                {[
                  { val: 10, suffix: "+", label: "Partners" },
                  { val: 98, suffix: "%", label: "Success" },
                  { val: 2, suffix: "+", label: "Months" }
                ].map((stat) => (
-                 <div key={stat.label} className="relative last:after:hidden after:content-[''] after:absolute after:-right-8 after:top-1/2 after:-translate-y-1/2 after:w-px after:h-10 after:bg-white/10">
+                 <div key={stat.label} className="relative md:last:after:hidden after:content-[''] md:after:absolute md:after:-right-8 md:after:top-1/2 md:after:-translate-y-1/2 md:after:w-px md:after:h-10 md:after:bg-white/10">
                     <p className="text-white font-black text-5xl tracking-tighter leading-none"><CountUp value={stat.val} suffix={stat.suffix} /></p>
                     <p className="text-[10px] font-mono-display text-accent font-bold uppercase tracking-[0.3em] mt-3">{stat.label}</p>
                  </div>

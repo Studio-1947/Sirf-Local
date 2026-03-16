@@ -135,7 +135,7 @@ export default function Pricing() {
   return (
     <section
       id="pricing"
-      className="bg-bg-primary py-32 border-t border-border overflow-hidden"
+      className="bg-bg-primary py-24 md:py-32 border-t border-border overflow-hidden"
     >
       <div className="max-w-7xl mx-auto px-6">
         <div
@@ -154,9 +154,9 @@ export default function Pricing() {
               initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ delay: 0.2, duration: 0.7 }}
-              className="text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter"
+              className="text-4xl sm:text-5xl md:text-7xl font-black text-white leading-tight tracking-tighter"
             >
-              {PRICING_COPY.titleLineOne} <br />
+              {PRICING_COPY.titleLineOne} <br className="hidden sm:block" />
               <span className="text-accent">{PRICING_COPY.titleLineTwo}</span>
             </motion.h2>
           </div>

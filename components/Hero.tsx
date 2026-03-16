@@ -54,9 +54,9 @@ export default function Hero() {
 
       <motion.div
         style={{ y, opacity }}
-        className="relative z-10 max-w-7xl mx-auto px-6 pt-32 pb-20"
+        className="relative z-10 max-w-7xl mx-auto px-6 pt-24 md:pt-32 pb-16 md:pb-20"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-12 items-center">
           <div>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -71,7 +71,7 @@ export default function Hero() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.7 }}
-              className="text-5xl md:text-7xl lg:text-6xl xl:text-7xl font-black leading-[0.95] tracking-tight mb-6"
+              className="text-4xl sm:text-5xl md:text-7xl lg:text-6xl xl:text-7xl font-black leading-[0.95] tracking-tight mb-6"
             >
               <span className="text-white/70">{HERO_COPY.heading.line1}</span>
               <br />
@@ -113,7 +113,7 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          <div className="relative hidden lg:block">
+          <div className="relative block lg:block">
             <HeroFigure images={heroPhotos.slice(0, 4).map(p => p.file)} />
           </div>
         </div>

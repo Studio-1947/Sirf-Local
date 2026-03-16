@@ -117,12 +117,12 @@ export default function Services() {
   const { trackRef, currentIndex, maxIndex, itemsPerView, scrollTo, prev, next, onScroll } = useCarousel({ itemCount: services.length, gap: GAP });
 
   return (
-    <section id="services" className="bg-bg-primary py-28 border-t border-white/10">
+    <section id="services" className="bg-bg-primary py-24 md:py-28 border-t border-white/10">
       <div className="max-w-7xl mx-auto px-6">
         <div ref={sectionRef} className="flex items-end justify-between mb-12 gap-6">
           <div>
             <motion.span initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} className="section-tag block mb-4">Services</motion.span>
-            <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} className="text-4xl md:text-6xl font-black text-text-primary leading-tight max-w-2xl">Everything You Need to <span className="text-accent">Grow Online</span></motion.h2>
+            <motion.h2 initial={{ opacity: 0, y: 30 }} animate={inView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.2, duration: 0.7 }} className="text-3xl sm:text-4xl md:text-6xl font-black text-text-primary leading-tight max-w-2xl">Everything You Need to <span className="text-accent">Grow Online</span></motion.h2>
           </div>
           <motion.div initial={{ opacity: 0 }} animate={inView ? { opacity: 1 } : {}} transition={{ delay: 0.4 }} className="flex items-center gap-2 shrink-0">
             <button onClick={prev} disabled={currentIndex === 0} className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center text-white hover:border-white/40 hover:text-white disabled:opacity-30 disabled:cursor-not-allowed transition-all" aria-label="Previous services"><ArrowLeft size={16} /></button>
